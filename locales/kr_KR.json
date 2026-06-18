@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "title": "SuperArchive 영구 파일 저장 플랫폼",
+    "subtitle": "안전하고 효율적이며 영구적입니다. 귀하의 데이터는 Arweave 블록체인에 저장되어 영구적으로 보존됩니다.",
+    "login_button": "로그인 / 회원가입",
+    "project_goal_title": "플랫폼 목표 및 비전",
+    "project_goal_desc": "SuperArchive는 개인과 기업을 위해 설계된 SaaS 플랫폼으로, 아위브(Arweave) 블록체인에 문서, 계약서, 디지털 인증서 및 각종 파일을 영구적으로 저장할 수 있는 편리한 웹 인터페이스와 고효율 API를 제공합니다. 당사의 스마트한 단일 지갑 대납 메커니즘과 유연한 S-Points 시스템을 통해 암호화폐를 보유하거나 복잡한 가스 비용을 직접 지불할 필요 없이 고도로 안전한 탈중앙화 영구 스토리지 서비스를 간편하게 이용할 수 있습니다.",
+    "free_tier_title": "일일 무료 제공량",
+    "free_tier_desc": "등록된 모든 사용자는 일일 10회의 무료 업로드 혜택을 받습니다(단일 파일 크기 64KB 미만). 무료 업로드는 ArDrive Turbo 네트워크를 통해 자동으로 대기열에 추가되며 3초의 지연 시간 내에 블록체인에 안전하게 업로드됩니다."
+  },
+  "footer": {
+    "tos": "서비스 이용약관",
+    "privacy": "개인정보 처리방침",
+    "refund": "환불 정책",
+    "copyright": "© 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.",
+    "company_info": "Shen & Shan Tech Co. | 사업자등록번호: 61263535",
+    "support_line": "비즈니스 협력 또는 계정 관련 문의사항은 cs@saltycat.tw로 이메일을 보내주시기 바랍니다."
+  }
+}

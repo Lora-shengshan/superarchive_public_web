@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "title": "SuperArchive Permanent Storage Platform",
+    "subtitle": "Secure, efficient, and permanent. Your data is stored on the Arweave blockchain, preserved forever.",
+    "login_button": "Log In / Sign Up",
+    "project_goal_title": "Platform Goals & Vision",
+    "project_goal_desc": "SuperArchive is a SaaS platform designed for individuals and enterprises, providing a convenient Web interface and highly efficient API to store files, contracts, digital credentials, and datasets permanently on the Arweave blockchain. Powered by our smart single-wallet mechanism and flexible S-Points payment system, users can easily access secure, decentralized permanent storage without holding cryptocurrencies or managing complex gas fees.",
+    "free_tier_title": "Daily Free Tier Quota",
+    "free_tier_desc": "Every registered user receives 10 free uploads daily for files smaller than 64KB. Free tier uploads are securely queued and processed via ArDrive Turbo with a 3-second delay, 100% free of charge."
+  },
+  "footer": {
+    "tos": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "refund": "Refund Policy",
+    "copyright": "© 2026 Saltycat Mailservice. All rights reserved.",
+    "company_info": "Shen & Shan Tech Co. | Unified Business No: 61263535",
+    "support_line": "For any business cooperation or account questions, please email cs@saltycat.tw"
+  }
+}
