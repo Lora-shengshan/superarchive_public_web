@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - Login / Sign Up</title>
+  <link rel="icon" type="image/png" href="https://email.saltycat.tw/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+      --error-color: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+
+    .nav-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--primary-color);
+    }
+
+    .btn-back {
+      color: #4b5563;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .btn-back:hover {
+      color: var(--primary-color);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 20px;
+    }
+
+    .login-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      outline: none;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      background-color: #4338ca;
+    }
+
+    .btn-otp {
+      background-color: white;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .btn-otp:hover {
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.8rem;
+      margin: 25px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider:not(:empty)::before {
+      margin-right: .5em;
+    }
+
+    .divider:not(:empty)::after {
+      margin-left: .5em;
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      color: #374151;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-google:hover {
+      background-color: #f3f4f6;
+    }
+
+    .google-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .message-banner {
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .message-success {
+      background-color: #ecfdf5;
+      color: var(--accent-color);
+      border: 1px solid #a7f3d0;
+    }
+
+    .message-error {
+      background-color: #fef2f2;
+      color: var(--error-color);
+      border: 1px solid #fca5a5;
+    }
+
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .footer-links {
+      margin-bottom: 1rem;
+    }
+
+    .footer-links a {
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .footer-copyright {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tax {
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .footer-support {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <select id="language-selector">
+          <option value="zh_TW">繁體中文 (zh_TW)</option>
+          <option value="en_US">English (en_US)</option>
+          <option value="jp_JP">日本語 (jp_JP)</option>
+          <option value="kr_KR">한국어 (kr_KR)</option>
+        </select>
+        <a href="/" class="btn-back" data-i18n="auth.back_landing">返回首頁</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="login-card">
+      <div class="login-header">
+        <h2 class="login-title" data-i18n="auth.title">登入或註冊</h2>
+        <p class="login-subtitle" data-i18n="auth.subtitle">使用 Google 帳號一鍵登入，或輸入電子信箱獲取臨時密碼。</p>
+      </div>
+
+      <div id="banner" class="message-banner"></div>
+
+      <form id="login-form" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" data-i18n="auth.email_label">電子信箱 (Email)</label>
+          <input type="email" id="email" class="form-input" data-i18n="auth.email_placeholder" required>
+        </div>
+
+        <button type="button" id="btn-request-otp" class="btn-submit btn-otp" data-i18n="auth.otp_button" onclick="handleRequestOTP()">獲取登入臨時密碼</button>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" data-i18n="auth.password_label">登入密碼 (Password)</label>
+          <input type="password" id="password" class="form-input" data-i18n="auth.password_placeholder" required>
+        </div>
+
+        <button type="submit" id="btn-login-submit" class="btn-submit" data-i18n="auth.signin_button" onclick="handleSignIn()">登入系統</button>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <button class="btn-google" onclick="handleGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 24 24" width="100%" height="100%">
+          <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.94 1 12 1 7.35 1 3.37 3.68 1.4 7.6l3.8 2.96c.92-2.76 3.51-4.52 6.8-4.52z"></path>
+          <path fill="#4285F4" d="M23.49 12.27c0-.8-.07-1.56-.2-2.3H12v4.4h6.44c-.28 1.48-1.07 2.73-2.3 3.57l3.58 2.78c2.1-1.94 3.77-4.8 3.77-8.45z"></path>
+          <path fill="#FBBC05" d="M5.2 14.44c-.23-.69-.36-1.43-.36-2.19s.13-1.5.36-2.19L1.4 7.1C.5 8.9 0 10.4 0 12s.5 3.1 1.4 4.9l3.8-2.46z"></path>
+          <path fill="#34A853" d="M12 23c3.24 0 5.97-1.08 7.96-2.92l-3.58-2.78c-1 .67-2.28 1.07-3.95 1.07-3.29 0-6.08-2.14-7.07-5.04l-3.8 2.96C3.37 20.32 7.35 23 12 23z"></path>
+        </svg>
+        <span data-i18n="auth.google_button">使用 Google 帳號登入</span>
+      </button>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms" data-i18n="footer.tos">使用與服務條款</a> • 
+      <a href="/privacy" data-i18n="footer.privacy">隱私權政策</a> • 
+      <a href="/refund" data-i18n="footer.refund">退款方式</a>
+    </div>
+    <div class="footer-copyright" data-i18n="footer.copyright">
+      © 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.
+    </div>
+    <div class="footer-tax" data-i18n="footer.company_info">
+      陞和姍科技商號 | 統編: 61263535
+    </div>
+    <div class="footer-support" data-i18n="footer.support_line">
+      如有任何商務合作或帳號疑問，請發信至 cs@saltycat.tw
+    </div>
+  </footer>
+
+  <script src="/js/l10n.js"></script>
+  <script>
+    const API_BASE = "https://api.sarchive.saltycat.tw/api/v1";
+
+    function showMessage(msg, isError = false) {
+      const banner = document.getElementById("banner");
+      banner.innerText = msg;
+      banner.style.display = "block";
+      banner.className = `message-banner ${isError ? 'message-error' : 'message-success'}`;
+    }
+
+    async function handleRequestOTP() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        showMessage("請輸入電子信箱地址。 / Please enter an email address.", true);
+        return;
+      }
+
+      showMessage("傳送中... / Requesting...");
+      try {
+        const response = await fetch(`${API_BASE}/auth/email/otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email })
+        });
+        
+        const data = await response.json();
+        if (response.ok) {
+          showMessage("✅ 臨時登入密碼已成功寄至您的電子信箱！請檢查信箱收件夾。\nTemporary password sent successfully! Please check your inbox.");
+        } else {
+          showMessage(`❌ ${data.detail || "申請失敗，請檢查輸入。 / Request failed."}`, true);
+        }
+      } catch (e) {
+        showMessage("❌ 網路連線失敗，請檢查網路狀態。 / Network connection error.", true);
+      }
+    }
+
+    async function handleSignIn() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showMessage("請輸入電子信箱與密碼。 / Please enter email and password.", true);
+        return;
+      }
+
+      showMessage("登入中... / Signing in...");
+      try {
+        const response = await fetch(`${API_BASE}/auth/email/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, password: password })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          showMessage("✅ 登入成功！正在跳轉... / Login successful! Redirecting...");
+          // Persist user context locally if needed, session cookie (sa_session) is written natively by backend
+          localStorage.setItem("sa_user_email", email);
+          setTimeout(() => {
+            window.location.href = "/dashboard.html";
+          }, 1500);
+        } else {
+          showMessage(`❌ ${data.detail || "登入失敗，請檢查密碼。 / Invalid email or password."}`, true);
+        }
+      } catch (e) {
+        showMessage("❌ 網路連線失敗，請檢查網路狀態。 / Network connection error.", true);
+      }
+    }
+
+    async function handleGoogleLogin() {
+      showMessage("正在跳轉至 Google... / Redirecting to Google...");
+      try {
+        const response = await fetch(`${API_BASE}/auth/google/login`);
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          showMessage("❌ 無法取得 Google 登入網址。 / Failed to load Google Login.", true);
+        }
+      } catch (e) {
+        showMessage("❌ 網路連線失敗，請檢查網路狀態。 / Network connection error.", true);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -6,7 +6,23 @@
     "project_goal_title": "플랫폼 목표 및 비전",
     "project_goal_desc": "SuperArchive는 개인과 기업을 위해 설계된 SaaS 플랫폼으로, 아위브(Arweave) 블록체인에 문서, 계약서, 디지털 인증서 및 각종 파일을 영구적으로 저장할 수 있는 편리한 웹 인터페이스와 고효율 API를 제공합니다. 당사의 스마트한 단일 지갑 대납 메커니즘과 유연한 S-Points 시스템을 통해 암호화폐를 보유하거나 복잡한 가스 비용을 직접 지불할 필요 없이 고도로 안전한 탈중앙화 영구 스토리지 서비스를 간편하게 이용할 수 있습니다.",
     "free_tier_title": "일일 무료 제공량",
-    "free_tier_desc": "등록된 모든 사용자는 일일 10회의 무료 업로드 혜택을 받습니다(단일 파일 크기 64KB 미만). 무료 업로드는 ArDrive Turbo 네트워크를 통해 자동으로 대기열에 추가되며 3초의 지연 시간 내에 블록체인에 안전하게 업로드됩니다."
+    "free_tier_desc": "등록된 모든 사용자는 일일 10회의 무료 업로드 혜택을 받습니다(단일 파일 크기 64KB 미만). 무료 업로드는 ArDrive Turbo 네트워크를 통해 자동으로 대기열에 추가되며 3초의 지연 시간 내에 블록체인에 안전하게 업로드됩니다.",
+    "description_free_title": "무료 혜택 설명",
+    "description": "아위브 블록체인에 업로드하여 영구 손실 없이 안전하게 보관하세요.",
+    "free_terms_title": "일일 무료 한도:",
+    "free_quota_detail": "64KB 미만의 단일 파일 및 일일 10회 미만의 업로드는 자동으로 대기열에 추가되며, ArDrive Turbo를 통해 3초 지연으로 블록체인에 영구 보관됩니다(100% 무료)."
+  },
+  "auth": {
+    "title": "로그인 또는 회원가입",
+    "subtitle": "Google 계정으로 간편하게 로그인하거나, 이메일을 입력해 일회용 임시 비밀번호를 받아보세요.",
+    "email_label": "이메일 주소",
+    "email_placeholder": "이메일 주소를 입력하세요...",
+    "otp_button": "임시 비밀번호 발송",
+    "password_label": "비밀번호",
+    "password_placeholder": "임시 비밀번호 또는 영구 비밀번호를 입력하세요...",
+    "signin_button": "로그인",
+    "google_button": "Google 계정으로 로그인",
+    "back_landing": "홈으로 가기"
   },
   "footer": {
     "tos": "서비스 이용약관",
