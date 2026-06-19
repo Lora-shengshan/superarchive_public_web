@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SuperArchive - Permanent Cloud Storage</title>
+  <title>SuperArchive - 隱私權政策 (Privacy Policy)</title>
   <link rel="icon" type="image/png" href="https://email.saltycat.tw/favicon.ico">
   <style>
     :root {
@@ -12,7 +12,6 @@
       --primary-color: #4f46e5;
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
-      --accent-color: #059669;
     }
 
     * {
@@ -22,7 +21,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
@@ -34,18 +33,16 @@
     header {
       border-bottom: 1px solid var(--border-color);
       background-color: white;
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
 
     .nav-container {
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 1rem 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
     }
 
     .logo-container {
@@ -63,111 +60,48 @@
       height: 32px;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    select {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
-      background-color: white;
-      font-size: 0.875rem;
-      cursor: pointer;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: var(--primary-color);
-    }
-
-    .btn-login {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
+    .btn-back {
+      color: #4b5563;
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
-      transition: background-color 0.2s;
     }
 
-    .btn-login:hover {
-      background-color: #4338ca;
+    .btn-back:hover {
+      color: var(--primary-color);
     }
 
     main {
       flex: 1;
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 3rem 20px;
       width: 100%;
     }
 
-    .hero-section {
-      text-align: center;
-      margin-bottom: 4rem;
-      padding: 2rem 0;
-    }
-
-    .hero-title {
-      font-size: 2.5rem;
+    .article-title {
+      font-size: 2rem;
       font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       color: #111827;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 15px;
     }
 
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: #4b5563;
-      max-width: 700px;
-      margin: 0 auto;
+    .section {
+      margin-bottom: 2rem;
     }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 2rem;
-    }
-
-    @media (max-width: 768px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-title {
-        font-size: 2rem;
-      }
-    }
-
-    .card {
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .card-title {
+    .section-title {
       font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 1rem;
       color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .card-title-icon {
-      font-size: 1.5rem;
-    }
-
-    .card p {
+    .section p {
       color: #4b5563;
-      font-size: 0.975rem;
+      margin-bottom: 1rem;
       text-align: justify;
     }
 
@@ -187,7 +121,6 @@
     .footer-links a {
       color: #4b5563;
       text-decoration: none;
-      transition: color 0.1s;
     }
 
     .footer-links a:hover {
@@ -208,6 +141,17 @@
       font-size: 0.85rem;
       color: #4b5563;
     }
+    
+    select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      outline: none;
+      margin-right: 15px;
+    }
   </style>
 </head>
 <body>
@@ -215,7 +159,6 @@
   <header>
     <div class="nav-container">
       <a href="/" class="logo-container">
-        <!-- Minimal SVG Logo representing decentralized secure archive blocks -->
         <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -230,38 +173,33 @@
           <option value="jp_JP">日本語 (jp_JP)</option>
           <option value="kr_KR">한국어 (kr_KR)</option>
         </select>
-        <a href="/login.html" class="btn-login" data-i18n="landing.login_button">登入 / 註冊</a>
+        <a href="/" class="btn-back" data-i18n="auth.back_landing">返回首頁</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero-section">
-      <h1 class="hero-title" data-i18n="landing.title">SuperArchive 永久檔案儲存平台</h1>
-      <p class="hero-subtitle" data-i18n="landing.subtitle">安全、高效、永久，您的資料將儲存在 Arweave 區塊鏈，永久保存不遺失。</p>
-    </section>
-
-    <section class="content-grid">
-      <div class="card">
-        <div class="card-title">
-          <span class="card-title-icon">🎯</span>
-          <span data-i18n="landing.project_goal_title">平台目標與願景</span>
-        </div>
-        <p data-i18n="landing.project_goal_desc">SuperArchive 是一個為個人與企業打造的 SaaS 平台，提供便利的 Web 介面與高效率的 API，讓您可以一鍵將文件、合約、數位憑證與各類檔案永久保存至 Arweave 區塊鏈上。我們採用單一智慧錢包代付機制，搭配彈性的 S-Points 點數系統，讓您無須理解複雜的區塊鏈 gas 費或購買加密貨幣，即可輕鬆享有極致安全的去中心化永久儲存服務。</p>
+    <article>
+      <h1 class="article-title" data-i18n="footer.privacy">隱私權政策</h1>
+      
+      <div class="section">
+        <h2 class="section-title">1. 個人資料之收集 (Information Collection)</h2>
+        <p>當您註冊或登入本平台時，我們會收集您的「電子信箱 (Email)」或您的 Google 帳戶公開基本資料（例如名稱、頭像、內部用戶標識符）。此資料僅用於建立您的用戶身分、計算 S-Points 點數餘額、向您發送系統通知（例如臨時密碼、購買收據）以及辨識 API 呼叫擁有權，絕不用於第三方商業廣告或無關推廣。</p>
+        <p>When you register or sign in, we collect your email address or your Google account public profile. This data is used solely to authenticate your identity, track your S-Points balance, deliver transactional notices, and identify API credentials.</p>
       </div>
 
-      <div class="card" style="border-left: 4px solid var(--accent-color);">
-        <div class="card-title" style="color: var(--accent-color);">
-          <span class="card-icon">🎁</span>
-          <span data-i18n="landing.description_free_title" style="margin-left: 5px;">免費額度說明</span>
-        </div>
-        <p data-i18n="landing.description" style="margin-bottom: 1.5rem;">
-          上傳至 Arweave 區塊鏈，永久保存不遺失。
-        </p>
-        <h4 style="margin: 0 0 10px 0; color: #333;" data-i18n="landing.free_terms_title">每日免費額度：</h4>
-        <p data-i18n="landing.free_quota_detail">單一檔案小於 64KB，且每日少於 10 次上傳，將自動排隊並透過 ArDrive Turbo 網路於 3 秒延遲內安全上傳至區塊鏈，100% 免費。</p>
+      <div class="section">
+        <h2 class="section-title">2. 資料儲存與去中心化特性 (Blockchain Storage Disclosure)</h2>
+        <p>本平台整合區塊鏈進行永續儲存。請注意，您上傳至區塊鏈的任何「檔案內容」皆會被寫入去中心化之永久公開帳本上。本商號不擁有、亦無法控制該去中心化網路，因此無法對已發布在鏈上的檔案進行任何刪除、修改或撤銷。我們強烈建議您不要上傳任何包含個人敏感隱私資訊（例如身份證號、未加密之私鑰、病歷等）的檔案。如果您有隱私需求，請務必開啟本平台的「AES 加密上傳」功能，以確保第三方無法直接閱讀您的檔案內容。</p>
+        <p>The Platform utilizes blockchain networks for storage. Any file content uploaded will be written to a decentralized, permanent, and public ledger. The Company cannot delete or modify data already signed to the chain. We advise against uploading unencrypted sensitive personal details. Use our AES GCM encryption mode to secure confidential documents.</p>
       </div>
-    </section>
+
+      <div class="section">
+        <h2 class="section-title">3. 資訊安全與 Cookie 使用 (Security & Cookies)</h2>
+        <p>我們採用業界標準之加密技術（例如 HTTPS/TLS、HttpOnly 安全 Cookie、AES-256-GCM、PBKDF2 密碼雜湊）來保護您的敏感身分資訊與傳輸通道。我們使用 HttpOnly Cookie 來儲存您的 JWT 會話資訊，這可以防止 JavaScript 惡意程式腳本（XSS 攻擊）讀取您的登入會話標記。</p>
+        <p>We implement strict industry security practices (including HTTPS, HttpOnly Session Cookies, and SHA-256 password hashes). HttpOnly cookies prevent XSS scripts from accessing your secure login session tokens.</p>
+      </div>
+    </article>
   </main>
 
   <footer class="saltycat-footer">
@@ -271,7 +209,7 @@
       <a href="/refund.html" target="_blank" data-i18n="footer.refund">退款方式</a>
     </div>
     <div class="footer-copyright" data-i18n="footer.copyright">
-      © 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.
+      © 2026 SuperArchive 閒貓典藏. All rights reserved.
     </div>
     <div class="footer-tax" data-i18n="footer.company_info">
       陞和姍科技商號 | 統編: 61263535

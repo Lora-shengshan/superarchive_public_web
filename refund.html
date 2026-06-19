@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SuperArchive - Permanent Cloud Storage</title>
+  <title>SuperArchive - 退款政策 (Refund Policy)</title>
   <link rel="icon" type="image/png" href="https://email.saltycat.tw/favicon.ico">
   <style>
     :root {
@@ -12,7 +12,6 @@
       --primary-color: #4f46e5;
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
-      --accent-color: #059669;
     }
 
     * {
@@ -22,7 +21,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
@@ -34,18 +33,16 @@
     header {
       border-bottom: 1px solid var(--border-color);
       background-color: white;
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
 
     .nav-container {
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 1rem 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
     }
 
     .logo-container {
@@ -63,111 +60,48 @@
       height: 32px;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    select {
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
-      background-color: white;
-      font-size: 0.875rem;
-      cursor: pointer;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: var(--primary-color);
-    }
-
-    .btn-login {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 6px;
+    .btn-back {
+      color: #4b5563;
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
-      transition: background-color 0.2s;
     }
 
-    .btn-login:hover {
-      background-color: #4338ca;
+    .btn-back:hover {
+      color: var(--primary-color);
     }
 
     main {
       flex: 1;
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 3rem 20px;
       width: 100%;
     }
 
-    .hero-section {
-      text-align: center;
-      margin-bottom: 4rem;
-      padding: 2rem 0;
-    }
-
-    .hero-title {
-      font-size: 2.5rem;
+    .article-title {
+      font-size: 2rem;
       font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       color: #111827;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 15px;
     }
 
-    .hero-subtitle {
-      font-size: 1.25rem;
-      color: #4b5563;
-      max-width: 700px;
-      margin: 0 auto;
+    .section {
+      margin-bottom: 2rem;
     }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 2rem;
-    }
-
-    @media (max-width: 768px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-title {
-        font-size: 2rem;
-      }
-    }
-
-    .card {
-      background: white;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    .card-title {
+    .section-title {
       font-size: 1.25rem;
       font-weight: 700;
       margin-bottom: 1rem;
       color: #111827;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .card-title-icon {
-      font-size: 1.5rem;
-    }
-
-    .card p {
+    .section p {
       color: #4b5563;
-      font-size: 0.975rem;
+      margin-bottom: 1rem;
       text-align: justify;
     }
 
@@ -187,7 +121,6 @@
     .footer-links a {
       color: #4b5563;
       text-decoration: none;
-      transition: color 0.1s;
     }
 
     .footer-links a:hover {
@@ -208,6 +141,17 @@
       font-size: 0.85rem;
       color: #4b5563;
     }
+    
+    select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+      outline: none;
+      margin-right: 15px;
+    }
   </style>
 </head>
 <body>
@@ -215,7 +159,6 @@
   <header>
     <div class="nav-container">
       <a href="/" class="logo-container">
-        <!-- Minimal SVG Logo representing decentralized secure archive blocks -->
         <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -230,38 +173,30 @@
           <option value="jp_JP">日本語 (jp_JP)</option>
           <option value="kr_KR">한국어 (kr_KR)</option>
         </select>
-        <a href="/login.html" class="btn-login" data-i18n="landing.login_button">登入 / 註冊</a>
+        <a href="/" class="btn-back" data-i18n="auth.back_landing">返回首頁</a>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero-section">
-      <h1 class="hero-title" data-i18n="landing.title">SuperArchive 永久檔案儲存平台</h1>
-      <p class="hero-subtitle" data-i18n="landing.subtitle">安全、高效、永久，您的資料將儲存在 Arweave 區塊鏈，永久保存不遺失。</p>
-    </section>
-
-    <section class="content-grid">
-      <div class="card">
-        <div class="card-title">
-          <span class="card-title-icon">🎯</span>
-          <span data-i18n="landing.project_goal_title">平台目標與願景</span>
-        </div>
-        <p data-i18n="landing.project_goal_desc">SuperArchive 是一個為個人與企業打造的 SaaS 平台，提供便利的 Web 介面與高效率的 API，讓您可以一鍵將文件、合約、數位憑證與各類檔案永久保存至 Arweave 區塊鏈上。我們採用單一智慧錢包代付機制，搭配彈性的 S-Points 點數系統，讓您無須理解複雜的區塊鏈 gas 費或購買加密貨幣，即可輕鬆享有極致安全的去中心化永久儲存服務。</p>
+    <div class="login-card" style="max-width: 600px;">
+      <div class="login-header">
+        <h2 class="login-title" data-i18n="footer.refund">退款方式</h2>
       </div>
 
-      <div class="card" style="border-left: 4px solid var(--accent-color);">
-        <div class="card-title" style="color: var(--accent-color);">
-          <span class="card-icon">🎁</span>
-          <span data-i18n="landing.description_free_title" style="margin-left: 5px;">免費額度說明</span>
-        </div>
-        <p data-i18n="landing.description" style="margin-bottom: 1.5rem;">
-          上傳至 Arweave 區塊鏈，永久保存不遺失。
-        </p>
-        <h4 style="margin: 0 0 10px 0; color: #333;" data-i18n="landing.free_terms_title">每日免費額度：</h4>
-        <p data-i18n="landing.free_quota_detail">單一檔案小於 64KB，且每日少於 10 次上傳，將自動排隊並透過 ArDrive Turbo 網路於 3 秒延遲內安全上傳至區塊鏈，100% 免費。</p>
+      <div style="color: #4b5563; font-size: 0.95rem;">
+        <p style="margin-bottom: 1rem; text-align: justify; font-weight: bold; color: #111827;">【 點數購買與消保法七日鑑賞期規定 】 (Taiwan Consumer Protection Act Compliance)</p>
+        
+        <p style="margin-bottom: 1rem; text-align: justify;">1. 依中華民國《消費者保護法》第十九條第二項規定，並經行政院消費者保護會通過之「通訊交易解除權合理例外情事適用準則」第二條第五款之規定，非以有形媒介提供之數位內容或一經提供即為完成之線上服務，經消費者事先同意始提供者，<strong>不適用消保法七日無條件退款之法定解除權規定</strong>。</p>
+        <p style="margin-bottom: 1.5rem; text-align: justify;">According to the Article 19-2 of Taiwan's Consumer Protection Act and the corresponding executive orders, digital contents or online services provided instantaneously upon consent are exempt from the standard 7-day unconditional refund policy.</p>
+
+        <p style="margin-bottom: 1rem; text-align: justify;">2. <strong>退款條件</strong>：在您購買本商號發行之「S-Points（點數）」後，若該筆交易<strong>完全未使用任何點數</strong>進行檔案上傳，您可在購買後 <strong>7 日內</strong>，發信至客服信箱 <strong>cs@saltycat.tw</strong> 申請全額退款。請註明您的註冊電子信箱、購買訂單編號及付款收據。</p>
+        <p style="margin-bottom: 1.5rem; text-align: justify;"><strong>Refundable Scope</strong>: Within 7 days of purchase, you may request a full refund of your S-Points order by emailing <strong>cs@saltycat.tw</strong>, provided that <strong>zero points have been consumed</strong> in that transaction.</p>
+
+        <p style="margin-bottom: 1rem; text-align: justify;">3. <strong>不可退款之例外</strong>：一旦您使用該筆訂單所產生的點數進行了至少一次檔案上傳，即代表該線上服務已開始提供且部分完成。由於本商號已經代表您向去中心化儲存節點代付了永久保存規費，因此<strong>該筆點數交易將永久無法申請退款、撤銷或轉讓</strong>。</p>
+        <p style="margin-bottom: 1rem; text-align: justify;"><strong>Exceptions</strong>: Once any portion of S-Points has been consumed for a file upload, the digital service is deemed fully delivered and irreversible. Consumed point transactions cannot be refunded, canceled, or transferred under any circumstances.</p>
       </div>
-    </section>
+    </div>
   </main>
 
   <footer class="saltycat-footer">
@@ -271,7 +206,7 @@
       <a href="/refund.html" target="_blank" data-i18n="footer.refund">退款方式</a>
     </div>
     <div class="footer-copyright" data-i18n="footer.copyright">
-      © 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.
+      © 2026 SuperArchive 閒貓典藏. All rights reserved.
     </div>
     <div class="footer-tax" data-i18n="footer.company_info">
       陞和姍科技商號 | 統編: 61263535
