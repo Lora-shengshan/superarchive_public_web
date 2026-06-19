@@ -24,6 +24,23 @@
     "google_button": "Google로 로그인",
     "back_landing": "돌아가기"
   },
+  "dash": {
+    "title": "사용자 대시보드",
+    "points_balance": "S-Points 잔액",
+    "points_count": "포인트",
+    "api_keys_title": "API 키 관리",
+    "create_key_button": "새 키 생성",
+    "key_name_placeholder": "키 이름 입력 (예: 운영 서버)",
+    "web_upload_title": "보안 웹 업로드",
+    "file_label": "파일 선택",
+    "encrypt_checkbox": "AES-256-GCM 보안 암호화 활성화",
+    "passphrase_placeholder": "암호화 비밀번호 입력",
+    "upload_button": "업로드",
+    "downloads_title": "블록체인 다운로드 및 복호화",
+    "tx_id_placeholder": "Arweave 트랜잭션 ID (tx_id) 입력",
+    "download_button": "다운로드 및 복호화",
+    "logout_button": "로그아웃"
+  },
   "footer": {
     "tos": "서비스 이용약관",
     "privacy": "개인정보 처리방침",

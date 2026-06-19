@@ -24,6 +24,23 @@
     "google_button": "Google 帳號登入",
     "back_landing": "返回首頁"
   },
+  "dash": {
+    "title": "用戶儀表板",
+    "points_balance": "您的 S-Points 餘額",
+    "points_count": "點",
+    "api_keys_title": "API 金鑰管理 (Developer API Keys)",
+    "create_key_button": "建立新金鑰",
+    "key_name_placeholder": "金鑰名稱 (例如：生產伺服器)",
+    "web_upload_title": "網頁端安全上傳 (Secure Web Upload)",
+    "file_label": "選擇檔案",
+    "encrypt_checkbox": "啟用 AES-256-GCM 安全加密上傳",
+    "passphrase_placeholder": "請輸入加密/解密密碼",
+    "upload_button": "立即上傳",
+    "downloads_title": "鏈上檔案下載與解密 (CDN & Decryptor)",
+    "tx_id_placeholder": "請輸入 Arweave 交易 ID (Transaction ID)",
+    "download_button": "安全下載並解密",
+    "logout_button": "安全登出"
+  },
   "footer": {
     "tos": "使用與服務條款",
     "privacy": "隱私權政策",

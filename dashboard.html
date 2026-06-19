@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - Dashboard</title>
+  <link rel="icon" type="image/png" href="https://email.saltycat.tw/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+      --error-color: #ef4444;
+      --warning-color: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+
+    .nav-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    select, input, button {
+      outline: none;
+    }
+
+    select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: white;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .btn-logout {
+      background-color: #fef2f2;
+      color: var(--error-color);
+      border: 1px solid #fca5a5;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    .btn-logout:hover {
+      background-color: #fee2e2;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 20px;
+      width: 100%;
+    }
+
+    .welcome-section {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .user-email {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .points-card {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 15px 25px;
+      text-align: center;
+    }
+
+    .points-title {
+      font-size: 0.8rem;
+      color: #1e40af;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .points-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+
+    .grid-sections {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    @media (min-width: 768px) {
+      .grid-sections {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .dashboard-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary-color);
+    }
+
+    .btn-action {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.1s;
+    }
+
+    .btn-action:hover {
+      background-color: #4338ca;
+    }
+
+    .key-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: var(--secondary-bg);
+    }
+
+    .key-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .key-name {
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .key-preview {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+
+    .key-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-toggle {
+      background: none;
+      border: 1px solid var(--border-color);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-toggle-active {
+      background-color: #ecfdf5;
+      color: var(--accent-color);
+      border-color: #a7f3d0;
+    }
+
+    .btn-delete {
+      background: none;
+      border: 1px solid #fee2e2;
+      color: var(--error-color);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .btn-delete:hover {
+      background: #fef2f2;
+    }
+
+    .message-banner {
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .message-success {
+      background-color: #ecfdf5;
+      color: var(--accent-color);
+      border: 1px solid #a7f3d0;
+    }
+
+    .message-error {
+      background-color: #fef2f2;
+      color: var(--error-color);
+      border: 1px solid #fca5a5;
+    }
+
+    .raw-key-display {
+      background-color: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #b45309;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      word-break: break-all;
+      display: none;
+      text-align: center;
+    }
+
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .footer-links {
+      margin-bottom: 1rem;
+    }
+
+    .footer-links a {
+      color: #4b5563;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .footer-copyright {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-tax {
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .footer-support {
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <select id="language-selector">
+          <option value="zh_TW">繁體中文 (zh_TW)</option>
+          <option value="en_US">English (en_US)</option>
+          <option value="jp_JP">日本語 (jp_JP)</option>
+          <option value="kr_KR">한국어 (kr_KR)</option>
+        </select>
+        <button class="btn-logout" data-i18n="dash.logout_button" onclick="handleLogout()">安全登出</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Welcome section showing user profile details -->
+    <section class="welcome-section">
+      <div>
+        <h2 class="user-email" id="user-display">sarchive@test2.5233.space</h2>
+        <p style="color: #6b7280; font-size: 0.9rem;">歡迎回來您的永久儲存管理平台</p>
+      </div>
+      <div class="points-card">
+        <p class="points-title" data-i18n="dash.points_balance">您的 S-Points 餘額</p>
+        <p><span class="points-value" id="points-display">5</span> <span style="font-size: 0.85rem; font-weight: bold; color: #1e40af;" data-i18n="dash.points_count">點</span></p>
+      </div>
+    </section>
+
+    <div id="banner" class="message-banner"></div>
+    <div id="raw-key-card" class="raw-key-display"></div>
+
+    <div class="grid-sections">
+      <!-- 1. API Key CRUD Management -->
+      <section class="dashboard-card">
+        <h2 class="card-title">🔑 <span data-i18n="dash.api_keys_title">API 金鑰管理</span></h2>
+        
+        <form onsubmit="return false;" style="margin-bottom: 25px; display: flex; gap: 10px; align-items: flex-end;">
+          <div style="flex: 1;">
+            <label class="form-label" data-i18n="dash.create_key_button">建立新金鑰</label>
+            <input type="text" id="new-key-name" class="form-input" data-i18n="dash.key_name_placeholder" placeholder="金鑰名稱">
+          </div>
+          <button type="submit" class="btn-action" onclick="createAPIKey()">建立</button>
+        </form>
+
+        <div id="keys-list-container">
+          <!-- Populated by JS dynamically -->
+        </div>
+      </section>
+
+      <!-- 2. Secure Web Upload & Local Decryptor -->
+      <section class="dashboard-card" style="display: flex; flex-direction: column; gap: 30px;">
+        <!-- Upload Card Part -->
+        <div>
+          <h2 class="card-title">📤 <span data-i18n="dash.web_upload_title">網頁端安全上傳</span></h2>
+          <form onsubmit="return false;">
+            <div class="form-group">
+              <label class="form-label" data-i18n="dash.file_label">選擇檔案</label>
+              <input type="file" id="file-uploader" class="form-input" required>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 15px;">
+              <input type="checkbox" id="enable-encrypt" onchange="toggleEncryptInput()">
+              <label for="enable-encrypt" class="form-label" style="margin-bottom: 0; cursor: pointer;" data-i18n="dash.encrypt_checkbox">啟用 AES-256-GCM 安全加密上傳</label>
+            </div>
+            <div class="form-group" id="passphrase-group" style="display: none;">
+              <label class="form-label" data-i18n="dash.passphrase_placeholder">請輸入加密/解密密碼</label>
+              <input type="password" id="upload-passphrase" class="form-input" placeholder="Passphrase">
+            </div>
+            <button class="btn-action" style="width: 100%;" data-i18n="dash.upload_button" onclick="handleFileUpload()">立即上傳</button>
+          </form>
+        </div>
+
+        <!-- Download Card Part -->
+        <div style="border-top: 1px solid var(--border-color); padding-top: 25px;">
+          <h2 class="card-title">📥 <span data-i18n="dash.downloads_title">鏈上檔案下載與解密</span></h2>
+          <form onsubmit="return false;">
+            <div class="form-group">
+              <label class="form-label" data-i18n="dash.tx_id_placeholder">請輸入 Arweave 交易 ID (Transaction ID)</label>
+              <input type="text" id="download-tx-id" class="form-input" placeholder="Transaction ID">
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-i18n="dash.passphrase_placeholder">請輸入加密/解密密碼</label>
+              <input type="password" id="download-passphrase" class="form-input" placeholder="Passphrase">
+            </div>
+            <button class="btn-action" style="width: 100%; background-color: var(--accent-color);" data-i18n="dash.download_button" onclick="handleFileDownload()">安全下載並解密</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank" data-i18n="footer.tos">使用與服務條款</a> • 
+      <a href="/privacy.html" target="_blank" data-i18n="footer.privacy">隱私權政策</a> • 
+      <a href="/refund.html" target="_blank" data-i18n="footer.refund">退款方式</a>
+    </div>
+    <div class="footer-copyright" data-i18n="footer.copyright">
+      © 2026 SuperArchive 閒貓典藏. All rights reserved.
+    </div>
+    <div class="footer-tax" data-i18n="footer.company_info">
+      陞和姍科技商號 | 統編: 61263535
+    </div>
+    <div class="footer-support" data-i18n="footer.support_line">
+      如有任何商務合作或帳號疑問，請發信至 cs@saltycat.tw
+    </div>
+  </footer>
+
+  <script src="/js/l10n.js"></script>
+  <script>
+    const API_BASE = "https://api.sarchive.saltycat.tw/api/v1";
+    let userProfile = null;
+
+    // Check auth state on boot
+    async function loadDashboard() {
+      try {
+        const response = await fetch(`${API_BASE}/auth/me`);
+        if (!response.ok) {
+           // Unauthorized, redirect back to login
+           window.location.href = "/login.html";
+           return;
+        }
+        userProfile = await response.json();
+        
+        // Render profile
+        document.getElementById("user-display").innerText = userProfile.email;
+        document.getElementById("points-display").innerText = userProfile.s_points;
+        
+        // Load keys list
+        await loadAPIKeysList();
+      } catch (e) {
+        console.error("Failed to load user profile:", e);
+        window.location.href = "/login.html";
+      }
+    }
+
+    function showBanner(msg, isError = false) {
+      const banner = document.getElementById("banner");
+      banner.innerText = msg;
+      banner.style.display = "block";
+      banner.className = `message-banner ${isError ? 'message-error' : 'message-success'}`;
+    }
+
+    // --- API Key CRUD Functions ---
+
+    async function loadAPIKeysList() {
+      try {
+        const res = await fetch(`${API_BASE}/api-keys/list`);
+        if (!res.ok) return;
+        const keys = await res.json();
+        
+        const container = document.getElementById("keys-list-container");
+        container.innerHTML = "";
+        
+        if (keys.length === 0) {
+          container.innerHTML = "<p style='color: #9ca3af; font-size: 0.85rem; text-align: center;'>目前無任何 API 金鑰。 / No active API keys found.</p>";
+          return;
+        }
+        
+        keys.forEach(k => {
+          const item = document.createElement("div");
+          item.className = "key-item";
+          item.innerHTML = `
+            <div class="key-info">
+              <span class="key-name">${escapeHTML(k.name)}</span>
+              <span class="key-preview">${k.key_preview}</span>
+            </div>
+            <div class="key-actions">
+              <button class="btn-toggle ${k.is_active ? 'btn-toggle-active' : ''}" onclick="toggleKey('${k.key_hash}')">
+                ${k.is_active ? '已啟用' : '已停用'}
+              </button>
+              <button class="btn-delete" onclick="deleteKey('${k.key_hash}')">刪除</button>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      } catch (e) {
+         console.error("Failed to list API keys:", e);
+      }
+    }
+
+    async function createAPIKey() {
+      const nameInput = document.getElementById("new-key-name");
+      const name = nameInput.value.trim();
+      if (!name) {
+         showBanner("請輸入金鑰名稱。 / Please enter key name.", true);
+         return;
+      }
+      
+      try {
+        const res = await fetch(`${API_BASE}/api-keys/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name })
+        });
+        
+        const data = await res.json();
+        if (res.ok) {
+          showBanner("✅ 成功建立 API 金鑰！金鑰明文只顯示一次，請務必妥善保存。");
+          const rawCard = document.getElementById("raw-key-card");
+          rawCard.innerText = `Plain API Key (Only Visible Once!):\n${data.raw_key}`;
+          rawCard.style.display = "block";
+          nameInput.value = "";
+          await loadAPIKeysList();
+        } else {
+          showBanner(`❌ ${data.detail || "建立金鑰失敗。"}`, true);
+        }
+      } catch (e) {
+         showBanner("❌ 網路連線失敗。 / Network connection error.", true);
+      }
+    }
+
+    async function toggleKey(hash) {
+      try {
+        const res = await fetch(`${API_BASE}/api-keys/toggle/${hash}`, { method: "POST" });
+        if (res.ok) {
+           await loadAPIKeysList();
+        }
+      } catch (e) {
+         console.error(e);
+      }
+    }
+
+    async function deleteKey(hash) {
+      if (!confirm("確定要永久刪除此 API 金鑰嗎？ / Are you sure you want to delete this API Key?")) return;
+      try {
+        const res = await fetch(`${API_BASE}/api-keys/${hash}`, { method: "DELETE" });
+        if (res.ok) {
+           await loadAPIKeysList();
+        }
+      } catch (e) {
+         console.error(e);
+      }
+    }
+
+    // --- Web Upload & Downloads ---
+
+    function toggleEncryptInput() {
+      const checked = document.getElementById("enable-encrypt").checked;
+      document.getElementById("passphrase-group").style.display = checked ? "block" : "none";
+    }
+
+    async function handleFileUpload() {
+      const fileInput = document.getElementById("file-uploader");
+      if (fileInput.files.length === 0) {
+         showBanner("請先選擇要上傳的檔案。 / Please choose a file.", true);
+         return;
+      }
+      
+      const file = fileInput.files[0];
+      const encryptChecked = document.getElementById("enable-encrypt").checked;
+      const passphrase = document.getElementById("upload-passphrase").value;
+      
+      if (encryptChecked && !passphrase) {
+         showBanner("啟用加密必須輸入密碼！ / Encryption passphrase is required.", true);
+         return;
+      }
+      
+      showBanner("上傳中（正在與區塊鏈連線，請稍候）... / Uploading to blockchain...");
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      const headers = {};
+      if (encryptChecked) {
+         headers["X-Encryption-Key"] = passphrase;
+      }
+      
+      try {
+        const res = await fetch(`${API_BASE}/upload`, {
+          method: "POST",
+          headers: headers,
+          body: formData
+        });
+        
+        const data = await res.json();
+        if (res.ok) {
+          showBanner(`🎉 檔案上傳成功！\n交易 ID (tx_id): ${data.tx_id}\n點數扣抵: ${data.points_deducted} 點`);
+          fileInput.value = "";
+          document.getElementById("upload-passphrase").value = "";
+          // Refresh balance
+          await loadDashboard();
+        } else {
+          showBanner(`❌ ${data.detail || "上傳失敗。"}`, true);
+        }
+      } catch (e) {
+        showBanner("❌ 網路連線或代付逾時失敗。 / Connection timed out.", true);
+      }
+    }
+
+    async function handleFileDownload() {
+      const txId = document.getElementById("download-tx-id").value.trim();
+      const passphrase = document.getElementById("download-passphrase").value;
+      
+      if (!txId) {
+         showBanner("請輸入交易 ID。 / Transaction ID is required.", true);
+         return;
+      }
+      
+      showBanner("正在從去中心化節點下載檔案中... / Downloading from CDN...");
+      
+      const headers = {};
+      if (passphrase) {
+         headers["X-Encryption-Key"] = passphrase;
+      }
+      
+      try {
+        const res = await fetch(`${API_BASE}/upload/download/${txId}`, {
+          headers: headers
+        });
+        
+        if (res.status === 200) {
+          const blob = await res.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          // Extract filename from headers if present, else fallback
+          a.download = `superarchive_${txId}.txt`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          showBanner("✅ 下載並解密成功！");
+        } else {
+          const err = await res.json();
+          showBanner(`❌ ${err.detail || "下載或解密失敗。"}`, true);
+        }
+      } catch (e) {
+         showBanner("❌ 網路連線錯誤。 / Download connection error.", true);
+      }
+    }
+
+    // --- Logout ---
+
+    async function handleLogout() {
+      try {
+        await fetch(`${API_BASE}/auth/logout`, { method: "POST" });
+        window.location.href = "/login.html";
+      } catch (e) {
+        window.location.href = "/login.html";
+      }
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
+    // Initialize Dashboard
+    document.addEventListener("DOMContentLoaded", loadDashboard);
+  </script>
+</body>
+</html>

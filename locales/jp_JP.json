@@ -24,6 +24,23 @@
     "google_button": "Google でログイン",
     "back_landing": "戻る"
   },
+  "dash": {
+    "title": "ユーザーダッシュボード",
+    "points_balance": "S-Points 残高",
+    "points_count": "ポイント",
+    "api_keys_title": "API キー管理",
+    "create_key_button": "新規キー作成",
+    "key_name_placeholder": "キー名 (例: 本番サーバー)",
+    "web_upload_title": "セキュアWebアップロード",
+    "file_label": "ファイルを選択",
+    "encrypt_checkbox": "AES-256-GCM 暗号化アップロードを有効にする",
+    "passphrase_placeholder": "暗号化パスフレーズを入力",
+    "upload_button": "アップロード",
+    "downloads_title": "ブロックチェーン ダウンロードと復号",
+    "tx_id_placeholder": "Arweave 取引 ID (tx_id) を入力",
+    "download_button": "ダウンロードと復号",
+    "logout_button": "ログアウト"
+  },
   "footer": {
     "tos": "サービス利用規約",
     "privacy": "プライバシーポリシー",

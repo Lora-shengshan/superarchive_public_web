@@ -24,6 +24,23 @@
     "google_button": "Sign In with Google",
     "back_landing": "Back"
   },
+  "dash": {
+    "title": "User Dashboard",
+    "points_balance": "Your S-Points Balance",
+    "points_count": "pts",
+    "api_keys_title": "API Key Management",
+    "create_key_button": "Create New Key",
+    "key_name_placeholder": "Key name (e.g., Prod Server)",
+    "web_upload_title": "Secure Web Upload",
+    "file_label": "Choose File",
+    "encrypt_checkbox": "Enable AES-256-GCM Secure Encryption",
+    "passphrase_placeholder": "Enter encryption passphrase",
+    "upload_button": "Upload",
+    "downloads_title": "Blockchain Download & Decrypter",
+    "tx_id_placeholder": "Enter Arweave Transaction ID (tx_id)",
+    "download_button": "Download & Decrypt",
+    "logout_button": "Logout"
+  },
   "footer": {
     "tos": "Terms of Service",
     "privacy": "Privacy Policy",
