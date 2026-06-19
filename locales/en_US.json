@@ -13,16 +13,16 @@
     "free_quota_detail": "Single files smaller than 64KB, with less than 10 uploads daily, are automatically queued and safely uploaded via ArDrive Turbo with a 3-second delay, 100% free."
   },
   "auth": {
-    "title": "Sign In or Sign Up",
-    "subtitle": "Log in instantly with Google, or enter your email address to receive a temporary password.",
+    "title": "Sign In / Sign Up",
+    "subtitle": "Sign in with Google or enter your email for a temporary password.",
     "email_label": "Email Address",
-    "email_placeholder": "Enter your email address...",
+    "email_placeholder": "Enter your email address",
     "otp_button": "Get Temporary Password",
     "password_label": "Password",
-    "password_placeholder": "Enter temporary or permanent password...",
+    "password_placeholder": "Enter password",
     "signin_button": "Sign In",
     "google_button": "Sign In with Google",
-    "back_landing": "Back to Home"
+    "back_landing": "Back"
   },
   "footer": {
     "tos": "Terms of Service",

@@ -13,16 +13,16 @@
     "free_quota_detail": "64KB 미만의 단일 파일 및 일일 10회 미만의 업로드는 자동으로 대기열에 추가되며, ArDrive Turbo를 통해 3초 지연으로 블록체인에 영구 보관됩니다(100% 무료)."
   },
   "auth": {
-    "title": "로그인 또는 회원가입",
-    "subtitle": "Google 계정으로 간편하게 로그인하거나, 이메일을 입력해 일회용 임시 비밀번호를 받아보세요.",
+    "title": "로그인 / 회원가입",
+    "subtitle": "Google로 로그인하거나 이메일을 입력해 임시 비밀번호를 받아보세요.",
     "email_label": "이메일 주소",
-    "email_placeholder": "이메일 주소를 입력하세요...",
-    "otp_button": "임시 비밀번호 발송",
+    "email_placeholder": "이메일 주소 입력",
+    "otp_button": "임시 비밀번호 받기",
     "password_label": "비밀번호",
-    "password_placeholder": "임시 비밀번호 또는 영구 비밀번호를 입력하세요...",
+    "password_placeholder": "비밀번호 입력",
     "signin_button": "로그인",
-    "google_button": "Google 계정으로 로그인",
-    "back_landing": "홈으로 가기"
+    "google_button": "Google로 로그인",
+    "back_landing": "돌아가기"
   },
   "footer": {
     "tos": "서비스 이용약관",

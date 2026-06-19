@@ -51,7 +51,7 @@ class L10nManager {
       const key = element.getAttribute('data-i18n');
       const translation = this.t(key);
       if (translation) {
-        if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email')) {
+        if (element.tagName === 'INPUT') {
           element.placeholder = translation;
         } else {
           element.innerHTML = translation;

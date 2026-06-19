@@ -13,15 +13,15 @@
     "free_quota_detail": "單一檔案小於 64KB，且每日少於 10 次上傳，將自動排隊並透過 ArDrive Turbo 網路於 3 秒延遲內安全上傳至區塊鏈，100% 免費。"
   },
   "auth": {
-    "title": "登入或註冊",
-    "subtitle": "使用 Google 帳號一鍵登入，或輸入電子信箱獲取臨時密碼。",
-    "email_label": "電子信箱 (Email)",
-    "email_placeholder": "請輸入您的電子信箱...",
-    "otp_button": "獲取登入臨時密碼",
-    "password_label": "登入密碼 (Password)",
-    "password_placeholder": "請輸入臨時密碼或永久密碼...",
-    "signin_button": "登入系統",
-    "google_button": "使用 Google 帳號登入",
+    "title": "登入 / 註冊",
+    "subtitle": "一鍵登入或輸入電子信箱取得臨時密碼。",
+    "email_label": "電子信箱",
+    "email_placeholder": "請輸入電子信箱",
+    "otp_button": "取得臨時密碼",
+    "password_label": "密碼",
+    "password_placeholder": "請輸入密碼",
+    "signin_button": "登入",
+    "google_button": "Google 帳號登入",
     "back_landing": "返回首頁"
   },
   "footer": {
