@@ -479,7 +479,7 @@
     // Check auth state on boot
     async function loadDashboard() {
       try {
-        const response = await fetch(`${API_BASE}/auth/me`);
+        const response = await fetch(`${API_BASE}/auth/me`, { credentials: "include" });
         if (!response.ok) {
            // Unauthorized, redirect back to login
            window.location.href = "/login.html";
@@ -510,7 +510,7 @@
 
     async function loadAPIKeysList() {
       try {
-        const res = await fetch(`${API_BASE}/api-keys/list`);
+        const res = await fetch(`${API_BASE}/api-keys/list`, { credentials: "include" });
         if (!res.ok) return;
         const keys = await res.json();
         
@@ -556,7 +556,8 @@
         const res = await fetch(`${API_BASE}/api-keys/create`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name })
+          body: JSON.stringify({ name: name }),
+          credentials: "include"
         });
         
         const data = await res.json();
@@ -577,7 +578,7 @@
 
     async function toggleKey(hash) {
       try {
-        const res = await fetch(`${API_BASE}/api-keys/toggle/${hash}`, { method: "POST" });
+        const res = await fetch(`${API_BASE}/api-keys/toggle/${hash}`, { method: "POST", credentials: "include" });
         if (res.ok) {
            await loadAPIKeysList();
         }
@@ -589,7 +590,7 @@
     async function deleteKey(hash) {
       if (!confirm("確定要永久刪除此 API 金鑰嗎？ / Are you sure you want to delete this API Key?")) return;
       try {
-        const res = await fetch(`${API_BASE}/api-keys/${hash}`, { method: "DELETE" });
+        const res = await fetch(`${API_BASE}/api-keys/${hash}`, { method: "DELETE", credentials: "include" });
         if (res.ok) {
            await loadAPIKeysList();
         }
@@ -635,7 +636,8 @@
         const res = await fetch(`${API_BASE}/upload`, {
           method: "POST",
           headers: headers,
-          body: formData
+          body: formData,
+          credentials: "include"
         });
         
         const data = await res.json();
@@ -671,7 +673,8 @@
       
       try {
         const res = await fetch(`${API_BASE}/upload/download/${txId}`, {
-          headers: headers
+          headers: headers,
+          credentials: "include"
         });
         
         if (res.status === 200) {
@@ -698,7 +701,7 @@
 
     async function handleLogout() {
       try {
-        await fetch(`${API_BASE}/auth/logout`, { method: "POST" });
+        await fetch(`${API_BASE}/auth/logout`, { method: "POST", credentials: "include" });
         window.location.href = "/login.html";
       } catch (e) {
         window.location.href = "/login.html";
