@@ -13,6 +13,7 @@
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
       --accent-color: #059669;
+      --error-color: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -61,7 +62,7 @@
     .nav-link:hover { color: var(--primary-color); }
     main {
       flex: 1;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin: 2rem auto;
       padding: 0 20px;
@@ -78,15 +79,15 @@
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
     .faq-question {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       gap: 10px;
     }
@@ -95,8 +96,27 @@
       color: #4b5563;
       text-align: justify;
     }
-    .faq-answer p { margin-bottom: 10px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-table th, .faq-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .faq-table th {
+      background-color: var(--secondary-bg);
+      font-weight: 700;
+      color: #374151;
+    }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -129,16 +149,88 @@
   <main>
     <h1 class="article-title">常見問題 / Frequently Asked Questions</h1>
 
-    <!-- Q1: Lifetime Guarantee -->
+    <!-- Q1: Bitcoin Analogy -->
     <div class="faq-item">
-      <h3 class="faq-question"><span>🌐</span> 為什麼本平台能保證「永久、永續」檔案儲存？</h3>
+      <h3 class="faq-question"><span>⛓️</span> 為什麼儲存在區塊鏈中的資料「絕對無法被刪除或修改」？</h3>
       <div class="faq-answer">
-        <p>SuperArchive 閒貓典藏 底層封存機制完全基於 <strong>Arweave 去中心化區塊鏈協議</strong>。Arweave 協議採用數學上嚴謹設計之儲存捐贈基金（Storage Endowment）模型，當您上傳檔案時，所需的儲存費用已一次性預付至去中心化共識基金中，這確保了底層礦工在未來的數百年裡皆能獲得持續的利息收益來維持硬體運轉，進而保證檔案能安全保存<strong>超過 200 年（及理論上永久）</strong>。</p>
-        <p>全球頂尖的去中心化公鏈如 <strong>Solana</strong>，其全部的歷史帳本數據皆是<strong>唯一且排他性地儲存在 Arweave 區塊鏈上</strong>。這意味著，所有架構在 Solana 鏈上的數位資產，包括近期極具熱度的 <strong>Trump Coin (DJT 川普幣)</strong> 或是任何熱門代幣，其最終的永續交易歷史與鏈上憑證皆是藉由 Arweave 進行永久歸檔與背書的。若您希望深入了解 Arweave 兩百年的儲存安全保證與數學模型，可直接參閱官方公開的 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 協議白皮書 (Arweave Yellow Paper)</a>。</p>
+        <p>要理解區塊鏈資料的不可篡改與永久性，最完美的範例就是 <strong>Bitcoin (比特幣) 區塊鏈</strong>。自從 2009 年比特幣的「創世區塊」誕生以來，過去 17 年來的每一筆交易與附隨資訊，都被永久記錄在分佈於全球數萬個獨立礦工節點組成的分散式帳本中。這世界上沒有任何個人、企業、政府，甚至是比特幣創辦人中本聰本人，有能力去刪除或修改任何一筆已經確認的歷史區塊。</p>
+        <p>雖然比特幣的原生網路為了交易安全，每一筆交易所能攜帶的資料極其微小（例如 <code>OP_RETURN</code> 腳本標記被限制在 80 位元組），但 SuperArchive 所採用的底層架構（Arweave）是基於完全相同的去中心化共識物理特性，並透過「區塊編織（Blockweave）」技術在數學上進行了優化，專門用於永久儲存大型檔案（如 PDF、圖片、壓縮檔）。檔案一旦寫入，即在全球多節點網路中硬編碼，任何人均無法將其更新、刪除或進行任何審查。</p>
       </div>
     </div>
 
-    <!-- Q2: AI Agent / Lobster Integration -->
+    <!-- Q2: S-Points Pricing vs AWS S3 & Google Drive -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>📊</span> S-Points 的點數費率（5 NTD 儲存 16MB）跟 AWS S3 或 Google Drive 相比，到底是貴還是便宜？</h3>
+      <div class="faq-answer">
+        <p>在本平台付費方案中，1 點 S-Point 售價為 <strong>5 NTD</strong>，可備份一塊 <strong>16MB</strong> 的檔案。若要儲存 <strong>1024MB (1GB)</strong> 的檔案，僅需 64 點 S-Points，換算下來是一次性付費 <strong>320 NTD</strong>，且未來<strong>永遠不需支付任何續期租金</strong>。</p>
+        <p>當我們將這個「一次性買斷」與傳統雲端硬碟在 1GB容量下的 <strong>1年、10年、20年</strong> 儲存成本進行對比時，您會發現 SuperArchive 在長遠考量下極其便宜。最重要的是：<strong>傳統雲端一旦逾期未付帳單，您的檔案將被永久刪除！</strong> 比較表如下：</p>
+
+        <table class="faq-table">
+          <thead>
+            <tr>
+              <th>比較維度</th>
+              <th>SuperArchive 閒貓典藏</th>
+              <th>AWS S3 標準儲存</th>
+              <th>Google Drive (Google One)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>費用模式</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">一次性付費（終身買斷）</td>
+              <td>每月循環帳單</td>
+              <td>按年循環訂閱</td>
+            </tr>
+            <tr>
+              <td><strong>1 年儲存費用 (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>約 9 NTD</td>
+              <td>約 6.5 NTD (按 100GB 比例折算)</td>
+            </tr>
+            <tr>
+              <td><strong>10 年儲存費用 (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>約 90 NTD</td>
+              <td>約 65 NTD (按 100GB 比例折算)</td>
+            </tr>
+            <tr>
+              <td><strong>20 年儲存費用 (1GB)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
+              <td>約 180 NTD</td>
+              <td>約 130 NTD (按 100GB 比例折算)</td>
+            </tr>
+            <tr>
+              <td><strong>下載流量費用 (Egress)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">完全免費</td>
+              <td>付費 (下載約每 GB $0.09 美元)</td>
+              <td>免費</td>
+            </tr>
+            <tr>
+              <td><strong>逾期欠費被刪除風險</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">零風險（已預付 200 年利息）</td>
+              <td style="color: var(--error-color);">極高（信用卡失效即刻刪除檔案）</td>
+              <td style="color: var(--error-color);">極高（未續費或空間不足即遭清理）</td>
+            </tr>
+            <tr>
+              <td><strong>物理防刪除保護</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">絕對防刪（共識機制禁止刪除）</td>
+              <td>可任意刪除</td>
+              <td>可任意刪除</td>
+            </tr>
+            <tr>
+              <td><strong>免費額度保障</strong></td>
+              <td>每日 10 次免費上傳 (&lt;64KB 排隊)</td>
+              <td>無（僅 12 個月新戶試用）</td>
+              <td>15GB 免費（但無資料損失賠償責任）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>雖然 Google Drive 有提供 15GB 免費額度，但其服務條款中明文聲明對於免費方案<strong>不承擔任何資料損失的保證責任</strong>，且 Google 系統本身並不具備「禁止刪除」的保護。若帳戶超過 2 年未活動，Google 有權直接清理並刪除您所有的資料。而 SuperArchive 則是用區塊鏈數學共識，為您的檔案提供絕對防刪除、防篡改的終極安全屏障。</p>
+      </div>
+    </div>
+
+    <!-- Q3: AI Agent / Lobster Integration & OpenClaw Skill -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🦞</span> 我的 AI 助理（如「養龍蝦 / Lobster」）該如何整合 SuperArchive API？</h3>
       <div class="faq-answer">
@@ -148,11 +240,44 @@
           <li><strong>步驟 2（餘額檢查）</strong>：在指引龍蝦上傳任何重要檔案前，**必須先請龍蝦調用 `GET /api/v1/developer/points` 查詢當前剩餘點數**，確保您的 S-Points 餘額充足（每 16MB 檔案扣抵 1 點）。</li>
           <li><strong>步驟 3（上傳封存）</strong>：引導龍蝦將需要永久備份的檔案，以 Form 表單 POST 發送至 <code>POST /api/v1/SuperArchive</code> 網址。</li>
         </ul>
-        <p><strong>不可篡改之安全聲明</strong>：一旦龍蝦成功完成上傳，檔案將直接被廣播並簽署至全球區塊鏈。**由於去中心化的物理特性，上傳後連龍蝦（AI 助理）自己、甚至本平台管理員，都絕對無法刪除或修改該檔案。** 這能為您的自動化任務提供最高層級的防篡改審計證明。</p>
+        <p><strong>不可篡改之安全聲明</strong>：一旦龍蝦成功完成上傳，檔案將直接被廣播並簽署至全球區塊鏈。**由於去中心化的物理特性，上傳後連龍蝦（AI 助理）自己、甚至本平台管理員，都絕對無法刪除或修改該檔案。**</p>
+        
+        <br>
+        <p><strong>🤖 OpenClaw AI 技能定義模組 (OpenClaw AI Skill Schema)</strong></p>
+        <p>為了方便您的 <strong>OpenClaw AI 助理 / 龍蝦</strong> 能自動調用此項服務，您可以直接將以下 JSON 定義匯入為它的 Tool / Skill 模組。這樣一來，AI 即可智慧判斷何時進行永久封存：</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_permanent_upload",
+  "description": "Upload a local file permanently to Arweave blockchain via SuperArchive. Auto-debits S-Points.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "The local absolute path of the file to archive permanently."
+      },
+      "enable_server_encryption": {
+        "type": "boolean",
+        "description": "Whether to enable Server-Managed Option C encryption (retains key on server securely).",
+        "default": true
+      }
+    },
+    "required": ["file_path"]
+  }
+}</pre>
       </div>
     </div>
 
-    <!-- Q3: AES Encryption Password -->
+    <!-- Q4: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> 為什麼本平台能保證「永久、永續」檔案儲存？</h3>
+      <div class="faq-answer">
+        <p>SuperArchive 閒貓典藏 底層封存機制完全基於 <strong>Arweave 去中心化區塊鏈協議</strong>。Arweave 協議採用數學上嚴謹設計之儲存捐贈基金（Storage Endowment）模型，當您上傳檔案時，所需的儲存費用已一次性預付至去中心化共識基金中，這確保了底層礦工在未來的數百年裡皆能獲得持續的利息收益來維持硬體運轉，進而保證檔案能安全保存<strong>超過 200 年（及理論上永久）</strong>。</p>
+        <p>全球頂尖的去中心化公鏈如 <strong>Solana</strong>，其全部的歷史帳本數據皆是<strong>唯一且排他性地儲存在 Arweave 區塊鏈上</strong>。這意味著，所有架構在 Solana 鏈上的數位資產，包括近期極具熱度的 <strong>Trump Coin (DJT 川普幣)</strong> 或是任何熱門代幣，其最終的永續交易歷史與鏈上憑證皆是藉由 Arweave 進行永久歸檔與背書的。若您希望深入了解 Arweave 兩百年的儲存安全保證與數學模型，可直接參閱官方公開的 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 協議白皮書 (Arweave Yellow Paper)</a>。</p>
+      </div>
+    </div>
+
+    <!-- Q5: AES Encryption Password -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔒</span> 網頁端 AES-256-GCM 安全加密密碼是如何儲存的？</h3>
       <div class="faq-answer">
@@ -161,7 +286,7 @@
       </div>
     </div>
 
-    <!-- Q4: Unencrypted Uploads -->
+    <!-- Q6: Unencrypted Uploads -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔓</span> 為什麼有時候選擇「無加密上傳」是更好的？</h3>
       <div class="faq-answer">

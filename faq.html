@@ -13,6 +13,7 @@
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
       --accent-color: #059669;
+      --error-color: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -61,7 +62,7 @@
     .nav-link:hover { color: var(--primary-color); }
     main {
       flex: 1;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin: 2rem auto;
       padding: 0 20px;
@@ -78,15 +79,15 @@
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
     .faq-question {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       gap: 10px;
     }
@@ -95,8 +96,27 @@
       color: #4b5563;
       text-align: justify;
     }
-    .faq-answer p { margin-bottom: 10px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-table th, .faq-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .faq-table th {
+      background-color: var(--secondary-bg);
+      font-weight: 700;
+      color: #374151;
+    }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -129,16 +149,88 @@
   <main>
     <h1 class="article-title">Frequently Asked Questions (FAQ)</h1>
 
-    <!-- Q1: Lifetime Guarantee -->
+    <!-- Q1: Bitcoin Analogy -->
     <div class="faq-item">
-      <h3 class="faq-question"><span>🌐</span> Why can we guarantee lifetime file preservation?</h3>
+      <h3 class="faq-question"><span>⛓️</span> Why can data stored in a blockchain never be deleted or updated?</h3>
       <div class="faq-answer">
-        <p>SuperArchive utilizes the <strong>Arweave blockchain</strong> as our decentralized permanent storage backbone. Arweave is mathematically engineered to preserve data for <strong>over 200 years</strong> (and theoretically perpetuity) using a Storage Endowment pool model. This means once your file is uploaded, the storage fee is prepaid forever into a consensus-secured pool, ensuring miners are financially incentivized to maintain your data indefinitely.</p>
-        <p>Major blockchain networks like <strong>Solana</strong> rely exclusively on Arweave to backup and archive their entire historical ledger states. Even prominent projects like the Solana-based <strong>Trump Coin (DJT)</strong> or other viral digital assets have their immutable records stored permanently on Arweave. To read more about the mathematical consensus and 200-year storage guarantees, check out the official <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave Yellow Paper</a>.</p>
+        <p>To understand why data inside a blockchain is immutable, look at the <strong>Bitcoin blockchain</strong> as the gold standard. Since Bitcoin’s genesis block was mined in 2009, every single transaction and metadata log has been permanently stored and validated by thousands of independent computer nodes (miners) distributed across the globe. No individual, corporation, government, or even Bitcoin’s creator Satoshi Nakamoto, has the power to delete, alter, or roll back a past block.</p>
+        <p>While Bitcoin’s native network can only store a very small amount of arbitrary data per transaction (e.g., <code>OP_RETURN</code> script markers limited to 80 bytes), SuperArchive’s backbone (Arweave) utilizes the exact same distributed consensus and cryptographic validation principles, but uses a block-weaving architecture mathematically optimized for storing large files (PDFs, images, zip files) permanently. Once written to Arweave, the file is hardcoded into the immutable ledger and cannot be updated, deleted, or censored by anyone.</p>
       </div>
     </div>
 
-    <!-- Q2: AI Agent / Lobster Integration -->
+    <!-- Q2: S-Points Pricing vs AWS S3 & Google Drive -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>📊</span> Is 5 NTD for 16MB expensive or cheap compared to AWS S3 and Google Drive?</h3>
+      <div class="faq-answer">
+        <p>For our paid tier, 1 S-Point costs <strong>5 NTD</strong> and lets you archive a <strong>16MB block</strong> on Arweave. Storing <strong>1024MB (1GB)</strong> requires 64 S-Points, which translates to a <strong>320 NTD one-time payment</strong> with absolutely zero recurring subscription fees. </p>
+        <p>When evaluated over a 10 or 20-year timeline, SuperArchive is remarkably cheaper because of its one-time payment model. In contrast, failing to pay a standard AWS or Google Drive monthly bill results in the immediate, permanent deletion of your files. Check out the comparison table below for a 1GB payload:</p>
+
+        <table class="faq-table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>SuperArchive</th>
+              <th>AWS S3 Standard</th>
+              <th>Google Drive (Google One)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cost Model</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">One-Time Payment</td>
+              <td>Recurring Monthly Bill</td>
+              <td>Recurring Annual Subscription</td>
+            </tr>
+            <tr>
+              <td><strong>1-Year Cost (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>~9 NTD</td>
+              <td>~6.5 NTD (Pro-rata of 100GB plan)</td>
+            </tr>
+            <tr>
+              <td><strong>10-Year Cost (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>~90 NTD</td>
+              <td>~65 NTD (Pro-rata of 100GB plan)</td>
+            </tr>
+            <tr>
+              <td><strong>20-Year Cost (1GB)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
+              <td>~180 NTD</td>
+              <td>~130 NTD (Pro-rata of 100GB plan)</td>
+            </tr>
+            <tr>
+              <td><strong>Egress/Retrieval Cost</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">Free</td>
+              <td>Paid (~$0.09/GB download)</td>
+              <td>Free</td>
+            </tr>
+            <tr>
+              <td><strong>Billing/Deletion Risk</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">Zero (Prepaid for 200+ Years)</td>
+              <td style="color: var(--error-color);">High (Files deleted if credit card fails)</td>
+              <td style="color: var(--error-color);">High (Deleted if payment fails or account inactive)</td>
+            </tr>
+            <tr>
+              <td><strong>Immutability (Anti-Delete)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">Absolute (Protocols prevent deletions)</td>
+              <td>Deleted instantly on request/non-payment</td>
+              <td>Deleted instantly on request/non-payment</td>
+            </tr>
+            <tr>
+              <td><strong>Free Tier Guarantee</strong></td>
+              <td>10 uploads/day (&lt;64KB) queued</td>
+              <td>None (Only 12-month trial)</td>
+              <td>15GB Free (No data loss guarantees)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>While Google Drive provides a 15GB free tier, Google's Terms of Service clearly state that they provide <strong>zero guarantees against data loss</strong>, and they do not possess any system-level "anti-deletion" safeguards (inactive accounts are regularly deleted after 2 years). With SuperArchive, your prepaid on-chain files are mathematically secured against deletion forever.</p>
+      </div>
+    </div>
+
+    <!-- Q3: AI Agent / Lobster Integration & OpenClaw Skill -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🦞</span> How can I integrate SArchive with my AI Agent (e.g., Lobster / 養龍蝦)?</h3>
       <div class="faq-answer">
@@ -149,10 +241,43 @@
           <li><strong>Step 3 (Submit Archive)</strong>: Instruct your Lobster AI Agent to perform a multipart POST request with their file payload to <code>POST /api/v1/SuperArchive</code>.</li>
         </ul>
         <p><strong>Note on Immutability</strong>: Once the Lobster agent completes the upload, the transaction is signed and permanently forged into the blockchain ledger. **The AI Agent itself (and even SuperArchive administrators) has no power to modify, delete, or censor the file.**</p>
+        
+        <br>
+        <p><strong>🤖 OpenClaw AI Skill Schema</strong></p>
+        <p>To easily enable your <strong>OpenClaw AI Assistant / Lobster agent</strong> to trigger permanent archiving automatically, you can directly import the following JSON schema tool definition into its skill module:</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_permanent_upload",
+  "description": "Upload a local file permanently to Arweave blockchain via SuperArchive. Auto-debits S-Points.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "The local absolute path of the file to archive permanently."
+      },
+      "enable_server_encryption": {
+        "type": "boolean",
+        "description": "Whether to enable Server-Managed Option C encryption (retains key on server securely).",
+        "default": true
+      }
+    },
+    "required": ["file_path"]
+  }
+}</pre>
       </div>
     </div>
 
-    <!-- Q3: AES Encryption Password -->
+    <!-- Q4: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> Why can we guarantee lifetime file preservation?</h3>
+      <div class="faq-answer">
+        <p>SuperArchive utilizes the <strong>Arweave blockchain</strong> as our decentralized permanent storage backbone. Arweave is mathematically engineered to preserve data for <strong>over 200 years</strong> (and theoretically perpetuity) using a Storage Endowment pool model. This means once your file is uploaded, the storage fee is prepaid forever into a consensus-secured pool, ensuring miners are financially incentivized to maintain your data indefinitely.</p>
+        <p>Major blockchain networks like <strong>Solana</strong> rely exclusively on Arweave to backup and archive their entire historical ledger states. Even prominent projects like the Solana-based <strong>Trump Coin (DJT)</strong> or other viral digital assets have their immutable records stored permanently on Arweave. To read more about the mathematical consensus and 200-year storage guarantees, check out the official <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave Yellow Paper</a>.</p>
+      </div>
+    </div>
+
+    <!-- Q5: AES Encryption Password -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔒</span> How does Web UI Encryption protect my files and passwords?</h3>
       <div class="faq-answer">
@@ -161,7 +286,7 @@
       </div>
     </div>
 
-    <!-- Q4: Unencrypted Uploads -->
+    <!-- Q6: Unencrypted Uploads -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔓</span> When should I choose "No Encryption"?</h3>
       <div class="faq-answer">

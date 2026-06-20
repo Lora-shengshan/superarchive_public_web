@@ -13,6 +13,7 @@
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
       --accent-color: #059669;
+      --error-color: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -61,7 +62,7 @@
     .nav-link:hover { color: var(--primary-color); }
     main {
       flex: 1;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin: 2rem auto;
       padding: 0 20px;
@@ -78,15 +79,15 @@
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
     .faq-question {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       gap: 10px;
     }
@@ -95,8 +96,27 @@
       color: #4b5563;
       text-align: justify;
     }
-    .faq-answer p { margin-bottom: 10px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-table th, .faq-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .faq-table th {
+      background-color: var(--secondary-bg);
+      font-weight: 700;
+      color: #374151;
+    }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -129,16 +149,88 @@
   <main>
     <h1 class="article-title">よくある質問 / FAQ</h1>
 
-    <!-- Q1: Lifetime Guarantee -->
+    <!-- Q1: Bitcoin Analogy -->
     <div class="faq-item">
-      <h3 class="faq-question"><span>🌐</span> なぜファイルの「永久」保存を保証できるのですか？</h3>
+      <h3 class="faq-question"><span>⛓️</span> なぜブロックチェーンに保存されたデータは「削除や変更が一切不可能」なのですか？</h3>
       <div class="faq-answer">
-        <p>デジタル猫アーカイブ（SuperArchive）の基盤となる永久保存メカニズムは、分散型ブロックチェーンである<strong>Arweave（アーウィーブ）プロトコル</strong>に基づいています。Arweaveは、データストレージ基金（Storage Endowment）と呼ばれる数学的に構築された経済モデルを導入しており、ファイルをアップロードする際、200年以上（理論上は永久）にわたる物理的なストレージ費用が基金を通じて一括前払いされます。これにより、鉱工（マイナー）はデータを永続的に維持するインセンティブを得ることができます。</p>
-        <p>世界をリードする高速ブロックチェーンである <strong>Solana（ソラナ）</strong> も、取引履歴と元帳データをすべて永久アーカイブするためにArweaveを唯一のストレージとして採用しています。そのため、ソラナ上の著名なデジタル資産（<strong>Trump Coin (DJT)</strong>など）の永久履歴や証明書も、すべてArweave上で永続的に保護されています。200年間のストレージ安全保証と学術モデルの詳細については、公式の <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweaveプロトコル白皮書 (Arweave Yellow Paper)</a> を直接ご参照ください。</p>
+        <p>ブロックチェーンデータの改ざん耐性と永続性を理解するための最も完璧な例は、<strong>Bitcoin（ビットコイン）ブロックチェーン</strong>です。2009年にビットコインの「ジェネシスブロック（創世ブロック）」が生成されて以来、過去17年間にわたるすべての取引記録と付随メッセージは、世界中に分散された数万もの独立したマイナーノードによって永久に保存・検証され続けています。世界中のいかなる個人、企業、政府、あるいはビットコインの創設者であるサトシ・ナカモトであっても、承認済みの過去のブロックを削除したり書き換えたりする権限はありません。</p>
+        <p>ビットコインのネイティブネットワークは取引の安全性を最優先するため、1つの取引に含められるデータ容量は極めて微小（<code>OP_RETURN</code>スクリプトにより80バイトに制限）ですが、SuperArchiveが採用している基盤プロトコル（Arweave）は、全く同じ分散型合意形成の仕組みを用いながら、大容量ファイル（PDF、画像、圧縮アーカイブなど）の永久保存に特化して数学的に最適化された「Blockweave（ブロックウィーブ）」技術を搭載しています。一度書き込まれたファイルは、グローバルノードにハードコーディングされ、管理者や開発者を含む誰一人として更新、削除、あるいは検閲を行うことはできません。</p>
       </div>
     </div>
 
-    <!-- Q2: AI Agent / Lobster Integration -->
+    <!-- Q2: S-Points Pricing vs AWS S3 & Google Drive -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>📊</span> S-Pointsの料金体系（16MBで5 NTD）は、AWS S3やGoogle Driveと比較して高いですか、それとも安いですか？</h3>
+      <div class="faq-answer">
+        <p>当プラットフォームでは、1 S-Pointが<strong>5 NTD</strong>で販売されており、Arweave上で<strong>16MBブロック</strong>をアーカイブできます。<strong>1024MB (1GB)</strong>を保存する場合、必要なのは64 S-Pointsであり、これは一括で<strong>320 NTDの買い切りコスト</strong>となります。将来的な月額サブスクリプション費用は完全にゼロです。</p>
+        <p>この「一回限りの買い切り型」を、従来のクラウドストレージで1GBを1年、10年、20年保存した場合の維持費と比較すると、長期的な視点ではSuperArchiveが極めて安価であることが分かります。最も重要な違いは、<strong>従来のクラウドは支払いが遅れると、ファイルが警告なしに永久削除される点です。</strong> 比較表は以下の通りです：</p>
+
+        <table class="faq-table">
+          <thead>
+            <tr>
+              <th>比較項目</th>
+              <th>SuperArchive デジタル猫</th>
+              <th>AWS S3 標準ストレージ</th>
+              <th>Google Drive (Google One)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>料金モデル</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">一括支払い (買い切り)</td>
+              <td>毎回の継続請求</td>
+              <td>毎月/毎年の継続支払い</td>
+            </tr>
+            <tr>
+              <td><strong>1年間の保存コスト (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>約 9 NTD</td>
+              <td>約 6.5 NTD (100GBプランの容量比換算)</td>
+            </tr>
+            <tr>
+              <td><strong>10年間の保存コスト (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>約 90 NTD</td>
+              <td>約 65 NTD (100GBプランの容量比換算)</td>
+            </tr>
+            <tr>
+              <td><strong>20年間の保存コスト (1GB)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
+              <td>約 180 NTD</td>
+              <td>約 130 NTD (100GBプランの容量比換算)</td>
+            </tr>
+            <tr>
+              <td><strong>ダウンロード転送費用</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">完全無料</td>
+              <td>有料 (ダウンロード約 $0.09/GB)</td>
+              <td>無料</td>
+            </tr>
+            <tr>
+              <td><strong>支払遅延による削除リスク</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">ゼロ (200年以上の保存を事前支払済)</td>
+              <td style="color: var(--error-color);">非常に高い (カード無効化で即時削除)</td>
+              <td style="color: var(--error-color);">非常に高い (未払いまたは空き容量不足で即時削除)</td>
+            </tr>
+            <tr>
+              <td><strong>システム的な削除保護</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">絶対削除不可 (プロトコルが禁止)</td>
+              <td>いつでも削除可能</td>
+              <td>いつでも削除可能</td>
+            </tr>
+            <tr>
+              <td><strong>無料プラン保証</strong></td>
+              <td>一日10回無料 (&lt;64KB キュー優先)</td>
+              <td>なし (12ヶ月限定トライアル)</td>
+              <td>15GB 無料 (ただし消失等の損害賠償責任は皆無)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Google Driveは15GBの無料枠を提供していますが、利用規約には無料プランのデータについて<strong>消失等の責任を一切負わない</strong>と明記されており、不活性アカウント（2年間使用がない場合）はデータごとアカウントが自動削除されます。対してSuperArchiveは、数学的合意に基づいて、最初から削除不可能かつ改ざん不可能な終極の保管障壁をファイルに提供します。</p>
+      </div>
+    </div>
+
+    <!-- Q3: AI Agent / Lobster Integration & OpenClaw Skill -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🦞</span> AIエージェント（ロブスター / 養龍蝦など）をどのように連携させますか？</h3>
       <div class="faq-answer">
@@ -149,10 +241,43 @@
           <li><strong>ステップ 3（永久アップロード）</strong>：ロブスターに、ファイルをマルチパート形式で <code>POST /api/v1/SuperArchive</code> へ送信させます。</li>
         </ul>
         <p><strong>不変性の警告</strong>：ロブスターがアップロードを完了すると、そのトランザクションは瞬時にブロックチェーンに永続的に刻まれます。**アップロードされたファイルは、ロブスター自身（AIアシスタント）や本プラットフォームの管理者であっても削除や変更を行うことは一切不可能です。**</p>
+        
+        <br>
+        <p><strong>🤖 OpenClaw AI スキル定義スキーマ (OpenClaw AI Skill Schema)</strong></p>
+        <p><strong>OpenClaw AI アシスタント / ロブスター</strong> が自動的に永久保存を実行できるように、以下のJSON定義をツール（Skill）としてエージェントに直接読み込ませることができます：</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_permanent_upload",
+  "description": "Upload a local file permanently to Arweave blockchain via SuperArchive. Auto-debits S-Points.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "The local absolute path of the file to archive permanently."
+      },
+      "enable_server_encryption": {
+        "type": "boolean",
+        "description": "Whether to enable Server-Managed Option C encryption (retains key on server securely).",
+        "default": true
+      }
+    },
+    "required": ["file_path"]
+  }
+}</pre>
       </div>
     </div>
 
-    <!-- Q3: AES Encryption Password -->
+    <!-- Q4: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> なぜファイルの「永久」保存を保証できるのですか？</h3>
+      <div class="faq-answer">
+        <p>デジタル猫アーカイブ（SuperArchive）の基盤となる永久保存メカニズムは、分散型ブロックチェーンである<strong>Arweave（アーウィーブ）プロトコル</strong>に基づいています。Arweaveは、データストレージ基金（Storage Endowment）と呼ばれる数学的に構築された経済モデルを導入しており、ファイルをアップロードする際、200年以上（理論上は永久）にわたる物理的なストレージ費用が基金を通じて一括前払いされます。これにより、鉱工（マイナー）はデータを永続的に維持するインセンティブを得ることができます。</p>
+        <p>世界をリードする高速ブロックチェーンである <strong>Solana（ソラナ）</strong> も、取引履歴と元帳データをすべて永久アーカイブするためにArweaveを唯一 of ストレージとして採用しています。そのため、ソラナ上の著名なデジタル資産（<strong>Trump Coin (DJT)</strong>など）の永久履歴や証明書も、すべてArweave上で永続的に保護されています。200年間のストレージ安全保証と学術モデルの詳細については、公式の <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweaveプロトコル白皮書 (Arweave Yellow Paper)</a> を直接ご参照ください。</p>
+      </div>
+    </div>
+
+    <!-- Q5: AES Encryption Password -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔒</span> Web UIの暗号化パスワードはどのように保存されますか？</h3>
       <div class="faq-answer">
@@ -161,7 +286,7 @@
       </div>
     </div>
 
-    <!-- Q4: Unencrypted Uploads -->
+    <!-- Q6: Unencrypted Uploads -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔓</span> 暗号化なし（No Encryption）を選択すべきなのはどのような場合ですか？</h3>
       <div class="faq-answer">

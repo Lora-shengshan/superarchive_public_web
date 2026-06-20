@@ -13,6 +13,7 @@
       --border-color: #e5e7eb;
       --secondary-bg: #f9fafb;
       --accent-color: #059669;
+      --error-color: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -61,7 +62,7 @@
     .nav-link:hover { color: var(--primary-color); }
     main {
       flex: 1;
-      max-width: 800px;
+      max-width: 900px;
       width: 100%;
       margin: 2rem auto;
       padding: 0 20px;
@@ -78,23 +79,44 @@
       background: white;
       border: 1px solid var(--border-color);
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
     .faq-question {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #111827;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       gap: 10px;
     }
     .faq-answer {
-      font-size: 0.875rem;
+      font-size: 0.95rem;
+      color: #4b5563;
+      text-align: justify;
+    }
+    .faq-answer p { margin-bottom: 12px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .faq-table th, .faq-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .faq-table th {
+      background-color: var(--secondary-bg);
+      font-weight: 700;
       color: #374151;
     }
-    /* Footer */
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -102,16 +124,9 @@
       text-align: center;
       font-size: 0.85rem;
       color: #6b7280;
-      margin-top: auto;
     }
-    .footer-links {
-      margin-bottom: 1rem;
-    }
-    .footer-links a {
-      color: #4b5563;
-      text-decoration: none;
-      transition: color 0.1s;
-    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
     .footer-links a:hover { color: var(--primary-color); }
   </style>
 </head>
@@ -134,7 +149,88 @@
   <main>
     <h1 class="article-title">자주 묻는 질문 (FAQ)</h1>
 
-    <!-- Q1: Lifetime Guarantee -->
+    <!-- Q1: Bitcoin Analogy -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>⛓️</span> 왜 블록체인에 저장된 데이터는 '삭제나 수정이 절대 불가능'한가요?</h3>
+      <div class="faq-answer">
+        <p>블록체인 데이터의 위변조 방지 능력과 영구성을 이해하기 위한 가장 완벽한 모범 사례는 <strong>Bitcoin (비트코인) 블록체인</strong>입니다. 2009년 비트코인의 '제네시스 블록(창세 블록)'이 채굴된 이후 지난 17년 동안 기록된 모든 트랜잭션과 부가 데이터는 전 세계 수만 개의 독립된 채굴 노드들이 소유한 분산 원장에 영구적으로 기록 및 검증되어 왔습니다. 전 세계 그 어떤 개인, 기업, 정부, 심지어 비트코인 창시자인 사토시 나카모토조차도 한 번 원장에 승인되어 기록된 블록을 임의로 삭제하거나 수정할 권한을 갖고 있지 않습니다.</p>
+        <p>비트코인의 자체 네트워크는 거래의 극한 보안을 위해 전송당 포함될 수 있는 임의 데이터 크기를 극도로 제한(예: <code>OP_RETURN</code> 스크립트 마커를 통해 80바이트로 한정)하지만, SuperArchive가 채택하고 있는 온체인 프로토콜(Arweave)은 완전히 동일한 분산형 수학적 합의 기술을 사용하면서도 대용량 파일(PDF, 이미지, 백업 아카이브 등)을 온체인 상에 영구히 직접 보관할 수 있도록 최적화된 'Blockweave (블록위브)' 기술을 사용합니다. 파일이 성공적으로 기록되는 즉시 전 세계 노드에 하드코딩되므로 본사나 시스템 관리자, 심지어 외부 해커라 할지라도 데이터를 수정, 삭제, 검열하는 것은 불가능합니다.</p>
+      </div>
+    </div>
+
+    <!-- Q2: S-Points Pricing vs AWS S3 & Google Drive -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>📊</span> S-Points 요금(16MB당 5 NTD)은 AWS S3나 Google Drive와 비교했을 때 정말 저렴한 편인가요?</h3>
+      <div class="faq-answer">
+        <p>본 플랫폼의 유료 등급 요금제에서 1 S-Point는 <strong>5 NTD</strong>로 판매되며, Arweave에 <strong>16MB 파일 블록</strong>을 아카이빙할 수 있는 권한을 제공합니다. 총 <strong>1024MB (1GB)</strong>의 데이터를 보관하려면 64 S-Points가 필요하므로, 단 한번 <strong>320 NTD 일시불 결제(평생 소유)</strong>만 수행하면 되며 향후 매월 청구되는 유지비나 월 구독료는 완벽히 0원입니다.</p>
+        <p>이 '일회성 평생 소유 모델'을 기존 대형 클라우드 스토리지의 1GB 용량 기준 1년, 10년, 20년 누적 비용과 구체적으로 대조해 보면, 장기 보존 관점에서 SuperArchive가 얼마나 압도적으로 저렴한지 증명할 수 있습니다. 가장 큰 차이는 <strong>기존 구독형 클라우드는 단 한번이라도 결제가 누락되거나 신용카드 한도가 만료되면 보관 중이던 파일이 즉시 영구 삭제된다는 점입니다.</strong> 비교표는 다음과 같습니다:</p>
+
+        <table class="faq-table">
+          <thead>
+            <tr>
+              <th>비교 지표</th>
+              <th>SuperArchive 평생 저장</th>
+              <th>AWS S3 표준 스토리지</th>
+              <th>Google Drive (Google One)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>과금 모델</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">일회성 결제 (평생 소유)</td>
+              <td>매월 청구되는 종량제 카드 요금</td>
+              <td>매월/매년 반복 구독제</td>
+            </tr>
+            <tr>
+              <td><strong>1년 유지비 (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>약 9 NTD</td>
+              <td>약 6.5 NTD (100GB 요금제 비율 환산)</td>
+            </tr>
+            <tr>
+              <td><strong>10년 유지비 (1GB)</strong></td>
+              <td>320 NTD</td>
+              <td>약 90 NTD</td>
+              <td>약 65 NTD (100GB 요금제 비율 환산)</td>
+            </tr>
+            <tr>
+              <td><strong>20년 유지비 (1GB)</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
+              <td>약 180 NTD</td>
+              <td>약 130 NTD (100GB 요금제 비율 환산)</td>
+            </tr>
+            <tr>
+              <td><strong>다운로드 트래픽 비용</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">완전 무료</td>
+              <td>유료 (다운로드당 약 GB당 $0.09)</td>
+              <td>무료</td>
+            </tr>
+            <tr>
+              <td><strong>연체/미납 시 데이터 삭제 위험</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">삭제 위험 없음 (200년분 기부금 선납 완료)</td>
+              <td style="color: var(--error-color);">극도로 높음 (카드 한도 초과 시 파일 즉각 삭제)</td>
+              <td style="color: var(--error-color);">극도로 높음 (구독 미지불 또는 용량 초과 시 계정 삭제)</td>
+            </tr>
+            <tr>
+              <td><strong>원장 영구 방어 메커니즘</strong></td>
+              <td style="color: var(--accent-color); font-weight: bold;">완벽한 절대 방어 (합의 알고리즘에 따른 방어)</td>
+              <td>사용자/관리자가 직접 삭제 가능</td>
+              <td>사용자/구글이 직접 삭제 가능</td>
+            </tr>
+            <tr>
+              <td><strong>무료 한도 책임 보증</strong></td>
+              <td>일 10회 무료 (&lt;64KB 자동 대기열)</td>
+              <td>없음 (최초 가입 후 12개월 임시)</td>
+              <td>15GB 무료 (데이터 유실 시 어떤 배상 책임도 지지 않음)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>구글 드라이브가 15GB 무료 용량을 기본 제공하지만, 구글의 공식 서비스 약관을 보면 무료 플랜 데이터에 대해 <strong>어떤 데이터 유실 배상 보증도 제공하지 않는다</strong>고 명시되어 있으며, 2년간 계정 활동이 없으면 휴면 계정으로 간주되어 보관 중이던 파일을 임의로 영구 정리할 수 있습니다. 이에 반해 SuperArchive는 수학적 합의 원장에 기부금을 선납하여 데이터 무단 정리나 물리적 데이터 훼손이 아예 불가능한 평생 보호막을 파일에 제공합니다.</p>
+      </div>
+    </div>
+
+    <!-- Q3: Lifetime Guarantee -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🌐</span> 왜 파일의 '영구적인' 보존을 보장할 수 있습니까?</h3>
       <div class="faq-answer">
@@ -143,7 +239,7 @@
       </div>
     </div>
 
-    <!-- Q2: AI Agent / Lobster Integration -->
+    <!-- Q4: AI Agent / Lobster Integration -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🦞</span> 내 AI 에이전트(예: 바닷가재 / 養龍蝦)를 어떻게 SArchive API와 연동합니까?</h3>
       <div class="faq-answer">
@@ -157,7 +253,7 @@
       </div>
     </div>
 
-    <!-- Q3: AES Encryption Password -->
+    <!-- Q5: AES Encryption Password -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔒</span> 웹 대시보드 AES-256-GCM 암호는 어떻게 저장됩니까?</h3>
       <div class="faq-answer">
@@ -166,7 +262,7 @@
       </div>
     </div>
 
-    <!-- Q4: Unencrypted Uploads -->
+    <!-- Q6: Unencrypted Uploads -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🔓</span> 어떤 경우에 "암호화 없이 업로드(No Encryption)"를 선택해야 합니까?</h3>
       <div class="faq-answer">
@@ -189,9 +285,6 @@
     </div>
     <div class="footer-copyright">
       © 2026 SuperArchive. All rights reserved.
-    </div>
-    <div class="footer-tax">
-      Shen & Shan Tech Co. | 사업자등록번호: 61263535
     </div>
   </footer>
 
