@@ -436,23 +436,42 @@
           </form>
         </div>
 
-        <!-- Download Card Part -->
-        <div style="border-top: 1px solid var(--border-color); padding-top: 25px;">
-          <h2 class="card-title">📥 <span data-i18n="dash.downloads_title">鏈上檔案下載與解密</span></h2>
-          <form onsubmit="return false;">
-            <div class="form-group">
-              <label class="form-label" data-i18n="dash.tx_id_placeholder">請輸入 Arweave 交易 ID (Transaction ID)</label>
-              <input type="text" id="download-tx-id" class="form-input" placeholder="Transaction ID">
-            </div>
-            <div class="form-group">
-              <label class="form-label" data-i18n="dash.passphrase_placeholder">請輸入加密/解密密碼</label>
-              <input type="password" id="download-passphrase" class="form-input" placeholder="Passphrase">
-            </div>
-            <button class="btn-action" style="width: 100%; background-color: var(--accent-color);" data-i18n="dash.download_button" onclick="handleFileDownload()">安全下載並解密</button>
-          </form>
-        </div>
       </section>
     </div>
+
+    <!-- 3. Blockchain Archive Registry (File List) -->
+    <section class="dashboard-card" style="margin-top: 30px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+        <h2 class="card-title" style="border: none; margin-bottom: 0; padding-bottom: 0;">📂 鏈上存檔清單 / File Archive Registry</h2>
+        <span style="font-size: 0.85rem; color: #6b7280; font-weight: 500;" id="file-total-count">共 0 個存檔 / Total: 0 files</span>
+      </div>
+      
+      <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 15px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem;">
+          <thead>
+            <tr style="background-color: var(--secondary-bg); border-bottom: 1px solid var(--border-color); color: #4b5563;">
+              <th style="padding: 12px 16px; font-weight: 600;">檔案名稱 / Filename</th>
+              <th style="padding: 12px 16px; font-weight: 600;">檔案大小 / Size</th>
+              <th style="padding: 12px 16px; font-weight: 600;">安全加密 / Security</th>
+              <th style="padding: 12px 16px; font-weight: 600;">上傳時間 / Archived Date</th>
+              <th style="padding: 12px 16px; font-weight: 600; text-align: right;">操作動作 / Actions</th>
+            </tr>
+          </thead>
+          <tbody id="files-list-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: #9ca3af; padding: 30px;">正在讀取鏈上資料... / Loading archive data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination Controls -->
+      <div id="files-pagination" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+        <button class="btn-action" style="padding: 6px 12px; font-size: 0.8rem; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151; cursor: pointer;" id="btn-prev-page" onclick="prevFilesPage()">上一頁 / Prev</button>
+        <span style="font-size: 0.85rem; color: #4b5563; font-weight: 600;" id="files-page-display">Page 1 of 1</span>
+        <button class="btn-action" style="padding: 6px 12px; font-size: 0.8rem; background-color: var(--primary-color); cursor: pointer;" id="btn-next-page" onclick="nextFilesPage()">下一頁 / Next</button>
+      </div>
+    </section>
   </main>
 
   <footer class="saltycat-footer">
@@ -494,6 +513,9 @@
         
         // Load keys list
         await loadAPIKeysList();
+        
+        // Load on-chain archived files list
+        await loadArchiveFilesList();
 
         // Check query parameters for payment notifications
         const urlParams = new URLSearchParams(window.location.search);
@@ -668,20 +690,121 @@
       }
     }
 
-    async function handleFileDownload() {
-      const txId = document.getElementById("download-tx-id").value.trim();
-      const passphrase = document.getElementById("download-passphrase").value;
+    // --- Blockchain Archive Registry (File List) Functions ---
+
+    let filesLimit = 50;
+    let filesOffset = 0;
+    let allFilesTotal = 0;
+
+    async function loadArchiveFilesList() {
+      try {
+        const res = await fetch(`${API_BASE}/SuperArchive/files?limit=${filesLimit}&offset=${filesOffset}`, { credentials: "include" });
+        if (!res.ok) return;
+        const data = await res.json();
+        
+        allFilesTotal = data.total_count;
+        document.getElementById("file-total-count").innerText = `共 ${allFilesTotal} 個存檔 / Total: ${allFilesTotal} files`;
+        
+        const tbody = document.getElementById("files-list-body");
+        tbody.innerHTML = "";
+        
+        if (data.files.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 30px;">目前無任何鏈上存檔。 / No archived files found.</td></tr>`;
+          document.getElementById("files-pagination").style.display = "none";
+          return;
+        }
+        
+        data.files.forEach(file => {
+          const row = document.createElement("tr");
+          row.style.borderBottom = "1px solid var(--border-color)";
+          
+          // Format file size
+          let sizeStr = `${file.filesize} B`;
+          if (file.filesize > 1024 * 1024) {
+            sizeStr = `${(file.filesize / (1024 * 1024)).toFixed(2)} MB`;
+          } else if (file.filesize > 1024) {
+            sizeStr = `${(file.filesize / 1024).toFixed(1)} KB`;
+          }
+          
+          // Format Security status badge
+          let securityBadge = "";
+          if (!file.is_encrypted) {
+            securityBadge = `<span style="background-color: #f3f4f6; color: #4b5563; padding: 3px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">🔓 無加密 / Plain</span>`;
+          } else if (file.is_encrypted_by_us) {
+            securityBadge = `<span style="background-color: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">🛡️ 系統託管加密 / Server</span>`;
+          } else {
+            securityBadge = `<span style="background-color: #fef3c7; color: #b45309; padding: 3px 8px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">🔑 自行安全加密 / User</span>`;
+          }
+          
+          // Format Archived Date
+          let dateStr = "N/A";
+          if (file.created_at) {
+            const d = new Date(file.created_at);
+            dateStr = d.toLocaleString();
+          }
+          
+          row.innerHTML = `
+            <td style="padding: 14px 16px; font-weight: 600; color: #111827; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHTML(file.filename)}">${escapeHTML(file.filename)}</td>
+            <td style="padding: 14px 16px; color: #374151;">${sizeStr}</td>
+            <td style="padding: 14px 16px;">${securityBadge}</td>
+            <td style="padding: 14px 16px; color: #6b7280; font-size: 0.8rem;">${dateStr}</td>
+            <td style="padding: 14px 16px; text-align: right; display: flex; justify-content: flex-end; gap: 8px; align-items: center;">
+              <button class="btn-action" style="padding: 5px 10px; font-size: 0.75rem; background-color: var(--primary-color);" onclick="downloadArchiveFile('${file.id}', ${file.is_encrypted}, ${file.is_encrypted_by_us}, '${escapeHTML(file.filename)}')">下載 / Download</button>
+              <button class="btn-action" style="padding: 5px 10px; font-size: 0.75rem; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151; font-weight: 500;" onclick="window.open('https://viewblock.io/arweave/tx/${file.id}', '_blank')">區塊鏈 / Chain</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        
+        // Render pagination state
+        document.getElementById("files-pagination").style.display = "flex";
+        const totalPages = Math.ceil(allFilesTotal / filesLimit) || 1;
+        const currentPage = Math.floor(filesOffset / filesLimit) + 1;
+        document.getElementById("files-page-display").innerText = `頁碼 / Page ${currentPage} of ${totalPages}`;
+        
+        document.getElementById("btn-prev-page").disabled = (filesOffset === 0);
+        document.getElementById("btn-next-page").disabled = (filesOffset + filesLimit >= allFilesTotal);
+        
+        document.getElementById("btn-prev-page").style.opacity = (filesOffset === 0) ? "0.5" : "1";
+        document.getElementById("btn-next-page").style.opacity = (filesOffset + filesLimit >= allFilesTotal) ? "0.5" : "1";
+        
+      } catch (e) {
+        console.error("Failed to load user archived files:", e);
+      }
+    }
+
+    function prevFilesPage() {
+      if (filesOffset >= filesLimit) {
+        filesOffset -= filesLimit;
+        loadArchiveFilesList();
+      }
+    }
+
+    function nextFilesPage() {
+      if (filesOffset + filesLimit < allFilesTotal) {
+        filesOffset += filesLimit;
+        loadArchiveFilesList();
+      }
+    }
+
+    async function downloadArchiveFile(txId, isEncrypted, isEncryptedByUs, filename) {
+      let passphrase = null;
       
-      if (!txId) {
-         showBanner("請輸入交易 ID。 / Transaction ID is required.", true);
-         return;
+      if (isEncrypted && !isEncryptedByUs) {
+        // Option B: User-Managed, requires prompting the user
+        passphrase = prompt("此檔案已啟用自行安全加密，請輸入您的解密密碼以進行下載：\n/ Enter decryption passphrase for download:");
+        if (passphrase === null) return; // cancelled
+        if (!passphrase.trim()) {
+          alert("密碼不能為空！ / Passphrase is required.");
+          return;
+        }
       }
       
-      showBanner("正在從去中心化節點下載檔案中... / Downloading from CDN...");
+      showBanner("正在從去中心化節點下載並解密檔案，請稍候... / Downloading and decrypting file...");
       
       const headers = {};
       if (passphrase) {
-         headers["X-Encryption-Key"] = passphrase;
+        headers["X-Encryption-Key"] = passphrase;
       }
       
       try {
@@ -695,18 +818,18 @@
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          // Extract filename from headers if present, else fallback
-          a.download = `superarchive_${txId}.txt`;
+          a.download = filename || `superarchive_${txId}.txt`;
           document.body.appendChild(a);
           a.click();
           a.remove();
-          showBanner("✅ 下載並解密成功！");
+          window.URL.revokeObjectURL(url);
+          showBanner("✅ 檔案下載並自動解密成功！ / Download and decryption completed successfully!");
         } else {
           const err = await res.json();
-          showBanner(`❌ ${err.detail || "下載或解密失敗。"}`, true);
+          showBanner(`❌ 下載或解密失敗 / Decryption failed: ${err.detail || "Server error"}`, true);
         }
       } catch (e) {
-         showBanner("❌ 網路連線錯誤。 / Download connection error.", true);
+        showBanner("❌ 網路連線錯誤，無法下載檔案。 / Download connection error.", true);
       }
     }
 
