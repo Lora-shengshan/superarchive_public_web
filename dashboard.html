@@ -1008,7 +1008,7 @@
             <td style="padding: 14px 16px;">${securityBadge}</td>
             <td style="padding: 14px 16px; color: #6b7280; font-size: 0.8rem;">${dateStr}</td>
             <td style="padding: 14px 16px; text-align: right; display: flex; justify-content: flex-end; gap: 8px; align-items: center;">
-              <button class="btn-action" style="padding: 5px 10px; font-size: 0.75rem; background-color: var(--primary-color);" onclick="downloadArchiveFile('${file.id}', ${file.is_encrypted}, ${file.is_encrypted_by_us}, '${escapeHTML(file.filename)}')">下載 / Download</button>
+              <button class="btn-action" style="padding: 5px 10px; font-size: 0.75rem; background-color: var(--primary-color);" onclick="downloadArchiveFile(this, '${file.id}', ${file.is_encrypted}, ${file.is_encrypted_by_us}, '${escapeHTML(file.filename)}')">下載 / Download</button>
               <button class="btn-action" style="padding: 5px 10px; font-size: 0.75rem; background-color: #f3f4f6; border: 1px solid #d1d5db; color: #374151; font-weight: 500;" onclick="window.open('https://viewblock.io/arweave/tx/${file.id}', '_blank')">區塊鏈 / Chain</button>
             </td>
           `;
@@ -1046,9 +1046,14 @@
       }
     }
 
-    async function downloadArchiveFile(txId, isEncrypted, isEncryptedByUs, filename) {
+    async function downloadArchiveFile(btn, txId, isEncrypted, isEncryptedByUs, filename) {
+      const tr = btn.closest("tr");
+      let errorRow = tr.nextSibling;
+      if (errorRow && errorRow.classList.contains("download-error-row")) {
+        errorRow.remove();
+      }
+
       let passphrase = null;
-      
       if (isEncrypted && !isEncryptedByUs) {
         // Option B: User-Managed, requires prompting the user
         passphrase = prompt("此檔案已啟用自行安全加密，請輸入您的解密密碼以進行下載：\n/ Enter decryption passphrase for download:");
@@ -1058,6 +1063,10 @@
           return;
         }
       }
+      
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "下載中 / Downloading...";
       
       showBanner("正在從去中心化節點下載並解密檔案，請稍候... / Downloading and decrypting file...");
       
@@ -1085,10 +1094,34 @@
           showBanner("✅ 檔案下載並自動解密成功！ / Download and decryption completed successfully!");
         } else {
           const err = await res.json();
-          showBanner(`❌ 下載或解密失敗 / Decryption failed: ${err.detail || "Server error"}`, true);
+          const errDetail = err.detail || "Server error";
+          showBanner(`❌ 下載或解密失敗 / Decryption failed: ${errDetail}`, true);
+          
+          const errRow = document.createElement("tr");
+          errRow.classList.add("download-error-row");
+          errRow.style.backgroundColor = "#fef2f2";
+          errRow.innerHTML = `
+            <td colspan="5" style="padding: 10px 16px; color: var(--error-color); font-size: 0.85rem; font-weight: 500;">
+              ❌ 下載或解密失敗 / Decryption failed: ${escapeHTML(errDetail)}
+            </td>
+          `;
+          tr.parentNode.insertBefore(errRow, tr.nextSibling);
         }
       } catch (e) {
         showBanner("❌ 網路連線錯誤，無法下載檔案。 / Download connection error.", true);
+        
+        const errRow = document.createElement("tr");
+        errRow.classList.add("download-error-row");
+        errRow.style.backgroundColor = "#fef2f2";
+        errRow.innerHTML = `
+          <td colspan="5" style="padding: 10px 16px; color: var(--error-color); font-size: 0.85rem; font-weight: 500;">
+            ❌ 網路連線錯誤，無法下載檔案。 / Download connection error.
+          </td>
+        `;
+        tr.parentNode.insertBefore(errRow, tr.nextSibling);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       }
     }
 
