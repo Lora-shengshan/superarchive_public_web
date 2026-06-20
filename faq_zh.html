@@ -236,7 +236,7 @@
           *註：Google Drive 費用係依據最低付費 Google One 100GB 方案（每年 650 NTD）等比例折算之數值。
         </div>
 
-        <p>雖然 Google Drive 有提供 15GB 免費額度，但其服務條款中明文聲明對於免費方案<strong>不承擔任何資料損失的保證責任</strong>，且 Google 系統本身並不具備「禁止刪除」的保護。若帳戶超過 2 年未活動，Google 有權直接清理並刪除您所有的資料。而 SuperArchive 則是用區塊鏈數學共識，為您的檔案提供絕對防刪除、防篡改的終極安全屏障。</p>
+        <p>雖然 Google Drive 有提供 15GB 免費額度，但其服務條款中明文聲明對於免費方案<strong>不承擔任何資料損失的保證責任</strong>，且 Google 系統本身並不具備「禁止刪除」的保護。若帳戶超過 2 年未活動，Google 有權直接清理並刪除您所有的資料。而 SuperArchive 則是用區塊鏈數學共識，為您的檔案提供絕對防刪除、防篡改 the 終極安全屏障。</p>
       </div>
     </div>
 
@@ -296,6 +296,19 @@
     "required": ["file_path"]
   }
 }</pre>
+
+        <br>
+        <p><strong>🎯 如何指引 AI 閱讀 API 文件以獲取 SuperArchive 技能？</strong></p>
+        <p>為使您的 AI 助理（如 <strong>OpenClaw</strong>）能百分之百理解並掌握 SuperArchive 的 API 調用方法，最推薦的做法是將本平台的 <strong>靜態 API 文件 (api.html)</strong> 作為「系統提示詞 (System Prompt)」或「背景上下文 (Context)」直接餵給 AI。</p>
+        <p>您可以直接複製以下提示詞範本並貼入 AI 的系統指令中：</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px; white-space: pre-wrap;">
+【系統指引：你已具備永久檔案封存技能】
+你是一個擁有 SuperArchive 區塊鏈永久存檔能力的 AI 助理。請仔細閱讀並遵循 https://sarchive.saltycat.tw/api.html 中的 API 規範。
+當用戶要求你備份或永久儲存某個本地檔案時，你必須：
+1. 優先調用「superarchive_check_points」工具，使用 Bearer 金鑰查詢當前 S-Points 點數餘額。
+2. 計算待上傳檔案大小，每 16MB 檔案將扣抵 1 點 S-Point（不足 16MB 以 1 點計）。
+3. 比對餘額，若點數不足則停止並引導用戶儲值；若點數充足，則調用「superarchive_permanent_upload」工具進行永久封存。
+4. 封存成功後，向用戶報告並提供 Arweave 交易 ID (tx_id) 及 ViewBlock 區塊鏈審計連結。</pre>
       </div>
     </div>
 

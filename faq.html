@@ -296,6 +296,20 @@
     "required": ["file_path"]
   }
 }</pre>
+
+        <br>
+        <p><strong>🎯 How to teach your AI the SuperArchive Skills using our API Docs?</strong></p>
+        <p>To let your LLM assistant (such as <strong>OpenClaw</strong>, Claude, or ChatGPT) seamlessly invoke the permanent storage service, we highly recommend feeding our static <strong>API Reference page (api.html)</strong> directly as custom "System Prompts" or "Agent Context".</p>
+        <p>Copy and paste the following System Prompt template directly into your AI agent's configuration module:</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px; white-space: pre-wrap;">
+[System Instruction: You are armed with Permanent Archive Skills]
+You are an advanced AI assistant equipped with decentralized on-chain file archiving skills via SuperArchive. Please read and follow the API parameters detailed in https://sarchive.saltycat.tw/api.html.
+Whenever a user asks you to permanently backup or archive a local file:
+1. Always call "superarchive_check_points" first to verify their remaining S-Points balance.
+2. Read the file size in bytes, compute required points (file size divided by 16MB block, rounded up).
+3. Compare the required points against S-Points balance. If insufficient, halt the execution, explain the budget deficit, and guide them to top-up S-Points.
+4. If points are sufficient, call "superarchive_permanent_upload" to execute the secure on-chain archive.
+5. Report the completed status, Arweave Transaction ID (tx_id), and its ViewBlock audit link.</pre>
       </div>
     </div>
 
