@@ -445,19 +445,9 @@
       }
     }
 
-    async function handleGoogleLogin() {
+    function handleGoogleLogin() {
       showMessage("正在跳轉至 Google... / Redirecting to Google...");
-      try {
-        const response = await fetch(`${API_BASE}/auth/google/login`, { credentials: "include" });
-        const data = await response.json();
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          showMessage("❌ 無法取得 Google 登入網址。 / Failed to load Google Login.", true);
-        }
-      } catch (e) {
-        showMessage("❌ 網路連線失敗，請檢查網路狀態。 / Network connection error.", true);
-      }
+      window.location.href = `${API_BASE}/auth/google/login`;
     }
   </script>
 </body>
