@@ -97,11 +97,11 @@
       text-align: justify;
     }
     .faq-answer p { margin-bottom: 12px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-answer ul, .faq-answer ol { margin-left: 20px; margin-bottom: 12px; }
     .faq-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
+      margin: 20px 0 10px 0;
       font-size: 0.85rem;
       border: 1px solid var(--border-color);
       border-radius: 6px;
@@ -116,6 +116,12 @@
       background-color: var(--secondary-bg);
       font-weight: 700;
       color: #374151;
+    }
+    .faq-footnote {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-style: italic;
     }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
@@ -139,9 +145,9 @@
         <span>デジタル猫アーカイブ</span>
       </a>
       <div class="header-actions">
-        <a href="/faq_jp.html" class="nav-link" style="color: var(--primary-color);">よくある質問</a>
-        <a href="/api.html" class="nav-link">開発者 API</a>
-        <a href="/login.html" class="nav-link">ログイン</a>
+        <a href="/faq_jp.html" class="nav-link" style="color: var(--primary-color);" target="_blank">よくある質問</a>
+        <a href="/api.html" class="nav-link" target="_blank">開発者 API</a>
+        <a href="/login.html" class="nav-link" target="_blank">ログイン</a>
       </div>
     </div>
   </header>
@@ -163,7 +169,7 @@
       <h3 class="faq-question"><span>📊</span> S-Pointsの料金体系（16MBで5 NTD）は、AWS S3やGoogle Driveと比較して高いですか、それとも安いですか？</h3>
       <div class="faq-answer">
         <p>当プラットフォームでは、1 S-Pointが<strong>5 NTD</strong>で販売されており、Arweave上で<strong>16MBブロック</strong>をアーカイブできます。<strong>1024MB (1GB)</strong>を保存する場合、必要なのは64 S-Pointsであり、これは一括で<strong>320 NTDの買い切りコスト</strong>となります。将来的な月額サブスクリプション費用は完全にゼロです。</p>
-        <p>この「一回限りの買い切り型」を、従来のクラウドストレージで1GBを1年、10年、20年保存した場合の維持費と比較すると、長期的な視点ではSuperArchiveが極めて安価であることが分かります。最も重要な違いは、<strong>従来のクラウドは支払いが遅れると、ファイルが警告なしに永久削除される点です。</strong> 比較表は以下の通りです：</p>
+        <p>この「一回限りの買い切り型」を、従来のクラウドストレージで1GBを1年、30年、50年保存した場合の維持費と比較すると、長期的な視点ではSuperArchiveが極めて安価であることが分かります。最も重要な違いは、<strong>従来のクラウドは支払いが遅れると、ファイルが警告なしに永久削除される点です。</strong> 比較表は以下の通りです：</p>
 
         <table class="faq-table">
           <thead>
@@ -185,19 +191,19 @@
               <td><strong>1年間の保存コスト (1GB)</strong></td>
               <td>320 NTD</td>
               <td>約 9 NTD</td>
-              <td>約 6.5 NTD (100GBプランの容量比換算)</td>
+              <td>約 6.5 NTD*</td>
             </tr>
             <tr>
-              <td><strong>10年間の保存コスト (1GB)</strong></td>
+              <td><strong>30年間の保存コスト (1GB)</strong></td>
               <td>320 NTD</td>
-              <td>約 90 NTD</td>
-              <td>約 65 NTD (100GBプランの容量比換算)</td>
+              <td>約 270 NTD</td>
+              <td>約 195 NTD*</td>
             </tr>
             <tr>
-              <td><strong>20年間の保存コスト (1GB)</strong></td>
+              <td><strong>50年間の保存コスト (ライフタイム) (1GB)</strong></td>
               <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
-              <td>約 180 NTD</td>
-              <td>約 130 NTD (100GBプランの容量比換算)</td>
+              <td>約 450 NTD</td>
+              <td>約 325 NTD*</td>
             </tr>
             <tr>
               <td><strong>ダウンロード転送費用</strong></td>
@@ -225,6 +231,10 @@
             </tr>
           </tbody>
         </table>
+        
+        <div class="faq-footnote">
+          *注：Google Drive の価格は、有料の最小プランである Google One 100GB ティア（年間 650 NTD）の容量比に基づいて等倍換算したものです。
+        </div>
 
         <p>Google Driveは15GBの無料枠を提供していますが、利用規約には無料プランのデータについて<strong>消失等の責任を一切負わない</strong>と明記されており、不活性アカウント（2年間使用がない場合）はデータごとアカウントが自動削除されます。対してSuperArchiveは、数学的合意に基づいて、最初から削除不可能かつ改ざん不可能な終極の保管障壁をファイルに提供します。</p>
       </div>
@@ -243,8 +253,29 @@
         <p><strong>不変性の警告</strong>：ロブスターがアップロードを完了すると、そのトランザクションは瞬時にブロックチェーンに永続的に刻まれます。**アップロードされたファイルは、ロブスター自身（AIアシスタント）や本プラットフォームの管理者であっても削除や変更を行うことは一切不可能です。**</p>
         
         <br>
-        <p><strong>🤖 OpenClaw AI スキル定義スキーマ (OpenClaw AI Skill Schema)</strong></p>
-        <p><strong>OpenClaw AI アシスタント / ロブスター</strong> が自動的に永久保存を実行できるように、以下のJSON定義をツール（Skill）としてエージェントに直接読み込ませることができます：</p>
+        <p><strong>🤖 OpenClaw AI 複数スキル連携ワークフロー (OpenClaw AI Multi-Skill Workflow)</strong></p>
+        <p>AIエージェントが自主的に容量計算やポイントの事前照合を行うために、以下の<strong>2つ</strong>のツールをエージェントに実装し、実行順序を指示してください：</p>
+        
+        <ol>
+          <li><strong>まず <code>superarchive_check_points</code> を呼び出す</strong>：APIを通じて、現在のアカウントに紐づくS-Points残高を取得します。</li>
+          <li><strong>必要なポイント数を算出する</strong>：AIは対象ファイルの容量を読み取り、16MB単位で必要なスロット数を自主的に演算します（端数は切り上げ）。</li>
+          <li><strong>残高不足時の処理</strong>：S-Points残高が必要ポイント数未満の場合、AIは処理を安全に中断し、ユーザーにポイントのチャージを促します。</li>
+          <li><strong>点数適合後に <code>superarchive_permanent_upload</code> を実行</strong>：十分なポイントが確認できた場合にのみ、永久アップロードツールを呼び出します。</li>
+        </ol>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">スキル 1：S-Points残高の確認</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_check_points",
+  "description": "Query remaining S-Points balance and key status from SuperArchive using the Developer API Key.",
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}</pre>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">スキル 2：永久アップロードの実行</p>
         <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
 {
   "name": "superarchive_permanent_upload",
@@ -273,13 +304,13 @@
       <h3 class="faq-question"><span>🌐</span> なぜファイルの「永久」保存を保証できるのですか？</h3>
       <div class="faq-answer">
         <p>デジタル猫アーカイブ（SuperArchive）の基盤となる永久保存メカニズムは、分散型ブロックチェーンである<strong>Arweave（アーウィーブ）プロトコル</strong>に基づいています。Arweaveは、データストレージ基金（Storage Endowment）と呼ばれる数学的に構築された経済モデルを導入しており、ファイルをアップロードする際、200年以上（理論上は永久）にわたる物理的なストレージ費用が基金を通じて一括前払いされます。これにより、鉱工（マイナー）はデータを永続的に維持するインセンティブを得ることができます。</p>
-        <p>世界をリードする高速ブロックチェーンである <strong>Solana（ソラナ）</strong> も、取引履歴と元帳データをすべて永久アーカイブするためにArweaveを唯一 of ストレージとして採用しています。そのため、ソラナ上の著名なデジタル資産（<strong>Trump Coin (DJT)</strong>など）の永久履歴や証明書も、すべてArweave上で永続的に保護されています。200年間のストレージ安全保証と学術モデルの詳細については、公式の <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweaveプロトコル白皮書 (Arweave Yellow Paper)</a> を直接ご参照ください。</p>
+        <p>世界をリードする高速ブロックチェーンである <strong>Solana（ソラナ）</strong> も、取引履歴と元帳データをすべて永久アーカイブするためにArweaveを唯一のストレージとして採用しています。そのため、ソラナ上の著名なデジタル資産（<strong>Trump Coin (DJT)</strong>など）の永久履歴や証明書も、すべてArweave上で永続的に保護されています。200年間のストレージ安全保証と学術モデルの詳細については、公式の <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweaveプロトコル白皮書 (Arweave Yellow Paper)</a> を直接ご参照ください。</p>
       </div>
     </div>
 
     <!-- Q5: AES Encryption Password -->
     <div class="faq-item">
-      <h3 class="faq-question"><span>🔒</span> Web UIの暗号化パスワードはどのように保存されますか？</h3>
+      <h3 class="faq-question"><span>🔒</span> Web UIの暗傷化パスワードはどのように保存されますか？</h3>
       <div class="faq-answer">
         <p>「自己管理型暗号化アップロード（Option B）」において、本プラットフォームは徹底した **ゼロ知識（Zero-Knowledge）プロトコル** を遵守しています。私たちは **お客様の生のパスワードをデータベースやブロックチェーンに一切保存しません。**</p>
         <p>パスワードを入力すると、ブラウザ上で直ちにSHA-256を用いてハッシュ化され、強固な256ビットのAES対称鍵が導出されてファイルを暗号化したのち、初めてアップロードが実行されます。パスワードはお客様の記憶にのみ留まるため、**管理者を含むいかなる第三者もファイルを解号・復元することはできません。パスワードを紛失した場合、ファイルは永久に復元できなくなりますのでご注意ください。**</p>

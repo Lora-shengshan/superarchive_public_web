@@ -97,11 +97,11 @@
       text-align: justify;
     }
     .faq-answer p { margin-bottom: 12px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-answer ul, .faq-answer ol { margin-left: 20px; margin-bottom: 12px; }
     .faq-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
+      margin: 20px 0 10px 0;
       font-size: 0.85rem;
       border: 1px solid var(--border-color);
       border-radius: 6px;
@@ -116,6 +116,12 @@
       background-color: var(--secondary-bg);
       font-weight: 700;
       color: #374151;
+    }
+    .faq-footnote {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-style: italic;
     }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
@@ -139,9 +145,9 @@
         <span>SuperArchive</span>
       </a>
       <div class="header-actions">
-        <a href="/faq.html" class="nav-link" style="color: var(--primary-color);">FAQ</a>
-        <a href="/api.html" class="nav-link">API Docs</a>
-        <a href="/login.html" class="nav-link">Sign In</a>
+        <a href="/faq.html" class="nav-link" style="color: var(--primary-color);" target="_blank">FAQ</a>
+        <a href="/api.html" class="nav-link" target="_blank">API Docs</a>
+        <a href="/login.html" class="nav-link" target="_blank">Sign In</a>
       </div>
     </div>
   </header>
@@ -163,7 +169,7 @@
       <h3 class="faq-question"><span>📊</span> Is 5 NTD for 16MB expensive or cheap compared to AWS S3 and Google Drive?</h3>
       <div class="faq-answer">
         <p>For our paid tier, 1 S-Point costs <strong>5 NTD</strong> and lets you archive a <strong>16MB block</strong> on Arweave. Storing <strong>1024MB (1GB)</strong> requires 64 S-Points, which translates to a <strong>320 NTD one-time payment</strong> with absolutely zero recurring subscription fees. </p>
-        <p>When evaluated over a 10 or 20-year timeline, SuperArchive is remarkably cheaper because of its one-time payment model. In contrast, failing to pay a standard AWS or Google Drive monthly bill results in the immediate, permanent deletion of your files. Check out the comparison table below for a 1GB payload:</p>
+        <p>When evaluated over a 30 or 50-year timeline, SuperArchive is remarkably cheaper because of its one-time payment model. In contrast, failing to pay a standard AWS or Google Drive monthly bill results in the immediate, permanent deletion of your files. Check out the comparison table below for a 1GB payload:</p>
 
         <table class="faq-table">
           <thead>
@@ -185,19 +191,19 @@
               <td><strong>1-Year Cost (1GB)</strong></td>
               <td>320 NTD</td>
               <td>~9 NTD</td>
-              <td>~6.5 NTD (Pro-rata of 100GB plan)</td>
+              <td>~6.5 NTD*</td>
             </tr>
             <tr>
-              <td><strong>10-Year Cost (1GB)</strong></td>
+              <td><strong>30-Year Cost (1GB)</strong></td>
               <td>320 NTD</td>
-              <td>~90 NTD</td>
-              <td>~65 NTD (Pro-rata of 100GB plan)</td>
+              <td>~270 NTD</td>
+              <td>~195 NTD*</td>
             </tr>
             <tr>
-              <td><strong>20-Year Cost (1GB)</strong></td>
+              <td><strong>50-Year Cost (Life-time) (1GB)</strong></td>
               <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
-              <td>~180 NTD</td>
-              <td>~130 NTD (Pro-rata of 100GB plan)</td>
+              <td>~450 NTD</td>
+              <td>~325 NTD*</td>
             </tr>
             <tr>
               <td><strong>Egress/Retrieval Cost</strong></td>
@@ -225,6 +231,10 @@
             </tr>
           </tbody>
         </table>
+        
+        <div class="faq-footnote">
+          *Note: Google Drive pricing is calculated pro-rata based on the minimum paid Google One 100GB tier (650 NTD/year).
+        </div>
 
         <p>While Google Drive provides a 15GB free tier, Google's Terms of Service clearly state that they provide <strong>zero guarantees against data loss</strong>, and they do not possess any system-level "anti-deletion" safeguards (inactive accounts are regularly deleted after 2 years). With SuperArchive, your prepaid on-chain files are mathematically secured against deletion forever.</p>
       </div>
@@ -243,8 +253,29 @@
         <p><strong>Note on Immutability</strong>: Once the Lobster agent completes the upload, the transaction is signed and permanently forged into the blockchain ledger. **The AI Agent itself (and even SuperArchive administrators) has no power to modify, delete, or censor the file.**</p>
         
         <br>
-        <p><strong>🤖 OpenClaw AI Skill Schema</strong></p>
-        <p>To easily enable your <strong>OpenClaw AI Assistant / Lobster agent</strong> to trigger permanent archiving automatically, you can directly import the following JSON schema tool definition into its skill module:</p>
+        <p><strong>🤖 OpenClaw AI Multi-Skill Workflow Specifications</strong></p>
+        <p>For your <strong>OpenClaw AI Assistant / Lobster agent</strong> to dynamically verify points and manage its lifecycle autonomously, you should register the following <strong>two</strong> tools into the agent module, configuring clear system guidelines on execution sequence:</p>
+        
+        <ol>
+          <li><strong>Query <code>superarchive_check_points</code> First</strong>: Let the AI query the endpoint to resolve remaining S-Points and check if the API developer key is active.</li>
+          <li><strong>Evaluate Required Blocks</strong>: Teach the AI to read the local target file size, compute required points (file size divided by 16MB block, rounded up).</li>
+          <li><strong>Assert & Abort</strong>: Instruct the AI to compare points. If remaining S-Points are sufficient, proceed; if not, raise a "low point balance" alert to the user and halt.</li>
+          <li><strong>Invoke <code>superarchive_permanent_upload</code></strong>: Execute the permanent on-chain upload safely.</li>
+        </ol>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">Skill 1 Tool Definition: Check Points Balance</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_check_points",
+  "description": "Query remaining S-Points balance and key status from SuperArchive using the Developer API Key.",
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}</pre>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">Skill 2 Tool Definition: Upload File</p>
         <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
 {
   "name": "superarchive_permanent_upload",

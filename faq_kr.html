@@ -97,11 +97,11 @@
       text-align: justify;
     }
     .faq-answer p { margin-bottom: 12px; }
-    .faq-answer ul { margin-left: 20px; margin-bottom: 12px; }
+    .faq-answer ul, .faq-answer ol { margin-left: 20px; margin-bottom: 12px; }
     .faq-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
+      margin: 20px 0 10px 0;
       font-size: 0.85rem;
       border: 1px solid var(--border-color);
       border-radius: 6px;
@@ -116,6 +116,12 @@
       background-color: var(--secondary-bg);
       font-weight: 700;
       color: #374151;
+    }
+    .faq-footnote {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-style: italic;
     }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
@@ -139,9 +145,9 @@
         <span>SuperArchive</span>
       </a>
       <div class="header-actions">
-        <a href="/faq_kr.html" class="nav-link" style="color: var(--primary-color);">자주 묻는 질문</a>
-        <a href="/api.html" class="nav-link">개발자 API</a>
-        <a href="/login.html" class="nav-link">로그인</a>
+        <a href="/faq_kr.html" class="nav-link" style="color: var(--primary-color);" target="_blank">자주 묻는 질문</a>
+        <a href="/api.html" class="nav-link" target="_blank">개발자 API</a>
+        <a href="/login.html" class="nav-link" target="_blank">로그인</a>
       </div>
     </div>
   </header>
@@ -154,7 +160,7 @@
       <h3 class="faq-question"><span>⛓️</span> 왜 블록체인에 저장된 데이터는 '삭제나 수정이 절대 불가능'한가요?</h3>
       <div class="faq-answer">
         <p>블록체인 데이터의 위변조 방지 능력과 영구성을 이해하기 위한 가장 완벽한 모범 사례는 <strong>Bitcoin (비트코인) 블록체인</strong>입니다. 2009년 비트코인의 '제네시스 블록(창세 블록)'이 채굴된 이후 지난 17년 동안 기록된 모든 트랜잭션과 부가 데이터는 전 세계 수만 개의 독립된 채굴 노드들이 소유한 분산 원장에 영구적으로 기록 및 검증되어 왔습니다. 전 세계 그 어떤 개인, 기업, 정부, 심지어 비트코인 창시자인 사토시 나카모토조차도 한 번 원장에 승인되어 기록된 블록을 임의로 삭제하거나 수정할 권한을 갖고 있지 않습니다.</p>
-        <p>비트코인의 자체 네트워크는 거래의 극한 보안을 위해 전송당 포함될 수 있는 임의 데이터 크기를 극도로 제한(예: <code>OP_RETURN</code> 스크립트 마커를 통해 80바이트로 한정)하지만, SuperArchive가 채택하고 있는 온체인 프로토콜(Arweave)은 완전히 동일한 분산형 수학적 합의 기술을 사용하면서도 대용량 파일(PDF, 이미지, 백업 아카이브 등)을 온체인 상에 영구히 직접 보관할 수 있도록 최적화된 'Blockweave (블록위브)' 기술을 사용합니다. 파일이 성공적으로 기록되는 즉시 전 세계 노드에 하드코딩되므로 본사나 시스템 관리자, 심지어 외부 해커라 할지라도 데이터를 수정, 삭제, 검열하는 것은 불가능합니다.</p>
+        <p>비트코인의 자체 네트워크는 거래의 거래의 극한 보안을 위해 전송당 포함될 수 있는 임의 데이터 크기를 극도로 제한(예: <code>OP_RETURN</code> 스크립트 마커를 통해 80바이트로 한정)하지만, SuperArchive가 채택하고 있는 온체인 프로토콜(Arweave)은 완전히 동일한 분산형 수학적 합의 기술을 사용하면서도 대용량 파일(PDF, 이미지, 백업 아카이브 등)을 온체인 상에 영구히 직접 보관할 수 있도록 최적화된 'Blockweave (블록위브)' 기술을 사용합니다. 파일이 성공적으로 기록되는 즉시 전 세계 노드에 하드코딩되므로 본사나 시스템 관리자, 심지어 외부 해커라 할지라도 데이터를 수정, 삭제, 검열하는 것은 불가능합니다.</p>
       </div>
     </div>
 
@@ -163,7 +169,7 @@
       <h3 class="faq-question"><span>📊</span> S-Points 요금(16MB당 5 NTD)은 AWS S3나 Google Drive와 비교했을 때 정말 저렴한 편인가요?</h3>
       <div class="faq-answer">
         <p>본 플랫폼의 유료 등급 요금제에서 1 S-Point는 <strong>5 NTD</strong>로 판매되며, Arweave에 <strong>16MB 파일 블록</strong>을 아카이빙할 수 있는 권한을 제공합니다. 총 <strong>1024MB (1GB)</strong>의 데이터를 보관하려면 64 S-Points가 필요하므로, 단 한번 <strong>320 NTD 일시불 결제(평생 소유)</strong>만 수행하면 되며 향후 매월 청구되는 유지비나 월 구독료는 완벽히 0원입니다.</p>
-        <p>이 '일회성 평생 소유 모델'을 기존 대형 클라우드 스토리지의 1GB 용량 기준 1년, 10년, 20년 누적 비용과 구체적으로 대조해 보면, 장기 보존 관점에서 SuperArchive가 얼마나 압도적으로 저렴한지 증명할 수 있습니다. 가장 큰 차이는 <strong>기존 구독형 클라우드는 단 한번이라도 결제가 누락되거나 신용카드 한도가 만료되면 보관 중이던 파일이 즉시 영구 삭제된다는 점입니다.</strong> 비교표는 다음과 같습니다:</p>
+        <p>이 '일회성 평생 소유 모델'을 기존 대형 클라우드 스토리지의 1GB 용량 기준 1년, 30년, 50년 누적 비용과 구체적으로 대조해 보면, 장기 보존 관점에서 SuperArchive가 얼마나 압도적으로 저렴한지 증명할 수 있습니다. 가장 큰 차이는 <strong>기존 구독형 클라우드는 단 한번이라도 결제가 누락되거나 신용카드 한도가 만료되면 보관 중이던 파일이 즉시 영구 삭제된다는 점입니다.</strong> 비교표는 다음과 같습니다:</p>
 
         <table class="faq-table">
           <thead>
@@ -185,19 +191,19 @@
               <td><strong>1년 유지비 (1GB)</strong></td>
               <td>320 NTD</td>
               <td>약 9 NTD</td>
-              <td>약 6.5 NTD (100GB 요금제 비율 환산)</td>
+              <td>약 6.5 NTD*</td>
             </tr>
             <tr>
-              <td><strong>10년 유지비 (1GB)</strong></td>
+              <td><strong>30년 유지비 (1GB)</strong></td>
               <td>320 NTD</td>
-              <td>약 90 NTD</td>
-              <td>약 65 NTD (100GB 요금제 비율 환산)</td>
+              <td>약 270 NTD</td>
+              <td>약 195 NTD*</td>
             </tr>
             <tr>
-              <td><strong>20년 유지비 (1GB)</strong></td>
+              <td><strong>50년 유지비 (평생 저장) (1GB)</strong></td>
               <td style="color: var(--accent-color); font-weight: bold;">320 NTD</td>
-              <td>약 180 NTD</td>
-              <td>약 130 NTD (100GB 요금제 비율 환산)</td>
+              <td>약 450 NTD</td>
+              <td>약 325 NTD*</td>
             </tr>
             <tr>
               <td><strong>다운로드 트래픽 비용</strong></td>
@@ -225,31 +231,80 @@
             </tr>
           </tbody>
         </table>
+        
+        <div class="faq-footnote">
+          *참고: Google Drive 요금은 유료 최소 등급인 Google One 100GB 요금제(연간 650 NTD)를 기준으로 용량 비율에 따라 산정한 금액입니다.
+        </div>
 
         <p>구글 드라이브가 15GB 무료 용량을 기본 제공하지만, 구글의 공식 서비스 약관을 보면 무료 플랜 데이터에 대해 <strong>어떤 데이터 유실 배상 보증도 제공하지 않는다</strong>고 명시되어 있으며, 2년간 계정 활동이 없으면 휴면 계정으로 간주되어 보관 중이던 파일을 임의로 영구 정리할 수 있습니다. 이에 반해 SuperArchive는 수학적 합의 원장에 기부금을 선납하여 데이터 무단 정리나 물리적 데이터 훼손이 아예 불가능한 평생 보호막을 파일에 제공합니다.</p>
       </div>
     </div>
 
-    <!-- Q3: Lifetime Guarantee -->
-    <div class="faq-item">
-      <h3 class="faq-question"><span>🌐</span> 왜 파일의 '영구적인' 보존을 보장할 수 있습니까?</h3>
-      <div class="faq-answer">
-        <p>SuperArchive의 영구적인 파일 보존 메커니즘은 분산형 블록체인인 <strong>Arweave (아위브) 프로토콜</strong>에 완전히 기반합니다. Arweave 프로토콜은 수학적으로 정밀하게 설계된 스토리지 기부금(Storage Endowment) 모델을 도입하였으며, 사용자가 파일을 업로드할 때 소모되는 보존 수수료는 기부금 풀에 영구적으로 일시 선납됩니다. 이를 통해 전 세계의 노드 채굴자들에게 데이터를 지속적으로 유지할 수 있는 경제적 인센티브가 확보되어 데이터를 <strong>200년 이상(이론적으로는 영구히)</strong> 안전하게 보존할 수 있습니다.</p>
-        <p>전 세계에서 가장 빠르고 확장성이 뛰어난 퍼블릭 블록체인인 <strong>Solana (솔라나)</strong> 또한 모든 거래 기록과 분산 원장 데이터를 영구 백업하기 위해 Arweave를 유일한 아카이빙 체인으로 채택하고 있습니다. 이에 따라, 최근 글로벌 시장에서 주목을 받은 <strong>Trump Coin (DJT)</strong> 및 솔라나 생태계의 모든 핵심 트랜잭션 증명들은 궁극적으로 Arweave 블록체인 위에 영구적으로 위조 불가능하게 각인되어 보호되고 있습니다. 200년 스토리지 안전 보증과 수학적 합의 모델에 대한 보다 상세한 증명은 공식 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 프로토콜 황서 (Arweave Yellow Paper)</a>에서 직접 확인하실 수 있습니다.</p>
-      </div>
-    </div>
-
-    <!-- Q4: AI Agent / Lobster Integration -->
+    <!-- Q3: AI Agent / Lobster Integration & OpenClaw Skill -->
     <div class="faq-item">
       <h3 class="faq-question"><span>🦞</span> 내 AI 에이전트(예: 바닷가재 / 養龍蝦)를 어떻게 SArchive API와 연동합니까?</h3>
       <div class="faq-answer">
         <p>개발자 API를 사용하면 <strong>바닷가재 (Lobster)</strong> 등의 자동화된 AI 어시스턴트에게 블록체인 영구 파일 아카이빙 능력을 손쉽게 추가할 수 있습니다. AI 에이전트에게 다음과 같은 파이프라인 프로세스를 수행하도록 지시하십시오:</p>
         <ul>
-          <li><strong>단계 1 (API 키 생성)</strong>: 본 플랫폼의 대시보드에 로그인한 후, 'API 키 관리' 세션에서 전용 키(접두사 <code>sa_live_</code>)를 발급받습니다.</li>
-          <li><strong>단계 2 (포인트 검사)</strong>: 에이전트가 영구 아카이빙을 진행하기 전에, 반드시 <code>GET /api/v1/developer/points</code>를 호출하여 귀하의 계정에 충분한 S-Points가 잔존하는지 사전에 조회하도록 지시하십시오 (16MB 블록당 1포인트가 소모됩니다).</li>
-          <li><strong>단계 3 (아카이브 업로드)</strong>: 에이전트가 파일을 멀티파트 형식으로 구성하여 <code>POST /api/v1/SuperArchive</code> 주소로 업로드 요청을 전송하도록 설정합니다.</li>
+          <li><strong>단계 1 (API 키 생성)</strong>: 본 플랫폼의 대시보드에 로그인하고 'API 키 관리'에서 전용 키(<code>sa_live_</code>로 시작)를 생성합니다.</li>
+          <li><strong>단계 2 (포인트 검증)</strong>: 에이전트가 아카이빙을 시도하기 전에, 먼저 <code>GET /api/v1/developer/points</code>를 호출하여 S-Points가 충분한지 검증하도록 지시합니다. (16MB 블록당 1포인트 차감)</li>
+          <li><strong>단계 3 (온체인 업로드)</strong>: 파일을 <code>POST /api/v1/SuperArchive</code>로 멀티파트 폼 형태로 업로드합니다.</li>
         </ul>
-        <p><strong>위조 불가 경고</strong>: AI 에이전트가 업로드를 성공적으로 수행하는 즉시 해당 트랜잭션은 전 세계 분산 원장에 영구 각인됩니다. **업로드 이후에는 AI 에이전트 자신은 물론, 본 플랫폼 관리자를 포함한 그 누구도 해당 파일을 변경하거나 삭제할 수 없습니다.**</p>
+        <p><strong>위조 불가 경고</strong>: 성공적으로 업로드된 뒤에는 블록체인의 탈중앙화 특성상, 에이전트 자신이나 시스템 관리자도 절대 수정하거나 삭제할 수 없습니다.</p>
+        
+        <br>
+        <p><strong>🤖 OpenClaw AI 다중 스킬 연동 워크플로우 (OpenClaw AI Multi-Skill Workflow)</strong></p>
+        <p>AI 에이전트가 포인트 잔액과 키 상태를 실시간으로 확인하고 안전하게 업로드를 수행할 수 있도록, 에이전트 툴 모듈에 아래의 <strong>두 가지</strong> 도구를 모두 등록해 주시기 바랍니다:</p>
+        
+        <ol>
+          <li><strong><code>superarchive_check_points</code> 우선 실행</strong>: API를 통해 현재 계정의 사용 가능한 S-Points 잔액 정보를 로드합니다.</li>
+          <li><strong>파일 블록 크기 계산</strong>: 업로드할 파일의 크기를 파악하여 16MB 블록 단위의 필요 포인트(파일 크기 / 16MB, 소수점 올림)를 산출합니다.</li>
+          <li><strong>포인트 검증 및 알림</strong>: S-Points 잔액이 필요 포인트보다 적은 경우 작업을 중단하고 사용자에게 포인트 충전을 유도합니다.</li>
+          <li><strong>조건 충족 시 <code>superarchive_permanent_upload</code> 실행</strong>: 포인트가 검증되었을 때만 최종 업로드를 실행합니다.</li>
+        </ol>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">스킬 1 정의: S-Points 잔액 확인</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_check_points",
+  "description": "Query remaining S-Points balance and key status from SuperArchive using the Developer API Key.",
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  }
+}</pre>
+
+        <p style="margin-top: 15px; font-weight: bold; color: #111827;">스킬 2 정의: 영구 업로드 진행</p>
+        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px;">
+{
+  "name": "superarchive_permanent_upload",
+  "description": "Upload a local file permanently to Arweave blockchain via SuperArchive. Auto-debits S-Points.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "file_path": {
+        "type": "string",
+        "description": "The local absolute path of the file to archive permanently."
+      },
+      "enable_server_encryption": {
+        "type": "boolean",
+        "description": "Whether to enable Server-Managed Option C encryption (retains key on server securely).",
+        "default": true
+      }
+    },
+    "required": ["file_path"]
+  }
+}</pre>
+      </div>
+    </div>
+
+    <!-- Q4: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> 왜 파일의 '영구적인' 보존을 보장할 수 있습니까?</h3>
+      <div class="faq-answer">
+        <p>SuperArchive의 영구적인 파일 보존 메커니즘은 분산형 블록체인인 <strong>Arweave (아위브) 프로토콜</strong>에 완전히 기반합니다. Arweave 프로토콜은 수학적으로 정밀하게 설계된 스토리지 기부금(Storage Endowment) 모델을 도입하였으며, 사용자가 파일을 업로드할 때 소모되는 보존 수수료는 기부금 풀에 영구적으로 일시 선납됩니다. 이를 통해 전 세계의 노드 채굴자들에게 데이터를 지속적으로 유지할 수 있는 경제적 인센티브가 확보되어 데이터를 <strong>200년 이상(이론적으로는 영구히)</strong> 안전하게 보존할 수 있습니다.</p>
+        <p>전 세계에서 가장 빠르고 확장성이 뛰어난 퍼블릭 블록체인인 <strong>Solana (솔라나)</strong> 또한 모든 거래 기록과 분산 원장 데이터를 영구 백업하기 위해 Arweave를 유일한 아카이빙 체인으로 채택하고 있습니다. 이에 따라, 최근 글로벌 시장에서 주목을 받은 <strong>Trump Coin (DJT)</strong> 및 솔라나 생태계의 모든 핵심 트랜잭션 증명들은 궁극적으로 Arweave 블록체인 위에 영구적으로 위조 불가능하게 각인되어 보호되고 있습니다. 200년 스토리지 안전 보증과 수학적 합의 모델에 대한 보다 상세한 증명은 공식 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 프로토콜 황서 (Arweave Yellow Paper)</a>에서 직접 확인하실 수 있습니다.</p>
       </div>
     </div>
 
