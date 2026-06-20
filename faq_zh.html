@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive 閒貓典藏 - 常見問題</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .faq-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .faq-answer {
+      font-size: 0.95rem;
+      color: #4b5563;
+      text-align: justify;
+    }
+    .faq-answer p { margin-bottom: 10px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>閒貓典藏</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq_zh.html" class="nav-link" style="color: var(--primary-color);">常見問題</a>
+        <a href="/api.html" class="nav-link">開發者 API</a>
+        <a href="/login.html" class="nav-link">登入系統</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="article-title">常見問題 / Frequently Asked Questions</h1>
+
+    <!-- Q1: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> 為什麼本平台能保證「永久、永續」檔案儲存？</h3>
+      <div class="faq-answer">
+        <p>SuperArchive 閒貓典藏 底層封存機制完全基於 <strong>Arweave 去中心化區塊鏈協議</strong>。Arweave 協議採用數學上嚴謹設計之儲存捐贈基金（Storage Endowment）模型，當您上傳檔案時，所需的儲存費用已一次性預付至去中心化共識基金中，這確保了底層礦工在未來的數百年裡皆能獲得持續的利息收益來維持硬體運轉，進而保證檔案能安全保存<strong>超過 200 年（及理論上永久）</strong>。</p>
+        <p>全球頂尖的去中心化公鏈如 <strong>Solana</strong>，其全部的歷史帳本數據皆是<strong>唯一且排他性地儲存在 Arweave 區塊鏈上</strong>。這意味著，所有架構在 Solana 鏈上的數位資產，包括近期極具熱度的 <strong>Trump Coin (DJT 川普幣)</strong> 或是任何熱門代幣，其最終的永續交易歷史與鏈上憑證皆是藉由 Arweave 進行永久歸檔與背書的。若您希望深入了解 Arweave 兩百年的儲存安全保證與數學模型，可直接參閱官方公開的 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 協議白皮書 (Arweave Yellow Paper)</a>。</p>
+      </div>
+    </div>
+
+    <!-- Q2: AI Agent / Lobster Integration -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🦞</span> 我的 AI 助理（如「養龍蝦 / Lobster」）該如何整合 SuperArchive API？</h3>
+      <div class="faq-answer">
+        <p>如果您希望為您的 AI 助理（例如 <strong>「養龍蝦 (Lobster)」</strong>）提供區塊鏈永久存檔能力，只需透過我們的開發者 API 即可無縫整合。您可以直接在系統中給予「龍蝦」以下指引步驟：</p>
+        <ul>
+          <li><strong>步驟 1（取得金鑰）</strong>：請先登入本平台的用戶儀表板，在「API 金鑰管理」區域建立一個專屬金鑰（開頭為 <code>sa_live_</code>）。</li>
+          <li><strong>步驟 2（餘額檢查）</strong>：在指引龍蝦上傳任何重要檔案前，**必須先請龍蝦調用 `GET /api/v1/developer/points` 查詢當前剩餘點數**，確保您的 S-Points 餘額充足（每 16MB 檔案扣抵 1 點）。</li>
+          <li><strong>步驟 3（上傳封存）</strong>：引導龍蝦將需要永久備份的檔案，以 Form 表單 POST 發送至 <code>POST /api/v1/SuperArchive</code> 網址。</li>
+        </ul>
+        <p><strong>不可篡改之安全聲明</strong>：一旦龍蝦成功完成上傳，檔案將直接被廣播並簽署至全球區塊鏈。**由於去中心化的物理特性，上傳後連龍蝦（AI 助理）自己、甚至本平台管理員，都絕對無法刪除或修改該檔案。** 這能為您的自動化任務提供最高層級的防篡改審計證明。</p>
+      </div>
+    </div>
+
+    <!-- Q3: AES Encryption Password -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔒</span> 網頁端 AES-256-GCM 安全加密密碼是如何儲存的？</h3>
+      <div class="faq-answer">
+        <p>在「自行安全加密上傳（Option B）」模式下，本平台遵循嚴格的 **零知識 (Zero-Knowledge) 安全隱私規範**：我們 **絕對不會在任何伺服器資料庫或區塊鏈上記錄您的原始密碼**。</p>
+        <p>當您在網頁端輸入加密密碼時，我們會利用 SHA-256 演算法對您的密碼進行雜湊，衍生出高安全性的 256 位元 AES 對稱金鑰，並直接在您的瀏覽器記憶體中將檔案加密後才進行上傳。因為密碼僅存在於您的腦海中，**包含本平台管理員在內的任何第三方，都絕對無法解密、還原或讀取您的檔案。請務必妥善保存您的密碼，密碼一旦遺失，檔案將永久無法取回。**</p>
+      </div>
+    </div>
+
+    <!-- Q4: Unencrypted Uploads -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔓</span> 為什麼有時候選擇「無加密上傳」是更好的？</h3>
+      <div class="faq-answer">
+        <p>無加密上傳非常適合那些您希望 **「永久對全球公開、透明且可被任何人隨時查閱」** 的檔案與數位資產。例如：</p>
+        <ul>
+          <li>您的個人榮譽、學術獎狀、畢業證書、結業證明。</li>
+          <li>企業的產品認證、專利申請、營業登記、合約公開副本。</li>
+          <li>開源軟體專案、學術論文、公開調查報告、歷史新聞紀錄。</li>
+        </ul>
+        <p>選擇不加密時，檔案將以原始格式完全公開地存儲在區塊鏈上。任何瀏覽器、去中心化節點或區塊鏈瀏覽器（如 ViewBlock）皆能直接讀取、載入並渲染這些檔案，無須任何密鑰授權，從而實現真正不可磨滅的永久公開存證。</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">使用與服務條款</a> • 
+      <a href="/privacy.html" target="_blank">隱私權政策</a> • 
+      <a href="/refund.html" target="_blank">退款方式</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive 閒貓典藏. All rights reserved.
+    </div>
+    <div class="footer-tax">
+      陞和姍科技商號 | 統編: 61263535
+    </div>
+  </footer>
+
+</body>
+</html>

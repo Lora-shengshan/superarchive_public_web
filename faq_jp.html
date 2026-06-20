@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デジタル猫アーカイブ - よくある質問 (FAQ)</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .faq-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .faq-answer {
+      font-size: 0.95rem;
+      color: #4b5563;
+      text-align: justify;
+    }
+    .faq-answer p { margin-bottom: 10px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>デジタル猫アーカイブ</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq_jp.html" class="nav-link" style="color: var(--primary-color);">よくある質問</a>
+        <a href="/api.html" class="nav-link">開発者 API</a>
+        <a href="/login.html" class="nav-link">ログイン</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="article-title">よくある質問 / FAQ</h1>
+
+    <!-- Q1: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> なぜファイルの「永久」保存を保証できるのですか？</h3>
+      <div class="faq-answer">
+        <p>デジタル猫アーカイブ（SuperArchive）の基盤となる永久保存メカニズムは、分散型ブロックチェーンである<strong>Arweave（アーウィーブ）プロトコル</strong>に基づいています。Arweaveは、データストレージ基金（Storage Endowment）と呼ばれる数学的に構築された経済モデルを導入しており、ファイルをアップロードする際、200年以上（理論上は永久）にわたる物理的なストレージ費用が基金を通じて一括前払いされます。これにより、鉱工（マイナー）はデータを永続的に維持するインセンティブを得ることができます。</p>
+        <p>世界をリードする高速ブロックチェーンである <strong>Solana（ソラナ）</strong> も、取引履歴と元帳データをすべて永久アーカイブするためにArweaveを唯一のストレージとして採用しています。そのため、ソラナ上の著名なデジタル資産（<strong>Trump Coin (DJT)</strong>など）の永久履歴や証明書も、すべてArweave上で永続的に保護されています。200年間のストレージ安全保証と学術モデルの詳細については、公式の <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweaveプロトコル白皮書 (Arweave Yellow Paper)</a> を直接ご参照ください。</p>
+      </div>
+    </div>
+
+    <!-- Q2: AI Agent / Lobster Integration -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🦞</span> AIエージェント（ロブスター / 養龍蝦など）をどのように連携させますか？</h3>
+      <div class="faq-answer">
+        <p>開発者APIを利用して、自動化されたAIアシスタント（例えば、<strong>ロブスター (Lobster)</strong> など）にブロックチェーンへの永久保存機能を簡単に統合させることができます。ロブスターに以下のプロセスを指示してください：</p>
+        <ul>
+          <li><strong>ステップ 1（APIキーの作成）</strong>：本プラットフォームのダッシュボードにログインし、「APIキー管理」セクションで専用のキー（接頭辞 <code>sa_live_</code>）を生成します。</li>
+          <li><strong>ステップ 2（ポイント確認）</strong>：ロブスターがデータをアーカイブする前に、必ず <code>GET /api/v1/developer/points</code> を呼び出して、アカウントの「S-Points（ポイント）」残高が十分であることを確認させてください（16MBごとに1ポイントが消費されます）。</li>
+          <li><strong>ステップ 3（永久アップロード）</strong>：ロブスターに、ファイルをマルチパート形式で <code>POST /api/v1/SuperArchive</code> へ送信させます。</li>
+        </ul>
+        <p><strong>不変性の警告</strong>：ロブスターがアップロードを完了すると、そのトランザクションは瞬時にブロックチェーンに永続的に刻まれます。**アップロードされたファイルは、ロブスター自身（AIアシスタント）や本プラットフォームの管理者であっても削除や変更を行うことは一切不可能です。**</p>
+      </div>
+    </div>
+
+    <!-- Q3: AES Encryption Password -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔒</span> Web UIの暗号化パスワードはどのように保存されますか？</h3>
+      <div class="faq-answer">
+        <p>「自己管理型暗号化アップロード（Option B）」において、本プラットフォームは徹底した **ゼロ知識（Zero-Knowledge）プロトコル** を遵守しています。私たちは **お客様の生のパスワードをデータベースやブロックチェーンに一切保存しません。**</p>
+        <p>パスワードを入力すると、ブラウザ上で直ちにSHA-256を用いてハッシュ化され、強固な256ビットのAES対称鍵が導出されてファイルを暗号化したのち、初めてアップロードが実行されます。パスワードはお客様の記憶にのみ留まるため、**管理者を含むいかなる第三者もファイルを解号・復元することはできません。パスワードを紛失した場合、ファイルは永久に復元できなくなりますのでご注意ください。**</p>
+      </div>
+    </div>
+
+    <!-- Q4: Unencrypted Uploads -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔓</span> 暗号化なし（No Encryption）を選択すべきなのはどのような場合ですか？</h3>
+      <div class="faq-answer">
+        <p>暗号化なしのアップロードは、**「世界中に永久に公開し、誰でもいつでも自由にアクセスさせたい」** ドキュメントやデジタル証明書に最適です。例えば以下のようなケースです：</p>
+        <ul>
+          <li>学術の表彰状、デジタル卒業証明書、保有スキルの認定証明。</li>
+          <li>企業の製品安全性認証、特許の公開データ、契約の公開証明コピー。</li>
+          <li>オープンソースの成果物、歴史的ニュースのアーカイブ、公開調査レポート。</li>
+        </ul>
+        <p>暗号化なしを選択した場合、ファイルは元のプレーンデータ形式で完全に公開ストレージに保存されます。キーの認証なしで、世界中のWebブラウザやブロックチェーンエクスプローラー（ViewBlockなど）から直接読み込み・表示・共有が可能です。</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">利用規約</a> • 
+      <a href="/privacy.html" target="_blank">プライバシーポリシー</a> • 
+      <a href="/refund.html" target="_blank">返金ポリシー</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 デジタル猫アーカイブ. All rights reserved.
+    </div>
+    <div class="footer-tax">
+      Shen & Shan Tech Co. | 統一番号: 61263535
+    </div>
+  </footer>
+
+</body>
+</html>

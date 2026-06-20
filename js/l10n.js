@@ -22,7 +22,23 @@ class L10nManager {
   async init() {
     await this.loadTranslations(this.currentLanguage);
     this.translateDOM();
+    this.updateFAQLink();
     this.setupSelector();
+  }
+
+  updateFAQLink() {
+    const faqLink = document.getElementById("nav-faq-link");
+    if (faqLink) {
+      if (this.currentLanguage === "zh_TW") {
+        faqLink.href = "/faq_zh.html";
+      } else if (this.currentLanguage === "jp_JP") {
+        faqLink.href = "/faq_jp.html";
+      } else if (this.currentLanguage === "kr_KR") {
+        faqLink.href = "/faq_kr.html";
+      } else {
+        faqLink.href = "/faq.html";
+      }
+    }
   }
 
   async loadTranslations(lang) {
@@ -64,6 +80,7 @@ class L10nManager {
     if (!this.supportedLanguages.includes(lang)) return;
     await this.loadTranslations(lang);
     this.translateDOM();
+    this.updateFAQLink();
     
     // Update select element if present
     const select = document.getElementById('language-selector');

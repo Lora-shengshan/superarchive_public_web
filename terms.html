@@ -152,6 +152,19 @@
       color: #4b5563;
     }
     
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+      margin-right: 10px;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
     select {
       padding: 6px 12px;
       border-radius: 6px;
@@ -173,6 +186,8 @@
         <span>SuperArchive</span>
       </a>
       <div class="header-actions">
+        <a href="/faq_zh.html" class="nav-link" id="nav-faq-link" data-i18n="nav.faq">常見問題</a>
+        <a href="/api.html" class="nav-link" data-i18n="nav.api_docs">開發者 API</a>
         <select id="language-selector">
           <option value="zh_TW">繁體中文 (zh_TW)</option>
           <option value="en_US">English (en_US)</option>

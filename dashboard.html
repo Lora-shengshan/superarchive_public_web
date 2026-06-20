@@ -282,6 +282,19 @@
       background: #fef2f2;
     }
 
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+      margin-right: 10px;
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+
     /* Header Profile Dropdown Styles */
     .profile-dropdown-container {
       position: relative;
@@ -454,6 +467,8 @@
       </a>
       
       <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
+        <a href="/faq_zh.html" class="nav-link" id="nav-faq-link" data-i18n="nav.faq">常見問題</a>
+        <a href="/api.html" class="nav-link" data-i18n="nav.api_docs">開發者 API</a>
         <!-- Header S-Points Pill -->
         <div style="display: flex; align-items: center; gap: 6px; background-color: #eff6ff; border: 1px solid #bfdbfe; padding: 4px 12px; border-radius: 9999px; font-weight: 700; font-size: 0.8rem; color: var(--primary-color); cursor: pointer;" onclick="openPurchaseModal()">
           💰 <span id="header-points-display">0</span> <span data-i18n="dash.points_count">點</span>

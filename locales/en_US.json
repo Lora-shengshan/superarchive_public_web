@@ -2,6 +2,10 @@
   "brand": {
     "title": "SuperArchive"
   },
+  "nav": {
+    "faq": "FAQ",
+    "api_docs": "API Docs"
+  },
   "landing": {
     "title": "SuperArchive Permanent Storage Platform",
     "subtitle": "Secure, efficient, and permanent. Your data is stored on the blockchain, preserved forever.",

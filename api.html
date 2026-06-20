@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - Developer API Reference</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+      --code-bg: #1e1e2e;
+      --code-text: #f8f8f2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    main {
+      flex: 1;
+      max-width: 1000px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+    .article-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+    .section {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .method-badge {
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: white;
+      text-transform: uppercase;
+    }
+    .method-post { background-color: var(--primary-color); }
+    .method-get { background-color: var(--accent-color); }
+    .endpoint-path {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+    }
+    .endpoint-desc {
+      font-size: 0.95rem;
+      color: #4b5563;
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    th {
+      background-color: var(--secondary-bg);
+      color: #374151;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: #4b5563;
+    }
+    tr:last-child td { border-bottom: none; }
+    .table-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    pre {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      padding: 15px;
+      border-radius: 8px;
+      font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      border: 1px solid #282a36;
+    }
+    .required-badge {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    .optional-badge {
+      background-color: #f3f4f6;
+      color: #4b5563;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq.html" class="nav-link">FAQ</a>
+        <a href="/api.html" class="nav-link" style="color: var(--primary-color);">API Docs</a>
+        <a href="/login.html" class="nav-link">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="article-title">Developer API Reference</h1>
+    <p class="article-subtitle">Official developer guidelines and schemas for interacting with the SuperArchive on-chain vault.</p>
+
+    <!-- 1. SuperArchive Upload -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-post">POST</span>
+        <span class="endpoint-path">/api/v1/SuperArchive</span>
+      </div>
+      <p class="endpoint-desc">Upload and archive a file permanently onto the Arweave blockchain. Supports three distinct encryption schemes (A, B, and C) depending on request parameters and headers.</p>
+      
+      <div class="table-title">HTTP Headers</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Header Name</th>
+            <th>Type</th>
+            <th>Necessity</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Authorization</code></td>
+            <td>String</td>
+            <td><span class="required-badge">Required</span></td>
+            <td>Credentials prefix. Must be formatted as: <code>Bearer sa_live_YOUR_API_KEY</code></td>
+          </tr>
+          <tr>
+            <td><code>X-Encryption-Key</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>User-Managed symmetric AES-256-GCM passphrase (Option B). Discarded immediately after encryption.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-title">Multipart Form Parameters</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Param Name</th>
+            <th>Type</th>
+            <th>Necessity</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>file</code></td>
+            <td>Binary</td>
+            <td><span class="required-badge">Required</span></td>
+            <td>Raw file stream bytes to be archived permanently.</td>
+          </tr>
+          <tr>
+            <td><code>enable_server_encryption</code></td>
+            <td>Boolean</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>If set to <code>true</code>, applies Server-Managed encryption (Option C). Defaults to <code>false</code>.</td>
+          </tr>
+          <tr>
+            <td><code>custom_tags_json</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>S-points debit divisor. Retains on-chain metadata tags as stringified JSON dict.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-title">Code Example (Python)</div>
+      <pre>import requests
+
+url = "https://api.sarchive.saltycat.tw/api/v1/SuperArchive"
+headers = {
+    "Authorization": "Bearer sa_live_YOUR_API_KEY"
+}
+files = {
+    "file": ("contract.pdf", open("contract.pdf", "rb"), "application/pdf")
+}
+data = {
+    "enable_server_encryption": "true",  # Trigger Server-Managed Option C
+    "custom_tags_json": '{"Project": "Phoenix", "Confidential": "true"}'
+}
+
+response = requests.post(url, headers=headers, files=files, data=data)
+print(response.json())</pre>
+    </section>
+
+    <!-- 2. SuperArchive Download -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/SuperArchive/download/{tx_id}</span>
+      </div>
+      <p class="endpoint-desc">Retrieves and streams file bytes directly from decentralized Arweave gateways. Supports automated on-the-fly decryption for server-managed files, or user-managed key decrypts.</p>
+
+      <div class="table-title">HTTP Headers</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Header Name</th>
+            <th>Type</th>
+            <th>Necessity</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>X-Encryption-Key</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>Symmetric AES-256-GCM key. Required only for User-Managed encrypted files (Option B).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-title">Code Example (cURL)</div>
+      <pre># Direct download & stream decrypt for Option B (User-Managed)
+curl -X GET "https://api.sarchive.saltycat.tw/api/v1/SuperArchive/download/TX_ID_HERE" \
+  -H "X-Encryption-Key: your_secure_passphrase" \
+  --output "decrypted_file.pdf"</pre>
+    </section>
+
+    <!-- 3. Points Balance -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/developer/points</span>
+      </div>
+      <p class="endpoint-desc">Query the remaining unspent S-Points balance in the ledger linked to your developer account.</p>
+
+      <div class="table-title">Code Example (Python)</div>
+      <pre>import requests
+
+url = "https://api.sarchive.saltycat.tw/api/v1/developer/points"
+headers = {"Authorization": "Bearer sa_live_YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+print(response.json()) # Output: {"email": "user@gmail.com", "remaining_s_points": 405, "status": "active"}</pre>
+    </section>
+
+    <!-- 4. List Uploads Registry -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/developer/files</span>
+      </div>
+      <p class="endpoint-desc">Query a comprehensive registry list of all permanent files uploaded by this user, including original sizes, metadata tags, encryption status, and transaction timestamps.</p>
+
+      <div class="table-title">Code Example (cURL)</div>
+      <pre>curl -X GET "https://api.sarchive.saltycat.tw/api/v1/developer/files" \
+  -H "Authorization: Bearer sa_live_YOUR_API_KEY"</pre>
+    </section>
+
+    <!-- 5. List Keys Spending -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/developer/keys</span>
+      </div>
+      <p class="endpoint-desc">Query all non-deleted developer API keys belonging to your account alongside their active status, preview strings, last-used telemetry, and the cumulative S-Point spending attributed to each specific key.</p>
+
+      <div class="table-title">Code Example (Python)</div>
+      <pre>import requests
+
+url = "https://api.sarchive.saltycat.tw/api/v1/developer/keys"
+headers = {"Authorization": "Bearer sa_live_YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+print(response.json())</pre>
+    </section>
+
+    <!-- 6. Key Retrieval -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/developer/files/{tx_id}/key</span>
+      </div>
+      <p class="endpoint-desc">Query and retrieve the secure server-managed AES-256-GCM decryption key and salt (Option C) for a given transaction ID. Enforces ownership: only the uploader can request their files keys.</p>
+
+      <div class="table-title">Code Example (cURL)</div>
+      <pre>curl -X GET "https://api.sarchive.saltycat.tw/api/v1/developer/files/TX_ID_HERE/key" \
+  -H "Authorization: Bearer sa_live_YOUR_API_KEY"</pre>
+    </section>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">Terms of Service</a> • 
+      <a href="/privacy.html" target="_blank">Privacy Policy</a> • 
+      <a href="/refund.html" target="_blank">Refund Policy</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

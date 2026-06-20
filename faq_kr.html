@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - 자주 묻는 질문 (FAQ)</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .faq-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .faq-answer {
+      font-size: 0.875rem;
+      color: #374151;
+    }
+    /* Footer */
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: auto;
+    }
+    .footer-links {
+      margin-bottom: 1rem;
+    }
+    .footer-links a {
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq_kr.html" class="nav-link" style="color: var(--primary-color);">자주 묻는 질문</a>
+        <a href="/api.html" class="nav-link">개발자 API</a>
+        <a href="/login.html" class="nav-link">로그인</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="article-title">자주 묻는 질문 (FAQ)</h1>
+
+    <!-- Q1: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> 왜 파일의 '영구적인' 보존을 보장할 수 있습니까?</h3>
+      <div class="faq-answer">
+        <p>SuperArchive의 영구적인 파일 보존 메커니즘은 분산형 블록체인인 <strong>Arweave (아위브) 프로토콜</strong>에 완전히 기반합니다. Arweave 프로토콜은 수학적으로 정밀하게 설계된 스토리지 기부금(Storage Endowment) 모델을 도입하였으며, 사용자가 파일을 업로드할 때 소모되는 보존 수수료는 기부금 풀에 영구적으로 일시 선납됩니다. 이를 통해 전 세계의 노드 채굴자들에게 데이터를 지속적으로 유지할 수 있는 경제적 인센티브가 확보되어 데이터를 <strong>200년 이상(이론적으로는 영구히)</strong> 안전하게 보존할 수 있습니다.</p>
+        <p>전 세계에서 가장 빠르고 확장성이 뛰어난 퍼블릭 블록체인인 <strong>Solana (솔라나)</strong> 또한 모든 거래 기록과 분산 원장 데이터를 영구 백업하기 위해 Arweave를 유일한 아카이빙 체인으로 채택하고 있습니다. 이에 따라, 최근 글로벌 시장에서 주목을 받은 <strong>Trump Coin (DJT)</strong> 및 솔라나 생태계의 모든 핵심 트랜잭션 증명들은 궁극적으로 Arweave 블록체인 위에 영구적으로 위조 불가능하게 각인되어 보호되고 있습니다. 200년 스토리지 안전 보증과 수학적 합의 모델에 대한 보다 상세한 증명은 공식 <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave 프로토콜 황서 (Arweave Yellow Paper)</a>에서 직접 확인하실 수 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- Q2: AI Agent / Lobster Integration -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🦞</span> 내 AI 에이전트(예: 바닷가재 / 養龍蝦)를 어떻게 SArchive API와 연동합니까?</h3>
+      <div class="faq-answer">
+        <p>개발자 API를 사용하면 <strong>바닷가재 (Lobster)</strong> 등의 자동화된 AI 어시스턴트에게 블록체인 영구 파일 아카이빙 능력을 손쉽게 추가할 수 있습니다. AI 에이전트에게 다음과 같은 파이프라인 프로세스를 수행하도록 지시하십시오:</p>
+        <ul>
+          <li><strong>단계 1 (API 키 생성)</strong>: 본 플랫폼의 대시보드에 로그인한 후, 'API 키 관리' 세션에서 전용 키(접두사 <code>sa_live_</code>)를 발급받습니다.</li>
+          <li><strong>단계 2 (포인트 검사)</strong>: 에이전트가 영구 아카이빙을 진행하기 전에, 반드시 <code>GET /api/v1/developer/points</code>를 호출하여 귀하의 계정에 충분한 S-Points가 잔존하는지 사전에 조회하도록 지시하십시오 (16MB 블록당 1포인트가 소모됩니다).</li>
+          <li><strong>단계 3 (아카이브 업로드)</strong>: 에이전트가 파일을 멀티파트 형식으로 구성하여 <code>POST /api/v1/SuperArchive</code> 주소로 업로드 요청을 전송하도록 설정합니다.</li>
+        </ul>
+        <p><strong>위조 불가 경고</strong>: AI 에이전트가 업로드를 성공적으로 수행하는 즉시 해당 트랜잭션은 전 세계 분산 원장에 영구 각인됩니다. **업로드 이후에는 AI 에이전트 자신은 물론, 본 플랫폼 관리자를 포함한 그 누구도 해당 파일을 변경하거나 삭제할 수 없습니다.**</p>
+      </div>
+    </div>
+
+    <!-- Q3: AES Encryption Password -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔒</span> 웹 대시보드 AES-256-GCM 암호는 어떻게 저장됩니까?</h3>
+      <div class="faq-answer">
+        <p>웹 브라우저의 '로컬 보안 암호화 업로드(Option B)'를 수행할 때, 본 플랫폼은 완전한 **영지식 증명(Zero-Knowledge) 개인정보 보호 규정**을 철저히 엄수합니다. **당사는 귀하의 평문 암호를 서버 데이터베이스나 블록체인 상에 절대 저장하지 않습니다.**</p>
+        <p>귀하가 웹 대시보드에서 암호를 입력하면, 즉시 로컬에서 SHA-256 해시를 도출해 256비트 대칭 암호화 키를 생성하고 파일을 AES-256-GCM 알고리즘으로 암호화하여 업로드합니다. 복호화 비밀번호는 오직 사용자의 머릿속에만 존재하므로, **본사 관리자를 포함한 그 어떤 삼자도 귀하의 파일을 해독하거나 복원할 수 없습니다. 암호를 분실하는 경우 파일은 영구히 복구 불가능하므로 비밀번호를 완벽히 관리해 주시기 바랍니다.**</p>
+      </div>
+    </div>
+
+    <!-- Q4: Unencrypted Uploads -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔓</span> 어떤 경우에 "암호화 없이 업로드(No Encryption)"를 선택해야 합니까?</h3>
+      <div class="faq-answer">
+        <p>암호화 없이 업로드하는 방식은 **"전 세계에 영구히 공개되어 누구든지 언제나 자유롭게 열람 및 검증해야 하는"** 디지털 파일 및 증명서 보존에 가장 적합합니다. 주요 예시는 다음과 같습니다:</p>
+        <ul>
+          <li>개인의 학업 상장, 디지털 졸업 증명서, 기술 자격 취득 이력.</li>
+          <li>기업의 제품 친환경 안전 인증서, 사업자 등록증, 특허 공시 사본, 오픈소스 라이선스 문서.</li>
+          <li>역사적인 보도 자료 아카이브, 공공 데이터베이스 조사 보고서, 학술 논문.</li>
+        </ul>
+        <p>암호화 없음 상태로 아카이빙된 파일은 원본 평문 상태로 영구 보존됩니다. 따라서 별도의 비밀번호 없이 전 세계의 모든 웹 브라우저나 블록체인 탐색기(ViewBlock 등)를 통해 투명하게 조회, 다운로드 및 인덱싱이 가능합니다.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">이용약관</a> • 
+      <a href="/privacy.html" target="_blank">개인정보 처리방침</a> • 
+      <a href="/refund.html" target="_blank">환불 정책</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive. All rights reserved.
+    </div>
+    <div class="footer-tax">
+      Shen & Shan Tech Co. | 사업자등록번호: 61263535
+    </div>
+  </footer>
+
+</body>
+</html>

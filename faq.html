@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - Frequently Asked Questions</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    main {
+      flex: 1;
+      max-width: 800px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .faq-item {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+    .faq-answer {
+      font-size: 0.95rem;
+      color: #4b5563;
+      text-align: justify;
+    }
+    .faq-answer p { margin-bottom: 10px; }
+    .faq-answer ul { margin-left: 20px; margin-bottom: 10px; }
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq.html" class="nav-link" style="color: var(--primary-color);">FAQ</a>
+        <a href="/api.html" class="nav-link">API Docs</a>
+        <a href="/login.html" class="nav-link">Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="article-title">Frequently Asked Questions (FAQ)</h1>
+
+    <!-- Q1: Lifetime Guarantee -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🌐</span> Why can we guarantee lifetime file preservation?</h3>
+      <div class="faq-answer">
+        <p>SuperArchive utilizes the <strong>Arweave blockchain</strong> as our decentralized permanent storage backbone. Arweave is mathematically engineered to preserve data for <strong>over 200 years</strong> (and theoretically perpetuity) using a Storage Endowment pool model. This means once your file is uploaded, the storage fee is prepaid forever into a consensus-secured pool, ensuring miners are financially incentivized to maintain your data indefinitely.</p>
+        <p>Major blockchain networks like <strong>Solana</strong> rely exclusively on Arweave to backup and archive their entire historical ledger states. Even prominent projects like the Solana-based <strong>Trump Coin (DJT)</strong> or other viral digital assets have their immutable records stored permanently on Arweave. To read more about the mathematical consensus and 200-year storage guarantees, check out the official <a href="https://www.arweave.org/yellow-paper.pdf" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Arweave Yellow Paper</a>.</p>
+      </div>
+    </div>
+
+    <!-- Q2: AI Agent / Lobster Integration -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🦞</span> How can I integrate SArchive with my AI Agent (e.g., Lobster / 養龍蝦)?</h3>
+      <div class="faq-answer">
+        <p>Integrating your automated AI Agents (like <strong>Lobster (養龍蝦)</strong>) is incredibly simple via our programmatic developer endpoints. Follow this workflow to guide your agent in archiving files permanently:</p>
+        <ul>
+          <li><strong>Step 1 (Generate Key)</strong>: Log in to your SuperArchive dashboard, navigate to the API Keys section, and generate a secure API key (prefixed with <code>sa_live_</code>).</li>
+          <li><strong>Step 2 (Check Points)</strong>: Before prompting the agent to archive, instruct them to query <code>GET /api/v1/developer/points</code> to verify that your account has sufficient S-Points (1 point per 16MB block).</li>
+          <li><strong>Step 3 (Submit Archive)</strong>: Instruct your Lobster AI Agent to perform a multipart POST request with their file payload to <code>POST /api/v1/SuperArchive</code>.</li>
+        </ul>
+        <p><strong>Note on Immutability</strong>: Once the Lobster agent completes the upload, the transaction is signed and permanently forged into the blockchain ledger. **The AI Agent itself (and even SuperArchive administrators) has no power to modify, delete, or censor the file.**</p>
+      </div>
+    </div>
+
+    <!-- Q3: AES Encryption Password -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔒</span> How does Web UI Encryption protect my files and passwords?</h3>
+      <div class="faq-answer">
+        <p>Under our **User-Managed Encryption (Option B)**, SuperArchive implements strict zero-knowledge protocols. We **never store your raw encryption password** in our database or on-chain. When you enter a passphrase, we derive a cryptographically strong 256-bit AES key using a SHA-256 hash. This key is used immediately inside your browser session to encrypt the bytes before posting them.</p>
+        <p>Since the password only exists in your memory, **absolutely no one in the world—including SuperArchive administrators—can decrypt or recover your files if you lose this key.** Your files remain completely secure, unreadable, and private to anyone who does not possess your exact passphrase.</p>
+      </div>
+    </div>
+
+    <!-- Q4: Unencrypted Uploads -->
+    <div class="faq-item">
+      <h3 class="faq-question"><span>🔓</span> When should I choose "No Encryption"?</h3>
+      <div class="faq-answer">
+        <p>Unencrypted uploads are ideal for files that you explicitly want to be **openly accessible, transparent, and retrievable by the entire world forever**. Excellent use cases include:</p>
+        <ul>
+          <li>Academic awards, digital diplomas, and graduation certificates.</li>
+          <li>Commercial product certifications, business registration tax documents, or patent filings.</li>
+          <li>Open-source source code repositories, open public logs, or historical press records.</li>
+        </ul>
+        <p>By choosing "No Encryption," these files are hosted openly on the public ledger. They can be indexed and rendered directly by any standard Web browser, Arweave node, or public blockchain explorer (like ViewBlock) globally without requiring any authorization or decryption keys.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">Terms of Service</a> • 
+      <a href="/privacy.html" target="_blank">Privacy Policy</a> • 
+      <a href="/refund.html" target="_blank">Refund Policy</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive. All rights reserved.
+    </div>
+    <div class="footer-tax">
+      Shen & Shan Tech Co. | Unified Business No: 61263535
+    </div>
+  </footer>
+
+</body>
+</html>
