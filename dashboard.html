@@ -282,6 +282,95 @@
       background: #fef2f2;
     }
 
+    /* Header Profile Dropdown Styles */
+    .profile-dropdown-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--border-color);
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .profile-avatar:hover {
+      box-shadow: 0 0 0 2px var(--primary-color);
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      width: 250px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      display: none;
+      flex-direction: column;
+      padding: 10px 0;
+      z-index: 1000;
+      text-align: left;
+    }
+
+    .dropdown-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    .dropdown-email {
+      font-weight: 700;
+      color: #111827;
+      word-break: break-all;
+    }
+
+    .dropdown-points {
+      margin-top: 4px;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    .dropdown-item {
+      padding: 10px 16px;
+      font-size: 0.875rem;
+      color: #374151;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background-color 0.1s;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--secondary-bg);
+      color: var(--primary-color);
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 8px 0;
+    }
+
     .message-banner {
       padding: 12px;
       border-radius: 6px;
@@ -367,14 +456,39 @@
         </svg>
         <span>SuperArchive</span>
       </a>
-      <div class="header-actions">
+      <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
         <select id="language-selector">
           <option value="zh_TW">繁體中文 (zh_TW)</option>
           <option value="en_US">English (en_US)</option>
           <option value="jp_JP">日本語 (jp_JP)</option>
           <option value="kr_KR">한국어 (kr_KR)</option>
         </select>
-        <button class="btn-logout" data-i18n="dash.logout_button" onclick="handleLogout()">安全登出</button>
+        
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown-container">
+          <div class="profile-avatar" id="header-avatar" onclick="toggleProfileDropdown()">-</div>
+          <div class="profile-dropdown" id="profile-dropdown">
+            <div class="dropdown-header">
+              <div class="dropdown-email" id="dropdown-user-email">Loading...</div>
+              <div class="dropdown-points"><span id="dropdown-points-display">0</span> S-Points</div>
+            </div>
+            
+            <!-- Admin Route Link (Only shown to admins) -->
+            <a href="/admin.html" class="dropdown-item" id="dropdown-admin-link" style="display: none;">
+              💼 系統後台 / Admin Console
+            </a>
+            
+            <a href="javascript:void(0)" class="dropdown-item" onclick="openPurchaseModal()">
+              💳 購買點數 / Top-Up S-Points
+            </a>
+            
+            <div class="dropdown-divider"></div>
+            
+            <button class="dropdown-item" style="color: var(--error-color);" onclick="handleLogout()">
+              🚪 安全登出 / Sign Out
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -383,8 +497,9 @@
     <!-- Welcome section showing user profile details -->
     <section class="welcome-section">
       <div>
-        <h2 class="user-email" id="user-display">sarchive@test2.5233.space</h2>
-        <p style="color: #6b7280; font-size: 0.9rem;">歡迎回來您的永久儲存管理平台</p>
+        <h2 class="user-email" id="user-display" style="display: none;">sarchive@test2.5233.space</h2>
+        <h2 class="user-email" style="font-size: 1.5rem;">🔒 去中心化永久儲存儀表板 / Decentralized Vault</h2>
+        <p style="color: #6b7280; font-size: 0.9rem;">您的資料已安全備份並錨定在 Arweave 區塊鏈，永久保存不遺失。 / Permanently secured on-chain forever.</p>
       </div>
       <div class="points-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
         <p class="points-title" data-i18n="dash.points_balance">您的 S-Points 餘額</p>
@@ -511,6 +626,16 @@
         document.getElementById("user-display").innerText = userProfile.email;
         document.getElementById("points-display").innerText = userProfile.s_points;
         
+        // Populate header dropdown components
+        document.getElementById("dropdown-user-email").innerText = userProfile.email;
+        document.getElementById("dropdown-points-display").innerText = userProfile.s_points;
+        document.getElementById("header-avatar").innerText = userProfile.email.charAt(0).toUpperCase();
+        
+        const emailClean = userProfile.email.toLowerCase().trim();
+        if (emailClean === "taosheng.chen@gmail.com" || emailClean === "taosheng@shengshan.tw") {
+          document.getElementById("dropdown-admin-link").style.display = "flex";
+        }
+        
         // Load keys list
         await loadAPIKeysList();
         
@@ -533,6 +658,20 @@
         window.location.href = "/login.html";
       }
     }
+
+    // --- Profile Dropdown Toggle ---
+    function toggleProfileDropdown() {
+      const dd = document.getElementById("profile-dropdown");
+      dd.style.display = dd.style.display === "flex" ? "none" : "flex";
+    }
+
+    // Close dropdown on click outside
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest(".profile-dropdown-container")) {
+        const dd = document.getElementById("profile-dropdown");
+        if (dd) dd.style.display = "none";
+      }
+    });
 
     function showBanner(msg, isError = false) {
       const banner = document.getElementById("banner");
