@@ -785,6 +785,93 @@
     </div>
   </div>
 
+  <!-- User Details Modal Overlay -->
+  <div id="user-detail-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;">
+      <h3 class="modal-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <span>👤 用戶詳細背景資訊 / User Profile & History</span>
+        <button onclick="closeUserDetailModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #9ca3af;">&times;</button>
+      </h3>
+      
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; padding: 15px; background-color: var(--secondary-bg); border-radius: 8px; border: 1px solid var(--border-color);">
+        <div><strong>電子信箱 / Email:</strong> <span id="detail-email" style="font-weight: bold; color: #111827;">-</span></div>
+        <div><strong>剩餘點數 / S-Points:</strong> <span id="detail-points" style="font-weight: bold; color: var(--primary-color);">- 點</span></div>
+        <div><strong>帳號狀態 / Status:</strong> <span id="detail-status" style="font-weight: bold;">-</span></div>
+      </div>
+      
+      <div style="display: flex; flex-direction: column; gap: 25px;">
+        
+        <!-- Section 1: Billing History -->
+        <div>
+          <h4 style="font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">💳 點數儲值歷史紀錄 / Billing & Top-Up History</h4>
+          <div style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0; border: none;">
+              <thead style="position: sticky; top: 0; background-color: var(--secondary-bg); z-index: 10;">
+                <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                  <th style="padding: 8px 12px;">訂單編號 / Order ID</th>
+                  <th style="padding: 8px 12px;">金額 / Amount</th>
+                  <th style="padding: 8px 12px;">獲得點數 / Points</th>
+                  <th style="padding: 8px 12px;">交易狀態 / Status</th>
+                  <th style="padding: 8px 12px;">交易時間 / Date</th>
+                </tr>
+              </thead>
+              <tbody id="detail-billing-body">
+                <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無交易紀錄。 / No transactions.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 2: Points Adjustments -->
+        <div>
+          <h4 style="font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">🛠️ 後台點數手動調整歷史 / Administrative Adjustments</h4>
+          <div style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0; border: none;">
+              <thead style="position: sticky; top: 0; background-color: var(--secondary-bg); z-index: 10;">
+                <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                  <th style="padding: 8px 12px;">變更數量 / Adjusted</th>
+                  <th style="padding: 8px 12px;">調整前 / Before</th>
+                  <th style="padding: 8px 12px;">調整後 / After</th>
+                  <th style="padding: 8px 12px;">調整原因 / Reason</th>
+                  <th style="padding: 8px 12px;">操作時間 / Date</th>
+                </tr>
+              </thead>
+              <tbody id="detail-adjustments-body">
+                <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無點數調整紀錄。 / No adjustments.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 3: User Upload Files -->
+        <div>
+          <h4 style="font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">📂 鏈上檔案歸檔名冊 / Archived User Files</h4>
+          <div style="max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0; border: none;">
+              <thead style="position: sticky; top: 0; background-color: var(--secondary-bg); z-index: 10;">
+                <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                  <th style="padding: 8px 12px;">檔案名稱 / Filename</th>
+                  <th style="padding: 8px 12px;">檔案大小 / Size</th>
+                  <th style="padding: 8px 12px;">扣抵點數 / Cost</th>
+                  <th style="padding: 8px 12px;">安全狀態 / Encryption</th>
+                  <th style="padding: 8px 12px; text-align: right;">鏈上審計 / Links</th>
+                </tr>
+              </thead>
+              <tbody id="detail-files-body">
+                <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無上傳存檔紀錄。 / No archived files.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+      </div>
+      
+      <div class="modal-footer" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+        <button class="btn-secondary" onclick="closeUserDetailModal()">關閉 / Close</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="saltycat-footer">
     <div class="footer-links">
       <a href="/terms.html" target="_blank" data-i18n="footer.tos">使用與服務條款</a> • 
@@ -914,7 +1001,7 @@
           : `<button class="btn-action-sm btn-activate" onclick="toggleUserStatus('${u.email}', 'active')">啟用 / Activate</button>`;
 
         row.innerHTML = `
-          <td style="font-weight: 600; color: #111827;">${u.email}</td>
+          <td style="font-weight: 600; color: var(--primary-color); cursor: pointer; text-decoration: underline;" onclick="openUserDetailModal('${u.email}')" title="點擊檢視詳細資訊 / Click to view details">${u.email}</td>
           <td style="font-weight: 700; color: var(--primary-color);">${u.s_points} <span style="font-size: 0.75rem; color:#6b7280; font-weight: 500;">pts</span></td>
           <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
           <td style="font-family: monospace; font-size: 0.8rem; color: #4b5563;">${u.google_id || 'N/A'}</td>
@@ -1011,6 +1098,112 @@
         closePointsModal();
         showBanner("❌ 網路傳輸失敗，無法調整點數。", true);
       }
+    }
+
+    async function openUserDetailModal(email) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/users/${encodeURIComponent(email)}/details`, { credentials: "include" });
+        if (!response.ok) {
+          throw new Error("Failed to load user details");
+        }
+        const data = await response.json();
+        
+        // 1. Fill headers
+        document.getElementById("detail-email").innerText = data.email;
+        document.getElementById("detail-points").innerText = `${data.s_points} 點 / pts`;
+        
+        const statusEl = document.getElementById("detail-status");
+        statusEl.innerText = data.status === "active" ? "使用中 (Active)" : "已停用 (Suspended)";
+        statusEl.style.color = data.status === "active" ? "var(--accent-color)" : "var(--error-color)";
+        
+        // 2. Render Billing History
+        const billingTbody = document.getElementById("detail-billing-body");
+        billingTbody.innerHTML = "";
+        if (data.billing_history.length === 0) {
+          billingTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無交易紀錄。 / No transactions.</td></tr>`;
+        } else {
+          data.billing_history.forEach(tx => {
+            const row = document.createElement("tr");
+            row.style.borderBottom = "1px solid var(--border-color)";
+            const txDate = tx.created_at ? new Date(tx.created_at).toLocaleString() : "N/A";
+            const txStatus = tx.status === "paid" ? `<span style="color: var(--accent-color); font-weight: bold;">已付款 (Paid)</span>` : `<span style="color: #9ca3af;">未付款 (Pending)</span>`;
+            row.innerHTML = `
+              <td style="padding: 8px 12px; font-family: monospace; font-size: 0.75rem;">${tx.id}</td>
+              <td style="padding: 8px 12px; font-weight: bold;">${tx.amount_twd} NTD</td>
+              <td style="padding: 8px 12px; color: var(--primary-color); font-weight: bold;">+${tx.points_credited}</td>
+              <td style="padding: 8px 12px;">${txStatus}</td>
+              <td style="padding: 8px 12px; font-size: 0.75rem; color: #6b7280;">${txDate}</td>
+            `;
+            billingTbody.appendChild(row);
+          });
+        }
+        
+        // 3. Render Adjustments
+        const adjustmentsTbody = document.getElementById("detail-adjustments-body");
+        adjustmentsTbody.innerHTML = "";
+        if (data.points_adjustments.length === 0) {
+          adjustmentsTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無點數調整紀錄。 / No adjustments.</td></tr>`;
+        } else {
+          data.points_adjustments.forEach(adj => {
+            const row = document.createElement("tr");
+            row.style.borderBottom = "1px solid var(--border-color)";
+            const adjDate = adj.created_at ? new Date(adj.created_at).toLocaleString() : "N/A";
+            const changeStr = adj.points_adjusted >= 0 ? `<span style="color: var(--accent-color); font-weight: bold;">+${adj.points_adjusted}</span>` : `<span style="color: var(--error-color); font-weight: bold;">${adj.points_adjusted}</span>`;
+            row.innerHTML = `
+              <td style="padding: 8px 12px;">${changeStr}</td>
+              <td style="padding: 8px 12px; color: #6b7280;">${adj.previous_points}</td>
+              <td style="padding: 8px 12px; font-weight: bold; color: var(--primary-color);">${adj.new_points}</td>
+              <td style="padding: 8px 12px; font-weight: 500;" title="${escapeHTML(adj.reason)}">${escapeHTML(adj.reason)}</td>
+              <td style="padding: 8px 12px; font-size: 0.75rem; color: #6b7280;">${adjDate}</td>
+            `;
+            adjustmentsTbody.appendChild(row);
+          });
+        }
+        
+        // 4. Render Files
+        const filesTbody = document.getElementById("detail-files-body");
+        filesTbody.innerHTML = "";
+        if (data.files.length === 0) {
+          filesTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 15px;">尚無上傳存檔紀錄。 / No archived files.</td></tr>`;
+        } else {
+          data.files.forEach(f => {
+            const row = document.createElement("tr");
+            row.style.borderBottom = "1px solid var(--border-color)";
+            
+            let sizeStr = `${f.filesize} B`;
+            if (f.filesize > 1024 * 1024) {
+              sizeStr = `${(f.filesize / (1024 * 1024)).toFixed(2)} MB`;
+            } else if (f.filesize > 1024) {
+              sizeStr = `${(f.filesize / 1024).toFixed(1)} KB`;
+            }
+            
+            let encLabel = "🔓 Plain";
+            if (f.is_encrypted) {
+              encLabel = f.is_encrypted_by_us ? "🛡️ Server" : "🔑 User";
+            }
+            
+            row.innerHTML = `
+              <td style="padding: 8px 12px; font-weight: 600; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHTML(f.filename)}">${escapeHTML(f.filename)}</td>
+              <td style="padding: 8px 12px; color: #4b5563;">${sizeStr}</td>
+              <td style="padding: 8px 12px; color: var(--error-color); font-weight: bold;">-${f.points_deducted} pt</td>
+              <td style="padding: 8px 12px; font-size: 0.75rem;">${encLabel}</td>
+              <td style="padding: 8px 12px; text-align: right;">
+                <a href="https://viewblock.io/arweave/tx/${f.id}" target="_blank" style="color: var(--primary-color); text-decoration: underline; font-weight: 600;">ViewBlock</a>
+              </td>
+            `;
+            filesTbody.appendChild(row);
+          });
+        }
+        
+        document.getElementById("user-detail-modal").style.display = "flex";
+      } catch (e) {
+        console.error("Failed to load user details", e);
+        showBanner("❌ 無法取得該用戶詳細背景資料。 / Could not load details.", true);
+      }
+    }
+    
+    function closeUserDetailModal() {
+      document.getElementById("user-detail-modal").style.display = "none";
     }
 
     function showBanner(msg, isError = false) {
