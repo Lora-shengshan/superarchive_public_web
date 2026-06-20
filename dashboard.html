@@ -754,7 +754,8 @@
       closePurchaseModal();
       
       try {
-        const res = await fetch(`${API_BASE}/payment/newebpay/checkout`.replace('/api/v1', ''), {
+        const apiHost = API_BASE.replace('/api/v1', '');
+        const res = await fetch(`${apiHost}/api/payment/newebpay/checkout`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ points: points }),
