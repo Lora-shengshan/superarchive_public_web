@@ -449,20 +449,15 @@
   <header>
     <div class="nav-container">
       <a href="/" class="logo-container">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-          <line x1="12" y1="22.08" x2="12" y2="12"></line>
-        </svg>
-        <span>SuperArchive</span>
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span id="brand-title" data-i18n="brand.title">SuperArchive</span>
       </a>
+      
       <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
-        <select id="language-selector">
-          <option value="zh_TW">繁體中文 (zh_TW)</option>
-          <option value="en_US">English (en_US)</option>
-          <option value="jp_JP">日本語 (jp_JP)</option>
-          <option value="kr_KR">한국어 (kr_KR)</option>
-        </select>
+        <!-- Header S-Points Pill -->
+        <div style="display: flex; align-items: center; gap: 6px; background-color: #eff6ff; border: 1px solid #bfdbfe; padding: 4px 12px; border-radius: 9999px; font-weight: 700; font-size: 0.8rem; color: var(--primary-color); cursor: pointer;" onclick="openPurchaseModal()">
+          💰 <span id="header-points-display">0</span> <span data-i18n="dash.points_count">點</span>
+        </div>
         
         <!-- Profile Dropdown -->
         <div class="profile-dropdown-container">
@@ -484,6 +479,19 @@
             
             <div class="dropdown-divider"></div>
             
+            <!-- Language Selector under dropdown -->
+            <div style="padding: 5px 16px 10px 16px;">
+              <label class="form-label" style="font-size: 0.75rem; color: #6b7280; font-weight: 600; margin-bottom: 5px; display: block;">語系 / Language</label>
+              <select id="language-selector" style="width: 100%;" onchange="changeUserLanguage(this.value)">
+                <option value="zh_TW">繁體中文 (zh_TW)</option>
+                <option value="en_US">English (en_US)</option>
+                <option value="jp_JP">日本語 (jp_JP)</option>
+                <option value="kr_KR">한국어 (kr_KR)</option>
+              </select>
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
             <button class="dropdown-item" style="color: var(--error-color);" onclick="handleLogout()">
               🚪 安全登出 / Sign Out
             </button>
@@ -494,19 +502,9 @@
   </header>
 
   <main>
-    <!-- Welcome section showing user profile details -->
-    <section class="welcome-section">
-      <div>
-        <h2 class="user-email" id="user-display" style="display: none;">sarchive@test2.5233.space</h2>
-        <h2 class="user-email" style="font-size: 1.5rem;">🔒 去中心化永久儲存儀表板 / Decentralized Vault</h2>
-        <p style="color: #6b7280; font-size: 0.9rem;">您的資料已安全備份並錨定在 Arweave 區塊鏈，永久保存不遺失。 / Permanently secured on-chain forever.</p>
-      </div>
-      <div class="points-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
-        <p class="points-title" data-i18n="dash.points_balance">您的 S-Points 餘額</p>
-        <p><span class="points-value" id="points-display">5</span> <span style="font-size: 0.85rem; font-weight: bold; color: #1e40af;" data-i18n="dash.points_count">點</span></p>
-        <button class="btn-action" style="padding: 6px 12px; font-size: 0.8rem; background-color: var(--primary-color);" onclick="openPurchaseModal()">購買點數 / Purchase S-Points</button>
-      </div>
-    </section>
+    <!-- Hidden fields kept for legacy JS compatibility -->
+    <div id="user-display" style="display: none;"></div>
+    <div id="points-display" style="display: none;"></div>
 
     <div id="banner" class="message-banner"></div>
     <div id="raw-key-card" class="raw-key-display"></div>
@@ -547,7 +545,18 @@
               <label class="form-label" data-i18n="dash.passphrase_placeholder">請輸入加密/解密密碼</label>
               <input type="password" id="upload-passphrase" class="form-input" placeholder="Passphrase">
             </div>
-            <button class="btn-action" style="width: 100%;" data-i18n="dash.upload_button" onclick="handleFileUpload()">立即上傳</button>
+            <button class="btn-action" style="width: 100%;" id="btn-upload-submit" data-i18n="dash.upload_button" onclick="handleFileUpload()">立即上傳</button>
+            
+            <!-- Upload Progress Bar -->
+            <div id="upload-progress-container" style="display: none; margin-top: 15px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #4b5563; margin-bottom: 5px; font-weight: 600;">
+                <span id="upload-progress-status">正在讀取檔案... / Preparing...</span>
+                <span id="upload-progress-percent">0%</span>
+              </div>
+              <div style="width: 100%; height: 8px; background-color: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                <div id="upload-progress-bar" style="width: 0%; height: 100%; background-color: var(--primary-color); transition: width 0.2s;"></div>
+              </div>
+            </div>
           </form>
         </div>
 
@@ -625,11 +634,24 @@
         // Render profile
         document.getElementById("user-display").innerText = userProfile.email;
         document.getElementById("points-display").innerText = userProfile.s_points;
+        document.getElementById("header-points-display").innerText = userProfile.s_points;
         
         // Populate header dropdown components
         document.getElementById("dropdown-user-email").innerText = userProfile.email;
         document.getElementById("dropdown-points-display").innerText = userProfile.s_points;
         document.getElementById("header-avatar").innerText = userProfile.email.charAt(0).toUpperCase();
+        
+        // Sync language selector with saved preference or browser fallback
+        const currentLang = userProfile.default_lang || (window.L10n ? window.L10n.currentLanguage : "zh_TW");
+        const langSelect = document.getElementById("language-selector");
+        if (langSelect) langSelect.value = currentLang;
+
+        if (userProfile.default_lang) {
+          console.log(`🌍 Applying user default language from Firestore profile: ${userProfile.default_lang}`);
+          if (window.L10n) {
+            await window.L10n.setLanguage(userProfile.default_lang);
+          }
+        }
         
         const emailClean = userProfile.email.toLowerCase().trim();
         if (emailClean === "taosheng.chen@gmail.com" || emailClean === "taosheng@shengshan.tw") {
@@ -672,6 +694,26 @@
         if (dd) dd.style.display = "none";
       }
     });
+
+    async function changeUserLanguage(lang) {
+      // 1. Locally change language
+      if (window.L10n) {
+        await window.L10n.setLanguage(lang);
+      }
+      
+      // 2. Persist to Firestore user profile dynamically!
+      try {
+        await fetch(`${API_BASE}/auth/language`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lang: lang }),
+          credentials: "include"
+        });
+        console.log(`✅ Default language preference persisted in Firestore: ${lang}`);
+      } catch (err) {
+        console.error("Failed to save language preference:", err);
+      }
+    }
 
     function showBanner(msg, isError = false) {
       const banner = document.getElementById("banner");
@@ -780,6 +822,24 @@
       document.getElementById("passphrase-group").style.display = checked ? "block" : "none";
     }
 
+    function setUploadState(uploading) {
+      document.getElementById("file-uploader").disabled = uploading;
+      document.getElementById("enable-encrypt").disabled = uploading;
+      document.getElementById("upload-passphrase").disabled = uploading;
+      
+      const submitBtn = document.getElementById("btn-upload-submit");
+      submitBtn.disabled = uploading;
+      if (uploading) {
+        submitBtn.innerText = "上傳中... / Uploading...";
+        submitBtn.style.opacity = "0.6";
+        submitBtn.style.cursor = "not-allowed";
+      } else {
+        submitBtn.innerText = "立即上傳";
+        submitBtn.style.opacity = "1";
+        submitBtn.style.cursor = "pointer";
+      }
+    }
+
     async function handleFileUpload() {
       const fileInput = document.getElementById("file-uploader");
       if (fileInput.files.length === 0) {
@@ -796,7 +856,33 @@
          return;
       }
       
-      showBanner("上傳中（正在與區塊鏈連線，請稍候）... / Uploading to blockchain...");
+      // Disable inputs and buttons to block double uploads
+      setUploadState(true);
+      
+      // Initialize and animate progress bar
+      const progressContainer = document.getElementById("upload-progress-container");
+      const progressBar = document.getElementById("upload-progress-bar");
+      const progressPercent = document.getElementById("upload-progress-percent");
+      const progressStatus = document.getElementById("upload-progress-status");
+      
+      progressContainer.style.display = "block";
+      progressBar.style.width = "10%";
+      progressPercent.innerText = "10%";
+      progressStatus.innerText = "正在讀取與處理檔案... / Reading file...";
+      
+      let progress = 10;
+      const progressInterval = setInterval(() => {
+        if (progress < 90) {
+          progress += 5;
+          progressBar.style.width = `${progress}%`;
+          progressPercent.innerText = `${progress}%`;
+          if (progress < 40) {
+            progressStatus.innerText = "進行安全加密中... / Encrypting file...";
+          } else {
+            progressStatus.innerText = "正在上傳至區塊鏈永久節點... / Archiving on-chain...";
+          }
+        }
+      }, 350);
       
       const formData = new FormData();
       formData.append("file", file);
@@ -815,16 +901,35 @@
         });
         
         const data = await res.json();
+        
+        // Clear progress animation on response
+        clearInterval(progressInterval);
+        
         if (res.ok) {
+          progressBar.style.width = "100%";
+          progressPercent.innerText = "100%";
+          progressStatus.innerText = "✅ 檔案已永久儲存至區塊鏈！ / Succeeded!";
+          
           showBanner(`🎉 檔案上傳成功！\n交易 ID (tx_id): ${data.tx_id}\n點數扣抵: ${data.points_deducted} 點`);
           fileInput.value = "";
           document.getElementById("upload-passphrase").value = "";
-          // Refresh balance
+          
+          // Fade out progress indicator after success
+          setTimeout(() => {
+            progressContainer.style.display = "none";
+          }, 2000);
+          
+          setUploadState(false);
           await loadDashboard();
         } else {
+          progressContainer.style.display = "none";
+          setUploadState(false);
           showBanner(`❌ ${data.detail || "上傳失敗。"}`, true);
         }
       } catch (e) {
+        clearInterval(progressInterval);
+        progressContainer.style.display = "none";
+        setUploadState(false);
         showBanner("❌ 網路連線或代付逾時失敗。 / Connection timed out.", true);
       }
     }
