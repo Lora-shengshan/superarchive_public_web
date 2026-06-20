@@ -160,6 +160,11 @@
       <h3 class="faq-question"><span>⛓️</span> 為什麼儲存在區塊鏈中的資料「絕對無法被刪除或修改」？</h3>
       <div class="faq-answer">
         <p>要理解區塊鏈資料的不可篡改與永久性，最完美的範例就是 <strong>Bitcoin (比特幣) 區塊鏈</strong>。自從 2009 年比特幣的「創世區塊」誕生以來，過去 17 年來的每一筆交易與附隨資訊，都被永久記錄在分佈於全球數萬個獨立礦工節點組成的分散式帳本中。這世界上沒有任何個人、企業、政府，甚至是比特幣創辦人中本聰本人，有能力去刪除或修改任何一筆已經確認的歷史區塊。</p>
+        <p>在技術底層，這是透過以下嚴謹的數學與物理共識機制來實現的：</p>
+        <ul>
+          <li><strong>密碼學鏈結 (Cryptographic Linking & Hashing)</strong>：每一個新的區塊都包含了前一個區塊的 SHA-256 雙重雜湊值（Parent Hash）。這意味著所有歷史資料都以極高強度的加密演算法串聯在一起，若要修改任何一個歷史區塊，後續所有的區塊雜湊值皆會失效，必須全部重新演算。</li>
+          <li><strong>去中心化多節點共識 (Distributed Proof of Work)</strong>：比特幣由遍佈全球的數萬個獨立伺服器（礦工）進行驗證，任何單一節點若企圖修改本地資料，其帳本將與全球共識帳本不符，隨即會被共識機制永久拋棄。若要強行修改，必須掌握全網超過 51% 的龐大算力（51% Attack），在物理上這需要難以想像的百億美元級別計算資源，是完全不可能達成的。</li>
+        </ul>
         <p>雖然比特幣的原生網路為了交易安全，每一筆交易所能攜帶的資料極其微小（例如 <code>OP_RETURN</code> 腳本標記被限制在 80 位元組），但 SuperArchive 所採用的底層架構（Arweave）是基於完全相同的去中心化共識物理特性，並透過「區塊編織（Blockweave）」技術在數學上進行了優化，專門用於永久儲存大型檔案（如 PDF、圖片、壓縮檔）。檔案一旦寫入，即在全球多節點網路中硬編碼，任何人均無法將其更新、刪除或進行任何審查。</p>
       </div>
     </div>
@@ -236,7 +241,7 @@
           *註：Google Drive 費用係依據最低付費 Google One 100GB 方案（每年 650 NTD）等比例折算之數值。
         </div>
 
-        <p>雖然 Google Drive 有提供 15GB 免費額度，但其服務條款中明文聲明對於免費方案<strong>不承擔任何資料損失的保證責任</strong>，且 Google 系統本身並不具備「禁止刪除」的保護。若帳戶超過 2 年未活動，Google 有權直接清理並刪除您所有的資料。而 SuperArchive 則是用區塊鏈數學共識，為您的檔案提供絕對防刪除、防篡改 the 終極安全屏障。</p>
+        <p>雖然 Google Drive 有提供 15GB 免費額度，但其服務條款中明文聲明對於免費方案<strong>不承擔任何資料損失的保證責任</strong>，且 Google 系統本身並不具備「禁止刪除」的保護。若帳戶超過 2 年未活動，Google 有權直接清理並刪除您所有的資料。而 SuperArchive 則是用區塊鏈數學共識，為您的檔案提供絕對防刪除、防篡改的終極安全屏障。</p>
       </div>
     </div>
 
@@ -296,19 +301,6 @@
     "required": ["file_path"]
   }
 }</pre>
-
-        <br>
-        <p><strong>🎯 如何指引 AI 閱讀 API 文件以獲取 SuperArchive 技能？</strong></p>
-        <p>為使您的 AI 助理（如 <strong>OpenClaw</strong>）能百分之百理解並掌握 SuperArchive 的 API 調用方法，最推薦的做法是將本平台的 <strong>靜態 API 文件 (api.html)</strong> 作為「系統提示詞 (System Prompt)」或「背景上下文 (Context)」直接餵給 AI。</p>
-        <p>您可以直接複製以下提示詞範本並貼入 AI 的系統指令中：</p>
-        <pre style="background: #1e1e2e; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-bottom: 15px; white-space: pre-wrap;">
-【系統指引：你已具備永久檔案封存技能】
-你是一個擁有 SuperArchive 區塊鏈永久存檔能力的 AI 助理。請仔細閱讀並遵循 https://sarchive.saltycat.tw/api.html 中的 API 規範。
-當用戶要求你備份或永久儲存某個本地檔案時，你必須：
-1. 優先調用「superarchive_check_points」工具，使用 Bearer 金鑰查詢當前 S-Points 點數餘額。
-2. 計算待上傳檔案大小，每 16MB 檔案將扣抵 1 點 S-Point（不足 16MB 以 1 點計）。
-3. 比對餘額，若點數不足則停止並引導用戶儲值；若點數充足，則調用「superarchive_permanent_upload」工具進行永久封存。
-4. 封存成功後，向用戶報告並提供 Arweave 交易 ID (tx_id) 及 ViewBlock 區塊鏈審計連結。</pre>
       </div>
     </div>
 
@@ -336,11 +328,11 @@
       <div class="faq-answer">
         <p>無加密上傳非常適合那些您希望 **「永久對全球公開、透明且可被任何人隨時查閱」** 的檔案與數位資產。例如：</p>
         <ul>
-          <li>您的個人榮譽、學術獎狀、畢業證書、結業證明。</li>
+          <li>您的個人榮譽、學術獎狀、畢業證書、結業證明.</li>
           <li>企業的產品認證、專利申請、營業登記、合約公開副本。</li>
           <li>開源軟體專案、學術論文、公開調查報告、歷史新聞紀錄。</li>
         </ul>
-        <p>選擇不加密時，檔案將以原始格式完全公開地存儲在區塊鏈上。任何瀏覽器、去中心化節點或區塊鏈瀏覽器（如 ViewBlock）皆能直接讀取、載入並渲染這些檔案，無須任何密鑰授權，從而實現真正不可磨滅的永久公開存證。</p>
+        <p>選擇不加密時，檔案將以原始格式完全公開地存儲在區塊鏈上。任何瀏覽器、去中心化節點或區塊鏈瀏覽器（如 ViewBlock）皆能直接讀取、載入並渲染這些檔案，無須 any 密鑰授權，從而實現真正不可磨滅的永久公開存證。</p>
       </div>
     </div>
   </main>
