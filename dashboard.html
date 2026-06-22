@@ -558,7 +558,10 @@
             </div>
             <div class="form-group" id="passphrase-group" style="display: none;">
               <label class="form-label" data-i18n="dash.passphrase_placeholder">請輸入加密/解密密碼</label>
-              <input type="password" id="upload-passphrase" class="form-input" placeholder="Passphrase">
+              <div style="position: relative; display: flex; align-items: center; width: 100%;">
+                <input type="password" id="upload-passphrase" class="form-input" placeholder="Passphrase" style="padding-right: 40px; width: 100%;">
+                <button type="button" id="toggle-passphrase-btn" onclick="togglePassphraseVisibility()" style="position: absolute; right: 10px; background: none; border: none; font-size: 1.15rem; cursor: pointer; color: #4b5563; outline: none; padding: 0;">👁️</button>
+              </div>
             </div>
             <button class="btn-action" style="width: 100%;" id="btn-upload-submit" data-i18n="dash.upload_button" onclick="handleFileUpload()">立即上傳</button>
             
@@ -795,7 +798,19 @@
         if (res.ok) {
           showBanner("✅ 成功建立 API 金鑰！金鑰明文只顯示一次，請務必妥善保存。");
           const rawCard = document.getElementById("raw-key-card");
-          rawCard.innerText = `Plain API Key (Only Visible Once!):\n${data.raw_key}`;
+          
+          rawCard.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <div style="font-weight: bold; font-size: 0.9rem; color: #b45309;">Plain API Key (Only Visible Once!):</div>
+              <div style="display: flex; align-items: center; gap: 10px; justify-content: center; width: 100%; flex-wrap: wrap;">
+                <span id="raw-key-value" style="background-color: white; border: 1px solid #fde68a; padding: 6px 12px; border-radius: 6px; font-family: monospace; font-size: 1rem; font-weight: 700; word-break: break-all; text-align: center;">${data.raw_key}</span>
+                <button type="button" id="copy-key-btn" onclick="copyRawKeyToClipboard('${data.raw_key}')" style="background-color: white; border: 1px solid #fde68a; border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600; color: #b45309; transition: background-color 0.15s; outline: none;" onmouseover="this.style.backgroundColor='#fef3c7'" onmouseout="this.style.backgroundColor='white'">
+                  📋 <span id="copy-btn-text">複製 / Copy</span>
+                </button>
+              </div>
+            </div>
+          `;
+          
           rawCard.style.display = "block";
           nameInput.value = "";
           await loadAPIKeysList();
@@ -804,6 +819,32 @@
         }
       } catch (e) {
          showBanner("❌ 網路連線失敗。 / Network connection error.", true);
+      }
+    }
+
+    function copyRawKeyToClipboard(key) {
+      navigator.clipboard.writeText(key).then(() => {
+        const btnText = document.getElementById("copy-btn-text");
+        const originalText = btnText.innerHTML;
+        btnText.innerHTML = "已複製! / Copied!";
+        setTimeout(() => {
+          btnText.innerHTML = originalText;
+        }, 2000);
+      }).catch(err => {
+        console.error("Could not copy text: ", err);
+        alert("複製失敗，請手動複製！ / Copy failed, please copy manually.");
+      });
+    }
+
+    function togglePassphraseVisibility() {
+      const pin = document.getElementById("upload-passphrase");
+      const btn = document.getElementById("toggle-passphrase-btn");
+      if (pin.type === "password") {
+        pin.type = "text";
+        btn.innerHTML = "🙈";
+      } else {
+        pin.type = "password";
+        btn.innerHTML = "👁️";
       }
     }
 
