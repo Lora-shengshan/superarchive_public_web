@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive - 交易與儲值歷史紀錄 / Billing History</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --accent-color: #059669;
+      --error-color: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.1s;
+    }
+    .nav-link:hover { color: var(--primary-color); }
+    
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 20px;
+    }
+    .title-area {
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+    .title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .subtitle {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-top: 5px;
+    }
+    
+    .billing-profile-card {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .profile-item {
+      flex: 1;
+      min-width: 200px;
+    }
+    .profile-label {
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .profile-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+    }
+    
+    .history-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .table-container {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 0;
+      border: none;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 16px;
+      text-align: left;
+    }
+    th {
+      background-color: var(--secondary-bg);
+      font-weight: 700;
+      color: #374151;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    tr:last-child td { border-bottom: none; }
+    
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: auto;
+    }
+    .footer-links { margin-bottom: 1rem; }
+    .footer-links a { color: #4b5563; text-decoration: none; }
+    .footer-links a:hover { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/dashboard.html" class="logo-container">
+        <img src="images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>SuperArchive</span>
+      </a>
+      <div class="header-actions">
+        <a href="/faq_zh.html" class="nav-link" id="nav-faq-link" target="_blank">常見問題</a>
+        <a href="/api.html" class="nav-link" target="_blank">開發者 API</a>
+        <a href="/dashboard.html" class="nav-link" style="color: var(--primary-color);">回儀表板 / Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="title-area">
+      <h1 class="title">🧾 交易與儲值歷史紀錄 / Billing History</h1>
+      <p class="subtitle">Complete audit logs of S-Points top-up invoices and manual balance adjustments</p>
+    </div>
+
+    <!-- Profile Summary Widget -->
+    <section class="billing-profile-card">
+      <div class="profile-item">
+        <div class="profile-label">電子信箱 / Email</div>
+        <div class="profile-value" id="user-email">-</div>
+      </div>
+      <div class="profile-item">
+        <div class="profile-label">S-Points 剩餘點數 / Balance</div>
+        <div class="profile-value" id="user-points" style="color: var(--primary-color);">- 點</div>
+      </div>
+      <div class="profile-item">
+        <div class="profile-label">帳號狀態 / Account Status</div>
+        <div class="profile-value" id="user-status">-</div>
+      </div>
+    </section>
+
+    <!-- Section 1: Top-Up History -->
+    <section class="history-card">
+      <h3 class="card-title">💳 點數儲值歷史紀錄 / Top-Up & Invoice History</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="padding: 12px 16px;">訂單編號 / Order ID</th>
+              <th style="padding: 12px 16px;">金額 / Amount</th>
+              <th style="padding: 12px 16px;">獲得點數 / Points</th>
+              <th style="padding: 12px 16px;">交易狀態 / Status</th>
+              <th style="padding: 12px 16px;">交易時間 / Date</th>
+            </tr>
+          </thead>
+          <tbody id="topup-history-body">
+            <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 25px;">正在載入儲值紀錄... / Loading billing history...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: S-Points Adjustments -->
+    <section class="history-card">
+      <h3 class="card-title">🛠️ 後台手動點數變更明細 / S-Points Adjustments</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th style="padding: 12px 16px;">變更數量 / Adjusted</th>
+              <th style="padding: 12px 16px;">調整前 / Before</th>
+              <th style="padding: 12px 16px;">調整後 / After</th>
+              <th style="padding: 12px 16px;">調整原因 / Administrative Reason</th>
+              <th style="padding: 12px 16px;">變更時間 / Date</th>
+            </tr>
+          </thead>
+          <tbody id="adjustments-history-body">
+            <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 25px;">正在載入變更明細... / Loading adjustments...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">使用與服務條款</a> • 
+      <a href="/privacy.html" target="_blank">隱私權政策</a> • 
+      <a href="/refund.html" target="_blank">退款方式</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = "https://api.sarchive.saltycat.tw/api/v1";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // 1. Fetch user authentication profile
+      try {
+        const profileRes = await fetch(`${API_BASE}/auth/me`, { credentials: "include" });
+        if (!profileRes.ok) {
+          window.location.href = "/login.html";
+          return;
+        }
+        const profile = await profileRes.json();
+        
+        // Fill Profile widget
+        document.getElementById("user-email").innerText = profile.email;
+        document.getElementById("user-points").innerText = `${profile.s_points} 點 / pts`;
+        
+        const statusEl = document.getElementById("user-status");
+        statusEl.innerText = profile.status === "active" ? "正常使用中 (Active)" : "已停用 (Suspended)";
+        statusEl.style.color = profile.status === "active" ? "var(--accent-color)" : "var(--error-color)";
+        
+        // 2. Fetch histories in parallel
+        await Promise.all([
+          loadTopUpHistory(),
+          loadPointsAdjustments()
+        ]);
+      } catch (e) {
+        console.error("Failed to authenticate billing view:", e);
+        window.location.href = "/login.html";
+      }
+    });
+
+    async function loadTopUpHistory() {
+      try {
+        const res = await fetch(`${API_BASE}/payment/newebpay/history`, { credentials: "include" });
+        if (!res.ok) return;
+        const history = await res.json();
+        
+        const tbody = document.getElementById("topup-history-body");
+        tbody.innerHTML = "";
+        
+        if (history.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 25px;">尚無儲值紀錄。 / No transactions.</td></tr>`;
+          return;
+        }
+        
+        history.forEach(tx => {
+          const row = document.createElement("tr");
+          row.style.borderBottom = "1px solid var(--border-color)";
+          
+          let txStatus = "";
+          if (tx.status === "paid") {
+            txStatus = `<span style="color: var(--accent-color); font-weight: bold;">已付款 (Paid)</span>`;
+          } else if (tx.status === "pending") {
+            txStatus = `<span style="color: #6b7280; font-weight: 500;">未付款 (Pending)</span>`;
+          } else {
+            txStatus = `<span style="color: var(--error-color); font-weight: bold;">交易失敗 (Failed)</span>`;
+          }
+          
+          const txDate = tx.created_at ? new Date(tx.created_at).toLocaleString() : "N/A";
+          
+          row.innerHTML = `
+            <td style="padding: 12px 16px; font-family: monospace; font-size: 0.75rem;" title="${tx.id}">${tx.id}</td>
+            <td style="padding: 12px 16px; font-weight: bold;">${tx.amount_twd} NTD</td>
+            <td style="padding: 12px 16px; color: var(--primary-color); font-weight: bold;">+${tx.points_credited}</td>
+            <td style="padding: 12px 16px;">${txStatus}</td>
+            <td style="padding: 12px 16px; font-size: 0.75rem; color: #6b7280;">${txDate}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (e) {
+        console.error("Failed to load top up history:", e);
+      }
+    }
+
+    async function loadPointsAdjustments() {
+      try {
+        const res = await fetch(`${API_BASE}/payment/newebpay/adjustments`, { credentials: "include" });
+        if (!res.ok) return;
+        const adjustments = await res.json();
+        
+        const tbody = document.getElementById("adjustments-history-body");
+        tbody.innerHTML = "";
+        
+        if (adjustments.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 25px;">尚無點數手動變更紀錄。 / No manual adjustments.</td></tr>`;
+          return;
+        }
+        
+        adjustments.forEach(adj => {
+          const row = document.createElement("tr");
+          row.style.borderBottom = "1px solid var(--border-color)";
+          
+          const changeStr = adj.points_adjusted >= 0 
+            ? `<span style="color: var(--accent-color); font-weight: bold;">+${adj.points_adjusted}</span>` 
+            : `<span style="color: var(--error-color); font-weight: bold;">${adj.points_adjusted}</span>`;
+            
+          const adjDate = adj.created_at ? new Date(adj.created_at).toLocaleString() : "N/A";
+          
+          row.innerHTML = `
+            <td style="padding: 12px 16px;">${changeStr}</td>
+            <td style="padding: 12px 16px; color: #6b7280;">${adj.previous_points}</td>
+            <td style="padding: 12px 16px; font-weight: bold; color: var(--primary-color);">${adj.new_points}</td>
+            <td style="padding: 12px 16px; font-weight: 500;" title="${escapeHTML(adj.reason)}">${escapeHTML(adj.reason)}</td>
+            <td style="padding: 12px 16px; font-size: 0.75rem; color: #6b7280;">${adjDate}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (e) {
+        console.error("Failed to load points adjustments:", e);
+      }
+    }
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+  </script>
+</body>
+</html>

@@ -492,6 +492,10 @@
               💳 購買點數 / Top-Up S-Points
             </a>
             
+            <a href="/billing.html" class="dropdown-item" target="_blank">
+              🧾 交易與儲值紀錄 / Billing History
+            </a>
+            
             <div class="dropdown-divider"></div>
             
             <!-- Language Selector under dropdown -->
@@ -539,28 +543,6 @@
 
         <div id="keys-list-container">
           <!-- Populated by JS dynamically -->
-        </div>
-      </section>
-
-      <!-- 4. Payment & Top-Up History -->
-      <section class="dashboard-card" style="display: flex; flex-direction: column;">
-        <h2 class="card-title">💳 <span>儲值點數歷史紀錄 / Top-Up History</span></h2>
-        
-        <div style="max-height: 250px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
-          <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 0; border: none;">
-            <thead style="position: sticky; top: 0; background-color: var(--secondary-bg); z-index: 10; border-bottom: 1px solid var(--border-color); color: #4b5563;">
-              <tr style="text-align: left;">
-                <th style="padding: 10px 12px; font-weight: 600;">訂單 / Order ID</th>
-                <th style="padding: 10px 12px; font-weight: 600;">金額 / Amount</th>
-                <th style="padding: 10px 12px; font-weight: 600;">獲得點數 / Points</th>
-                <th style="padding: 10px 12px; font-weight: 600;">交易狀態 / Status</th>
-                <th style="padding: 10px 12px; font-weight: 600;">交易時間 / Date</th>
-              </tr>
-            </thead>
-            <tbody id="payment-history-body">
-              <tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 20px;">尚無儲值紀錄。 / No transactions.</td></tr>
-            </tbody>
-          </table>
         </div>
       </section>
 
@@ -703,9 +685,6 @@
         
         // Load on-chain archived files list
         await loadArchiveFilesList();
-
-        // Load billing/top-up history list
-        await loadPaymentHistory();
 
         // Check query parameters for payment notifications
         const urlParams = new URLSearchParams(window.location.search);
@@ -1109,49 +1088,6 @@
       if (filesOffset + filesLimit < allFilesTotal) {
         filesOffset += filesLimit;
         loadArchiveFilesList();
-      }
-    }
-
-    async function loadPaymentHistory() {
-      try {
-        const res = await fetch(`${API_BASE}/payment/newebpay/history`, { credentials: "include" });
-        if (!res.ok) return;
-        const history = await res.json();
-        
-        const tbody = document.getElementById("payment-history-body");
-        tbody.innerHTML = "";
-        
-        if (history.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #9ca3af; padding: 20px;">尚無儲值紀錄。 / No transactions.</td></tr>`;
-          return;
-        }
-        
-        history.forEach(tx => {
-          const row = document.createElement("tr");
-          row.style.borderBottom = "1px solid var(--border-color)";
-          
-          let txStatus = "";
-          if (tx.status === "paid") {
-            txStatus = `<span style="color: var(--accent-color); font-weight: bold;">已付款 (Paid)</span>`;
-          } else if (tx.status === "pending") {
-            txStatus = `<span style="color: #6b7280; font-weight: 500;">未付款 (Pending)</span>`;
-          } else {
-            txStatus = `<span style="color: var(--error-color); font-weight: bold;">交易失敗 (Failed)</span>`;
-          }
-          
-          const txDate = tx.created_at ? new Date(tx.created_at).toLocaleString() : "N/A";
-          
-          row.innerHTML = `
-            <td style="padding: 10px 12px; font-family: monospace; font-size: 0.75rem;" title="${tx.id}">${tx.id}</td>
-            <td style="padding: 10px 12px; font-weight: bold;">${tx.amount_twd} NTD</td>
-            <td style="padding: 10px 12px; color: var(--primary-color); font-weight: bold;">+${tx.points_credited}</td>
-            <td style="padding: 10px 12px;">${txStatus}</td>
-            <td style="padding: 10px 12px; font-size: 0.75rem; color: #6b7280;">${txDate}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      } catch (e) {
-        console.error("Failed to load payment history:", e);
       }
     }
 
