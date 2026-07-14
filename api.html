@@ -173,6 +173,42 @@
       font-size: 0.7rem;
       font-weight: bold;
     }
+    .public-badge {
+      background-color: #ecfdf5;
+      color: #059669;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid #a7f3d0;
+    }
+    .reserved-badge {
+      background-color: #fffbeb;
+      color: #b45309;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid #fde68a;
+    }
+    .section-group-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #111827;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .section-group-title:first-of-type { margin-top: 0; }
+    .note-box {
+      background-color: #f9fafb;
+      border-left: 3px solid var(--primary-color);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #4b5563;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 1.5rem;
+    }
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -204,7 +240,9 @@
 
   <main>
     <h1 class="article-title">Developer API Reference</h1>
-    <p class="article-subtitle">Official developer guidelines and schemas for interacting with the SuperArchive on-chain vault.</p>
+    <p class="article-subtitle">SuperArchive is the permanent knowledge layer for AI: archive files and URLs permanently on Arweave, and let anyone independently verify them forever. Official developer guidelines and schemas below.</p>
+
+    <div class="section-group-title">📥 Archiving</div>
 
     <!-- 1. SuperArchive Upload -->
     <section class="section">
@@ -212,7 +250,7 @@
         <span class="method-badge method-post">POST</span>
         <span class="endpoint-path">/api/v1/SuperArchive</span>
       </div>
-      <p class="endpoint-desc">Upload and archive a file permanently onto the Arweave blockchain. Supports three distinct encryption schemes (A, B, and C) depending on request parameters and headers.</p>
+      <p class="endpoint-desc">Upload and archive a file permanently onto the Arweave blockchain. Supports three distinct encryption schemes (A, B, and C) depending on request parameters and headers. Every archive returns permanent proof information (content hash, transaction ID, timestamp) that can be independently verified forever via <code>/api/v1/verify/{archive_id}</code>.</p>
       
       <div class="table-title">HTTP Headers</div>
       <table>
@@ -267,7 +305,37 @@
             <td><code>custom_tags_json</code></td>
             <td>String</td>
             <td><span class="optional-badge">Optional</span></td>
-            <td>S-points debit divisor. Retains on-chain metadata tags as stringified JSON dict.</td>
+            <td>Custom on-chain metadata tags as a stringified JSON dict, e.g. <code>{"Project": "Phoenix"}</code>.</td>
+          </tr>
+          <tr>
+            <td><code>title</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: human-readable title. Defaults to the original filename if omitted.</td>
+          </tr>
+          <tr>
+            <td><code>description</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: short description/summary of the content.</td>
+          </tr>
+          <tr>
+            <td><code>source_url</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: original source URL the content was captured from, if any.</td>
+          </tr>
+          <tr>
+            <td><code>language</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: ISO 639-1 language code, e.g. <code>en</code>.</td>
+          </tr>
+          <tr>
+            <td><code>tags_json</code></td>
+            <td>String</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: JSON array of topical tags, e.g. <code>["research","AI"]</code>.</td>
           </tr>
         </tbody>
       </table>
@@ -284,12 +352,151 @@ files = {
 }
 data = {
     "enable_server_encryption": "true",  # Trigger Server-Managed Option C
-    "custom_tags_json": '{"Project": "Phoenix", "Confidential": "true"}'
+    "custom_tags_json": '{"Project": "Phoenix", "Confidential": "true"}',
+    "title": "Q3 Vendor Contract",
+    "tags_json": '["legal", "contract"]'
 }
 
 response = requests.post(url, headers=headers, files=files, data=data)
 print(response.json())</pre>
+
+      <div class="table-title">Example Response</div>
+      <pre>{
+  "success": true,
+  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+  "file_size": 123456,
+  "content_type": "application/pdf",
+  "created_at": "2026-07-14T10:00:00Z",
+  "status": "permanent",
+  "metadata": {
+    "title": "Q3 Vendor Contract",
+    "description": null,
+    "source_url": null,
+    "language": null,
+    "content_type": "application/pdf",
+    "tags": ["legal", "contract"],
+    "created_at": "2026-07-14T10:00:00Z"
+  },
+  "tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "filename": "contract.pdf",
+  "filesize": 123456,
+  "points_deducted": 0,
+  "upload_method": "turbo"
+}</pre>
     </section>
+
+    <!-- 1b. Archive URL -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-post">POST</span>
+        <span class="endpoint-path">/api/v1/archive/url</span>
+      </div>
+      <p class="endpoint-desc">Archives a live webpage permanently: downloads an HTML snapshot, extracts structured metadata (title, description, language), computes a SHA-256 fingerprint, and uploads it to Arweave — turning any URL into a permanent, verifiable knowledge asset. Ideal for research citations, web evidence, and RAG/AI knowledge sources.</p>
+
+      <div class="table-title">HTTP Headers</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Header Name</th>
+            <th>Type</th>
+            <th>Necessity</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Authorization</code></td>
+            <td>String</td>
+            <td><span class="required-badge">Required</span></td>
+            <td>Credentials prefix. Must be formatted as: <code>Bearer sa_live_YOUR_API_KEY</code></td>
+          </tr>
+          <tr>
+            <td><code>Content-Type</code></td>
+            <td>String</td>
+            <td><span class="required-badge">Required</span></td>
+            <td>Must be <code>application/json</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="table-title">JSON Body Parameters</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Param Name</th>
+            <th>Type</th>
+            <th>Necessity</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>url</code></td>
+            <td>String</td>
+            <td><span class="required-badge">Required</span></td>
+            <td>The absolute <code>http(s)://</code> URL of the webpage to snapshot and archive.</td>
+          </tr>
+          <tr>
+            <td><code>tags</code></td>
+            <td>Array&lt;String&gt;</td>
+            <td><span class="optional-badge">Optional</span></td>
+            <td>AI-ready metadata: topical tags, e.g. <code>["research", "AI"]</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        For security, URLs that resolve to private, loopback, or link-local network addresses are rejected (SSRF protection), and redirects are re-validated at every hop. The maximum snapshot size is 20MB.
+      </div>
+
+      <div class="table-title">Code Example (Python)</div>
+      <pre>import requests
+
+url = "https://api.sarchive.saltycat.tw/api/v1/archive/url"
+headers = {
+    "Authorization": "Bearer sa_live_YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+payload = {
+    "url": "https://example.com/article",
+    "tags": ["research", "AI"]
+}
+
+response = requests.post(url, headers=headers, json=payload)
+print(response.json())</pre>
+
+      <div class="table-title">Example Response</div>
+      <pre>{
+  "url": "https://example.com/article",
+  "archive_id": "5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+  "arweave_tx_id": "5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+  "sha256": "ff67a9d764d6a2367a187734e697f6a53217db9a21c101d410a113ca871a299d",
+  "title": "Example Article Title",
+  "success": true,
+  "resolved_url": "https://example.com/article",
+  "arweave_url": "https://arweave.net/5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+  "file_size": 45210,
+  "content_type": "text/html",
+  "created_at": "2026-07-14T10:00:00Z",
+  "status": "permanent",
+  "points_deducted": 0,
+  "upload_method": "turbo",
+  "metadata": {
+    "title": "Example Article Title",
+    "description": "A short summary extracted from the page's meta description.",
+    "source_url": "https://example.com/article",
+    "language": "en",
+    "content_type": "text/html",
+    "tags": ["research", "AI"],
+    "created_at": "2026-07-14T10:00:00Z"
+  }
+}</pre>
+    </section>
+
+    <div class="section-group-title">🔍 Retrieval &amp; Verification</div>
 
     <!-- 2. SuperArchive Download -->
     <section class="section">
@@ -326,7 +533,106 @@ curl -X GET "https://api.sarchive.saltycat.tw/api/v1/SuperArchive/download/TX_ID
   --output "decrypted_file.pdf"</pre>
     </section>
 
-    <!-- 3. Points Balance -->
+    <!-- 3. Verify -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/verify/{archive_id}</span>
+        <span class="public-badge">Public · No Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Allows <strong>anyone</strong> — not just the uploader — to independently verify that archived content is authentic and unchanged. This endpoint re-fetches the content directly from the Arweave network and recomputes its SHA-256 hash on every call; it never simply trusts the database. <code>verified: true</code> is only ever returned when the database record exists, the on-chain data is retrievable, the recomputed hash matches, and an archive timestamp exists.</p>
+
+      <div class="table-title">Code Example (cURL)</div>
+      <pre>curl -X GET "https://api.sarchive.saltycat.tw/api/v1/verify/TX_ID_HERE"</pre>
+
+      <div class="table-title">Example Response</div>
+      <pre>{
+  "verified": true,
+  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+  "sha256_match": true,
+  "archive_timestamp": "2026-07-14T10:00:00Z",
+  "status": "permanent",
+  "filename": "contract.pdf",
+  "content_type": "application/pdf",
+  "file_size": 123456,
+  "metadata": { "title": "Q3 Vendor Contract", "tags": ["legal", "contract"], "...": "..." },
+  "checks": {
+    "record_exists": true,
+    "arweave_data_retrievable": true,
+    "content_hash_match": true,
+    "timestamp_exists": true
+  }
+}</pre>
+      <div class="note-box">
+        <code>status</code> may also be <code>pending</code> (submitted but not yet mined/propagated — typically resolves within ~10-20 minutes) or <code>mismatch</code> (the on-chain content no longer matches the recorded hash).
+      </div>
+    </section>
+
+    <!-- 3b. Archive Metadata -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/archive/{archive_id}</span>
+        <span class="public-badge">Public · No Auth Required</span>
+      </div>
+      <p class="endpoint-desc">Returns the permanent proof information together with the structured, AI-ready metadata recorded for an archive (title, description, source URL, language, tags). This is metadata-only — no summarization, embeddings, or LLM processing is performed.</p>
+
+      <div class="table-title">Code Example (cURL)</div>
+      <pre>curl -X GET "https://api.sarchive.saltycat.tw/api/v1/archive/TX_ID_HERE"</pre>
+
+      <div class="table-title">Example Response</div>
+      <pre>{
+  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+  "file_size": 123456,
+  "content_type": "application/pdf",
+  "created_at": "2026-07-14T10:00:00Z",
+  "status": "permanent",
+  "metadata": {
+    "title": "Q3 Vendor Contract",
+    "description": null,
+    "source_url": null,
+    "language": null,
+    "content_type": "application/pdf",
+    "tags": ["legal", "contract"],
+    "created_at": "2026-07-14T10:00:00Z"
+  }
+}</pre>
+    </section>
+
+    <!-- 3c. Reserved AI Endpoints -->
+    <section class="section">
+      <div class="endpoint-header">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/archive/{archive_id}/markdown</span>
+        <span class="reserved-badge">Reserved · Coming Soon</span>
+      </div>
+      <div class="endpoint-header" style="margin-top: -10px;">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/archive/{archive_id}/summary</span>
+        <span class="reserved-badge">Reserved · Coming Soon</span>
+      </div>
+      <div class="endpoint-header" style="margin-top: -10px;">
+        <span class="method-badge method-get">GET</span>
+        <span class="endpoint-path">/api/v1/archive/{archive_id}/entities</span>
+        <span class="reserved-badge">Reserved · Coming Soon</span>
+      </div>
+      <p class="endpoint-desc">These paths are reserved for upcoming AI-derived views of archived content — clean Markdown conversion, AI-generated summaries, and named-entity extraction — so the API surface is stable for integrators building ahead of time. They currently return <code>501 Not Implemented</code> (or <code>404</code> if the <code>archive_id</code> itself doesn't exist).</p>
+
+      <div class="table-title">Example Response (501)</div>
+      <pre>{
+  "detail": "AI summarization is not implemented yet. This endpoint is reserved for future AI-ready content processing."
+}</pre>
+    </section>
+
+    <div class="section-group-title">🔑 Account &amp; Key Management</div>
+
+    <!-- 4. Points Balance -->
     <section class="section">
       <div class="endpoint-header">
         <span class="method-badge method-get">GET</span>
@@ -344,20 +650,20 @@ response = requests.get(url, headers=headers)
 print(response.json()) # Output: {"email": "user@gmail.com", "remaining_s_points": 405, "status": "active"}</pre>
     </section>
 
-    <!-- 4. List Uploads Registry -->
+    <!-- 5. List Uploads Registry -->
     <section class="section">
       <div class="endpoint-header">
         <span class="method-badge method-get">GET</span>
         <span class="endpoint-path">/api/v1/developer/files</span>
       </div>
-      <p class="endpoint-desc">Query a comprehensive registry list of all permanent files uploaded by this user, including original sizes, metadata tags, encryption status, and transaction timestamps.</p>
+      <p class="endpoint-desc">Query a comprehensive registry list of all permanent files uploaded by this user, including <code>archive_id</code>, <code>sha256</code>, original sizes, metadata tags, encryption status, and transaction timestamps.</p>
 
       <div class="table-title">Code Example (cURL)</div>
       <pre>curl -X GET "https://api.sarchive.saltycat.tw/api/v1/developer/files" \
   -H "Authorization: Bearer sa_live_YOUR_API_KEY"</pre>
     </section>
 
-    <!-- 5. List Keys Spending -->
+    <!-- 6. List Keys Spending -->
     <section class="section">
       <div class="endpoint-header">
         <span class="method-badge method-get">GET</span>
@@ -375,7 +681,7 @@ response = requests.get(url, headers=headers)
 print(response.json())</pre>
     </section>
 
-    <!-- 6. Key Retrieval -->
+    <!-- 7. Key Retrieval -->
     <section class="section">
       <div class="endpoint-header">
         <span class="method-badge method-get">GET</span>
