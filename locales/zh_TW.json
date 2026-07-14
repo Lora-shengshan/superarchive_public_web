@@ -7,8 +7,8 @@
     "api_docs": "開發者 API"
   },
   "landing": {
-    "title": "SuperArchive 永久檔案儲存平台",
-    "subtitle": "安全、高效、永久，您的資料將儲存在區塊鏈，永久保存不遺失。",
+    "title": "將任何內容轉化為可信任的知識",
+    "subtitle": "為 AI、研究與法規遵循，永久典藏、驗證並取用任何數位內容。",
     "login_button": "登入 / 註冊",
     "project_goal_title": "平台目標與願景",
     "project_goal_desc": "SuperArchive 是一個為個人與企業打造的 SaaS 平台，提供便利的 Web 介面與高效率的 API，讓您可以一鍵將文件、合約、數位憑證與各類檔案永久保存至區塊鏈上。我們採用單一智慧錢包代付機制，搭配彈性的 S-Points 點數系統，讓您無須理解複雜的區塊鏈 gas 費或購買加密貨幣，即可輕鬆享有極致安全的去中心化永久儲存服務。",

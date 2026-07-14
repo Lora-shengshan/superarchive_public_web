@@ -7,8 +7,8 @@
     "api_docs": "API Docs"
   },
   "landing": {
-    "title": "SuperArchive Permanent Storage Platform",
-    "subtitle": "Secure, efficient, and permanent. Your data is stored on the blockchain, preserved forever.",
+    "title": "Turn Any Content into Trusted Knowledge",
+    "subtitle": "Permanently archive, verify, and retrieve any digital content for AI, research, and compliance.",
     "login_button": "Log In / Sign Up",
     "project_goal_title": "Platform Goals & Vision",
     "project_goal_desc": "SuperArchive is a SaaS platform designed for individuals and enterprises, providing a convenient Web interface and highly efficient API to store files, contracts, digital credentials, and datasets permanently on the blockchain. Powered by our smart single-wallet mechanism and flexible S-Points payment system, users can easily access secure, decentralized permanent storage without holding cryptocurrencies or managing complex gas fees.",
