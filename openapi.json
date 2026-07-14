@@ -1,0 +1,1443 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SuperArchive Developer API",
+    "description": "\nOfficial Developer API for permanent decentralized file uploads powered by Arweave.\n\n### \ud83d\udd11 Authentication\nInclude your raw API Key in the `Authorization` header on all requests:\n`Authorization: Bearer sa_live_YOUR_API_KEY`\n\n---\n\n### \ud83d\udd12 File Encryption Strategies\nSuperArchive standardizes three distinct encryption options to balance absolute privacy against peak administrative convenience:\n\n1. **Option A: Pre-Encrypted Uploads (Client-Side Encryption)**\n   - *How it works*: You encrypt the file locally on your machine (using standard OpenSSL or local AES-GCM libraries) prior to upload, and send it as a standard file. To SuperArchive, this looks like any other regular unencrypted binary file upload.\n   - *Pros*: Absolute Zero-Knowledge. Neither our server nor Arweave ever see the plain contents, salt, or keys.\n   - *Cons*: You must implement the encryption algorithm locally, manage nonces/IVs, and handle your own keys. **Warning: If you lose your local key, the file is permanently unrecoverable.**\n\n2. **Option B: Zero-Knowledge Server-Side Encryption (`X-Encryption-Key` Header)**\n   - *How it works*: You upload a plain file and supply a custom passphrase in the HTTP `X-Encryption-Key` header. Our server performs AES-256-GCM encryption before uploading to Arweave, and immediately discards the passphrase (we never store it in Firestore).\n   - *Pros*: On-chain ciphertext privacy without having to write cryptographic logic locally.\n   - *Cons*: Decryption requires providing the same `X-Encryption-Key` header during download. **Warning: If you lose your passphrase, the file is permanently lost.**\n\n3. **Option C: Automated Server-Managed Encryption (`enable_server_encryption`)**\n   - *How it works*: You upload a plain file with the form parameter `enable_server_encryption=true`. The server automatically generates a random 256-bit AES key/salt, encrypts the file, and securely indexes the key/salt inside our Firestore database.\n   - *Pros*: Unmatched convenience. Downloads via our standard API automatically decrypt your file on-the-fly without requiring any header. You can query your key/salt anytime via the `/files/{tx_id}/key` endpoint.\n   - *Cons*: Not zero-knowledge to SuperArchive because keys are securely stored in our Firestore (though completely encrypted and zero-knowledge to Arweave L1 and public onlookers).\n\n---\n\n### \ud83d\udce4 File Upload Example (cURL)\n```bash\ncurl -X POST \"https://api.sarchive.saltycat.tw/api/v1/SuperArchive\" \\\n  -H \"Authorization: Bearer sa_live_YOUR_API_KEY\" \\\n  -F \"file=@/path/to/your/file.txt\"\n```\n\n### \ud83d\udce4 Encrypted Upload with Metadata Tags (Python)\n```python\nimport requests\n\nurl = \"https://api.sarchive.saltycat.tw/api/v1/SuperArchive\"\nheaders = {\n    \"Authorization\": \"Bearer sa_live_YOUR_API_KEY\",\n    \"X-Encryption-Key\": \"your_secure_passphrase\"  # Optional zero-knowledge encryption key\n}\nfiles = {\n    \"file\": (\"document.pdf\", open(\"document.pdf\", \"rb\"), \"application/pdf\")\n}\ndata = {\n    \"custom_tags_json\": '{\"Project\": \"Alpha\", \"Category\": \"Legal\"}'  # Optional custom tags\n}\n\nresponse = requests.post(url, headers=headers, files=files, data=data)\nprint(response.json())\n```\n",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/SuperArchive": {
+      "post": {
+        "tags": [
+          "SuperArchive & Retrieval Engine"
+        ],
+        "summary": "Upload File",
+        "description": "Core Upload Gateway. Performs split-routing based on file size and daily free quotas.\nExceeding files cost S-points computed atomically via Firestore transactions (1 point per 16MB).",
+        "operationId": "upload_file_api_v1_SuperArchive_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_file_api_v1_SuperArchive_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "archive_id": {
+                      "type": "string",
+                      "description": "Permanent archive identifier (identical to the Arweave transaction ID)"
+                    },
+                    "arweave_tx_id": {
+                      "type": "string"
+                    },
+                    "arweave_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "description": "SHA-256 hex digest of the archived (post-encryption, if applicable) bytes"
+                    },
+                    "file_size": {
+                      "type": "integer"
+                    },
+                    "content_type": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "permanent"
+                      ]
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "source_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "language": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "content_type": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "tx_id": {
+                      "type": "string",
+                      "description": "Legacy alias of arweave_tx_id, kept for backward compatibility"
+                    },
+                    "filename": {
+                      "type": "string"
+                    },
+                    "filesize": {
+                      "type": "integer",
+                      "description": "Legacy alias of file_size"
+                    },
+                    "points_deducted": {
+                      "type": "integer"
+                    },
+                    "upload_method": {
+                      "type": "string",
+                      "enum": [
+                        "turbo",
+                        "l1"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "archive_id",
+                    "arweave_tx_id",
+                    "sha256",
+                    "status"
+                  ]
+                },
+                "example": {
+                  "success": true,
+                  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+                  "file_size": 123456,
+                  "content_type": "application/pdf",
+                  "created_at": "2026-07-14T10:00:00Z",
+                  "status": "permanent",
+                  "metadata": {
+                    "title": "Q3 Vendor Contract",
+                    "description": null,
+                    "source_url": null,
+                    "language": null,
+                    "content_type": "application/pdf",
+                    "tags": [
+                      "legal",
+                      "contract"
+                    ],
+                    "created_at": "2026-07-14T10:00:00Z"
+                  },
+                  "tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "filename": "contract.pdf",
+                  "filesize": 123456,
+                  "points_deducted": 0,
+                  "upload_method": "turbo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/SuperArchive/download/{tx_id}": {
+      "get": {
+        "tags": [
+          "SuperArchive & Retrieval Engine",
+          "Retrieval Engine"
+        ],
+        "summary": "Download File",
+        "description": "Streams file bytes directly from Arweave gateways. \nSupports decrypting files on-the-fly if 'X-Encryption-Key' header is supplied.\nAlso supports automated server-managed decryption if 'enable_server_encryption' was utilized on upload.",
+        "operationId": "download_file_api_v1_SuperArchive_download__tx_id__get",
+        "parameters": [
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Streams the raw (or decrypted) file bytes directly.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/SuperArchive/files": {
+      "get": {
+        "tags": [
+          "SuperArchive & Retrieval Engine",
+          "SuperArchive & Retrieval Engine"
+        ],
+        "summary": "List User Files",
+        "description": "Lists all files uploaded by the authenticated user, sorted by created_at descending.\nSupports pagination via 'limit' and 'offset' query parameters.",
+        "operationId": "list_user_files_api_v1_SuperArchive_files_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/developer/points": {
+      "get": {
+        "tags": [
+          "Developer APIs"
+        ],
+        "summary": "Get Developer Points",
+        "description": "Retrieves the remaining S-Points balance from the active developer account ledger.",
+        "operationId": "get_developer_points_api_v1_developer_points_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SPointsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/developer/files": {
+      "get": {
+        "tags": [
+          "Developer APIs"
+        ],
+        "summary": "List Developer Files",
+        "description": "Returns a comprehensive list of all decentralized permanent files uploaded by this developer \nincluding complete on-chain metadata, sizes, encryption status, and tags.\nEliminates any need for developers to maintain local database indexes of blockchain transaction IDs.",
+        "operationId": "list_developer_files_api_v1_developer_files_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FileUploadRecord"
+                  },
+                  "type": "array",
+                  "title": "Response List Developer Files Api V1 Developer Files Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/developer/keys": {
+      "get": {
+        "tags": [
+          "Developer APIs"
+        ],
+        "summary": "List Developer Keys With Spending",
+        "description": "Lists all non-deleted API keys belonging to the developer along with active states, \ntelemetry, and the cumulative S-Point spending attributed to each specific key.",
+        "operationId": "list_developer_keys_with_spending_api_v1_developer_keys_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/APIKeySpendingRecord"
+                  },
+                  "type": "array",
+                  "title": "Response List Developer Keys With Spending Api V1 Developer Keys Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/developer/files/{tx_id}/key": {
+      "get": {
+        "tags": [
+          "Developer APIs"
+        ],
+        "summary": "Get File Decryption Key",
+        "description": "Retrieves the server-managed AES key and salt for a specific transaction ID.\nEnforces that only the authorized upload owner can fetch their file's encryption keys.",
+        "operationId": "get_file_decryption_key_api_v1_developer_files__tx_id__key_get",
+        "parameters": [
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyRetrievalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/verify/{archive_id}": {
+      "get": {
+        "tags": [
+          "Public Verification"
+        ],
+        "summary": "Verify Archive",
+        "description": "Public, no-authentication endpoint that allows anyone to independently verify\nthat content archived via SuperArchive is authentic, unchanged, and permanently\nretrievable from the Arweave blockchain.\n\nPerforms four checks, all of which must pass for `verified` to be `true`:\n  1. A database record for this archive_id exists.\n  2. The corresponding Arweave transaction data is retrievable from the network.\n  3. The SHA-256 hash of the retrieved on-chain bytes matches the hash recorded\n     at archive time (content integrity / tamper-evidence).\n  4. An archive timestamp exists for the record.",
+        "operationId": "verify_archive_api_v1_verify__archive_id__get",
+        "parameters": [
+          {
+            "name": "archive_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archive Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "archive_id": {
+                      "type": "string"
+                    },
+                    "arweave_tx_id": {
+                      "type": "string"
+                    },
+                    "arweave_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "sha256_match": {
+                      "type": "boolean"
+                    },
+                    "archive_timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "permanent",
+                        "pending",
+                        "mismatch",
+                        "unverified"
+                      ]
+                    },
+                    "filename": {
+                      "type": "string"
+                    },
+                    "content_type": {
+                      "type": "string"
+                    },
+                    "file_size": {
+                      "type": "integer"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "source_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "language": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "content_type": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "checks": {
+                      "type": "object",
+                      "properties": {
+                        "record_exists": {
+                          "type": "boolean"
+                        },
+                        "arweave_data_retrievable": {
+                          "type": "boolean"
+                        },
+                        "content_hash_match": {
+                          "type": "boolean"
+                        },
+                        "timestamp_exists": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "verified",
+                    "archive_id",
+                    "arweave_tx_id",
+                    "sha256_match",
+                    "status"
+                  ]
+                },
+                "example": {
+                  "verified": true,
+                  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+                  "sha256_match": true,
+                  "archive_timestamp": "2026-07-14T10:00:00Z",
+                  "status": "permanent",
+                  "filename": "contract.pdf",
+                  "content_type": "application/pdf",
+                  "file_size": 123456,
+                  "metadata": {
+                    "title": "Q3 Vendor Contract",
+                    "description": null,
+                    "source_url": null,
+                    "language": null,
+                    "content_type": "application/pdf",
+                    "tags": [
+                      "legal",
+                      "contract"
+                    ],
+                    "created_at": "2026-07-14T10:00:00Z"
+                  },
+                  "checks": {
+                    "record_exists": true,
+                    "arweave_data_retrievable": true,
+                    "content_hash_match": true,
+                    "timestamp_exists": true
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/archive/url": {
+      "post": {
+        "tags": [
+          "Archive & AI-Ready Metadata"
+        ],
+        "summary": "Archive Url",
+        "description": "Archives a live webpage permanently: downloads an HTML snapshot, extracts\nstructured AI-ready metadata (title/description/language), computes a\nSHA-256 content fingerprint, and uploads the snapshot to Arweave \u2014 turning\na URL into a permanently verifiable knowledge asset.",
+        "operationId": "archive_url_api_v1_archive_url_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/URLArchiveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "The originally requested URL"
+                    },
+                    "archive_id": {
+                      "type": "string"
+                    },
+                    "arweave_tx_id": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "resolved_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Final URL after following any redirects"
+                    },
+                    "arweave_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "file_size": {
+                      "type": "integer"
+                    },
+                    "content_type": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "permanent"
+                      ]
+                    },
+                    "points_deducted": {
+                      "type": "integer"
+                    },
+                    "upload_method": {
+                      "type": "string",
+                      "enum": [
+                        "turbo",
+                        "l1"
+                      ]
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "source_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "language": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "content_type": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "archive_id",
+                    "arweave_tx_id",
+                    "sha256",
+                    "success"
+                  ]
+                },
+                "example": {
+                  "url": "https://example.com/article",
+                  "archive_id": "5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+                  "arweave_tx_id": "5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+                  "sha256": "ff67a9d764d6a2367a187734e697f6a53217db9a21c101d410a113ca871a299d",
+                  "title": "Example Article Title",
+                  "success": true,
+                  "resolved_url": "https://example.com/article",
+                  "arweave_url": "https://arweave.net/5QVqnCuXKr5wG-E7AsCDiyKuHuZ3EN_cKK9sXkscHho",
+                  "file_size": 45210,
+                  "content_type": "text/html",
+                  "created_at": "2026-07-14T10:00:00Z",
+                  "status": "permanent",
+                  "points_deducted": 0,
+                  "upload_method": "turbo",
+                  "metadata": {
+                    "title": "Example Article Title",
+                    "description": "A short summary extracted from the page's meta description.",
+                    "source_url": "https://example.com/article",
+                    "language": "en",
+                    "content_type": "text/html",
+                    "tags": [
+                      "research",
+                      "AI"
+                    ],
+                    "created_at": "2026-07-14T10:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/archive/{archive_id}": {
+      "get": {
+        "tags": [
+          "Archive & AI-Ready Metadata"
+        ],
+        "summary": "Get Archive Metadata",
+        "description": "Public, no-authentication endpoint that returns the permanent proof information\ntogether with the structured AI-ready metadata recorded for an archive.\n\nThis is metadata-only: no summarization, embedding, or LLM processing is performed.\nSee `/archive/{archive_id}/markdown`, `/summary`, and `/entities` for planned\n(not-yet-implemented) AI-derived views of the same content.",
+        "operationId": "get_archive_metadata_api_v1_archive__archive_id__get",
+        "parameters": [
+          {
+            "name": "archive_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archive Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "archive_id": {
+                      "type": "string"
+                    },
+                    "arweave_tx_id": {
+                      "type": "string"
+                    },
+                    "arweave_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "file_size": {
+                      "type": "integer"
+                    },
+                    "content_type": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "permanent"
+                      ]
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "description": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "source_url": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "language": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "content_type": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "archive_id",
+                    "arweave_tx_id",
+                    "status"
+                  ]
+                },
+                "example": {
+                  "archive_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_tx_id": "PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "arweave_url": "https://arweave.net/PRG-nUoKkh-tumHe2pyJSTnrfaAuiWHsanZd7XUDOH4",
+                  "sha256": "5ef8433ee79975c72679dd441eb042f114ad4e6664f1efd8ebfb510a6b4de74c",
+                  "file_size": 123456,
+                  "content_type": "application/pdf",
+                  "created_at": "2026-07-14T10:00:00Z",
+                  "status": "permanent",
+                  "metadata": {
+                    "title": "Q3 Vendor Contract",
+                    "description": null,
+                    "source_url": null,
+                    "language": null,
+                    "content_type": "application/pdf",
+                    "tags": [
+                      "legal",
+                      "contract"
+                    ],
+                    "created_at": "2026-07-14T10:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/archive/{archive_id}/markdown": {
+      "get": {
+        "tags": [
+          "Archive & AI-Ready Metadata"
+        ],
+        "summary": "Get Archive Markdown",
+        "description": "Reserved for future use: will return a Markdown-converted rendition of the\narchived content (e.g. HTML/PDF -> clean Markdown) for LLM/RAG consumption.\nNot implemented yet.",
+        "operationId": "get_archive_markdown_api_v1_archive__archive_id__markdown_get",
+        "parameters": [
+          {
+            "name": "archive_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archive Id"
+            }
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "Not Implemented \u2014 reserved for future AI-derived content processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "Markdown conversion is not implemented yet. This endpoint is reserved for future AI-ready content processing."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The referenced archive_id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "No archive found for the provided archive_id."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/archive/{archive_id}/summary": {
+      "get": {
+        "tags": [
+          "Archive & AI-Ready Metadata"
+        ],
+        "summary": "Get Archive Summary",
+        "description": "Reserved for future use: will return an AI-generated summary of the archived\ncontent. Not implemented yet.",
+        "operationId": "get_archive_summary_api_v1_archive__archive_id__summary_get",
+        "parameters": [
+          {
+            "name": "archive_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archive Id"
+            }
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "Not Implemented \u2014 reserved for future AI-derived content processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "AI summarization is not implemented yet. This endpoint is reserved for future AI-ready content processing."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The referenced archive_id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "No archive found for the provided archive_id."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/archive/{archive_id}/entities": {
+      "get": {
+        "tags": [
+          "Archive & AI-Ready Metadata"
+        ],
+        "summary": "Get Archive Entities",
+        "description": "Reserved for future use: will return AI-extracted named entities (people,\norganizations, locations, etc.) from the archived content. Not implemented yet.",
+        "operationId": "get_archive_entities_api_v1_archive__archive_id__entities_get",
+        "parameters": [
+          {
+            "name": "archive_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archive Id"
+            }
+          }
+        ],
+        "responses": {
+          "501": {
+            "description": "Not Implemented \u2014 reserved for future AI-derived content processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "Entity extraction is not implemented yet. This endpoint is reserved for future AI-ready content processing."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The referenced archive_id does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "detail": "No archive found for the provided archive_id."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APIKeySpendingRecord": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Descriptive name of the API key"
+          },
+          "key_preview": {
+            "type": "string",
+            "title": "Key Preview",
+            "description": "Masked preview of the key (e.g., sa_live_...xxxx)"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active",
+            "description": "Whether the key is active"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "ISO 8601 creation date of the key"
+          },
+          "last_used_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Used At",
+            "description": "ISO 8601 timestamp of when the key was last used"
+          },
+          "s_points_spent": {
+            "type": "integer",
+            "title": "S Points Spent",
+            "description": "Total S-Points consumed on-chain by this specific key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "key_preview",
+          "is_active",
+          "created_at",
+          "s_points_spent"
+        ],
+        "title": "APIKeySpendingRecord"
+      },
+      "Body_upload_file_api_v1_SuperArchive_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "custom_tags_json": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Tags Json",
+            "description": "Optional custom metadata tags as a JSON string"
+          },
+          "enable_server_encryption": {
+            "type": "boolean",
+            "title": "Enable Server Encryption",
+            "description": "Whether to apply server-managed AES-256-GCM encryption with keys kept securely in SuperArchive database",
+            "default": false
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "AI-ready metadata: human-readable title of the archived content"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "AI-ready metadata: short description/summary of the archived content"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url",
+            "description": "AI-ready metadata: original source URL the content was captured from, if any"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language",
+            "description": "AI-ready metadata: ISO 639-1 language code of the content, e.g. 'en'"
+          },
+          "tags_json": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags Json",
+            "description": "AI-ready metadata: JSON array of topical tags, e.g. '[\"research\",\"AI\"]'"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_file_api_v1_SuperArchive_post"
+      },
+      "FileUploadRecord": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "On-chain transaction ID (tx_id)"
+          },
+          "archive_id": {
+            "type": "string",
+            "title": "Archive Id",
+            "description": "Permanent archive identifier (currently identical to the Arweave tx_id)"
+          },
+          "filename": {
+            "type": "string",
+            "title": "Filename",
+            "description": "Original filename of the upload"
+          },
+          "filesize": {
+            "type": "integer",
+            "title": "Filesize",
+            "description": "Size of the file in bytes"
+          },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "description": "MIME content type of the file"
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sha256",
+            "description": "SHA-256 content fingerprint of the archived bytes, usable for independent verification"
+          },
+          "custom_tags": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Custom Tags",
+            "description": "Custom metadata tags applied to the file on-chain"
+          },
+          "upload_method": {
+            "type": "string",
+            "title": "Upload Method",
+            "description": "Upload tier routing: 'Turbo' (free) or 'L1' (direct)"
+          },
+          "points_deducted": {
+            "type": "integer",
+            "title": "Points Deducted",
+            "description": "Number of S-Points spent on this upload"
+          },
+          "is_encrypted": {
+            "type": "boolean",
+            "title": "Is Encrypted",
+            "description": "Whether zero-knowledge AES-256-GCM encryption was applied"
+          },
+          "is_encrypted_by_us": {
+            "type": "boolean",
+            "title": "Is Encrypted By Us",
+            "description": "Whether server-managed AES-256-GCM encryption was applied",
+            "default": false
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "ISO 8601 timestamp of upload completion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "archive_id",
+          "filename",
+          "filesize",
+          "content_type",
+          "upload_method",
+          "points_deducted",
+          "is_encrypted",
+          "created_at"
+        ],
+        "title": "FileUploadRecord"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "KeyRetrievalResponse": {
+        "properties": {
+          "tx_id": {
+            "type": "string",
+            "title": "Tx Id",
+            "description": "On-chain transaction ID"
+          },
+          "is_encrypted_by_us": {
+            "type": "boolean",
+            "title": "Is Encrypted By Us",
+            "description": "Whether server-managed encryption was used"
+          },
+          "server_aes_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Server Aes Key",
+            "description": "Server-managed AES encryption key (Hex string)"
+          },
+          "server_aes_salt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Server Aes Salt",
+            "description": "Server-managed AES key salt (Hex string)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tx_id",
+          "is_encrypted_by_us"
+        ],
+        "title": "KeyRetrievalResponse"
+      },
+      "SPointsResponse": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "Developer account email"
+          },
+          "remaining_s_points": {
+            "type": "integer",
+            "title": "Remaining S Points",
+            "description": "Active S-Points balance in the ledger"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Account status ('active' or 'suspended')"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "remaining_s_points",
+          "status"
+        ],
+        "title": "SPointsResponse"
+      },
+      "URLArchiveRequest": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The URL of the webpage to snapshot and permanently archive"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags",
+            "description": "Optional topical tags for AI-ready metadata, e.g. ['research','AI']"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "title": "URLArchiveRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
