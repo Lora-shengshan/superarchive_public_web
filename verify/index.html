@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive — Public Verification</title>
+  <meta name="description" content="Independently verify that content archived on SuperArchive is authentic, unchanged, and permanently stored on the Arweave blockchain.">
+  <link rel="icon" type="image/png" href="https://email.saltycat.tw/favicon.ico">
+  <style>
+    :root {
+      --bg-color: #fcfcfc;
+      --text-color: #2c2c2c;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+      --secondary-bg: #f9fafb;
+      --success-color: #059669;
+      --success-bg: #ecfdf5;
+      --warning-color: #b45309;
+      --warning-bg: #fffbeb;
+      --error-color: #dc2626;
+      --error-bg: #fef2f2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      background-color: white;
+    }
+
+    .nav-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .btn-back {
+      color: #4b5563;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .btn-back:hover {
+      color: var(--primary-color);
+    }
+
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 20px;
+      width: 100%;
+    }
+
+    .lookup-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .lookup-card input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      font-family: "SF Mono", Consolas, Menlo, monospace;
+    }
+
+    .lookup-card button {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .lookup-card button:hover {
+      opacity: 0.9;
+    }
+
+    .result-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .status-banner {
+      padding: 1.75rem 1.75rem 1.5rem;
+      text-align: center;
+    }
+
+    .status-banner.verified {
+      background-color: var(--success-bg);
+      color: var(--success-color);
+    }
+
+    .status-banner.pending {
+      background-color: var(--warning-bg);
+      color: var(--warning-color);
+    }
+
+    .status-banner.mismatch,
+    .status-banner.error {
+      background-color: var(--error-bg);
+      color: var(--error-color);
+    }
+
+    .status-icon {
+      font-size: 2.75rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .status-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .status-subtitle {
+      font-size: 0.9rem;
+      margin-top: 0.35rem;
+      opacity: 0.85;
+    }
+
+    .details {
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .detail-row {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: #6b7280;
+      margin-bottom: 0.3rem;
+    }
+
+    .detail-value {
+      font-size: 0.95rem;
+      color: #111827;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-value.mono {
+      font-family: "SF Mono", Consolas, Menlo, monospace;
+      font-size: 0.85rem;
+    }
+
+    .copy-btn {
+      flex-shrink: 0;
+      border: 1px solid var(--border-color);
+      background: var(--secondary-bg);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      cursor: pointer;
+      color: #4b5563;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .proof-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .proof-badge.available {
+      background-color: var(--success-bg);
+      color: var(--success-color);
+    }
+
+    .proof-badge.indexing {
+      background-color: var(--warning-bg);
+      color: var(--warning-color);
+    }
+
+    .arweave-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .arweave-link:hover {
+      text-decoration: underline;
+    }
+
+    .loading, .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #6b7280;
+    }
+
+    .footnote {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 1.5rem;
+    }
+
+    .saltycat-footer {
+      border-top: 1px solid var(--border-color);
+      background-color: var(--secondary-bg);
+      padding: 3rem 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .footer-links a {
+      color: #4b5563;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .footer-copyright {
+      font-weight: 500;
+      margin: 1rem 0 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-container">
+        <img src="/images/logo.webp" alt="Logo" style="height: 36px; width: auto; object-fit: contain;">
+        <span>SuperArchive</span>
+      </a>
+      <a href="/" class="btn-back">Back to Home</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="lookup-card">
+      <input type="text" id="archive-id-input" placeholder="Enter Archive ID / Arweave Transaction ID...">
+      <button id="lookup-btn">Verify</button>
+    </div>
+
+    <div id="result-container">
+      <div class="empty-state">
+        Enter an Archive ID above, or visit <code>/verify/&lt;archive_id&gt;</code> directly to view a permanent proof record.
+      </div>
+    </div>
+
+    <p class="footnote">
+      SuperArchive independently re-fetches the content from the Arweave network and recomputes its SHA-256 hash
+      on every verification request — this page never simply trusts our own database.
+    </p>
+  </main>
+
+  <footer class="saltycat-footer">
+    <div class="footer-links">
+      <a href="/terms.html" target="_blank">Terms of Service</a> •
+      <a href="/privacy.html" target="_blank">Privacy Policy</a> •
+      <a href="/api.html" target="_blank">API Docs</a>
+    </div>
+    <div class="footer-copyright">
+      © 2026 SuperArchive. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = "https://api.sarchive.saltycat.tw/api/v1";
+    const resultContainer = document.getElementById("result-container");
+    const input = document.getElementById("archive-id-input");
+    const lookupBtn = document.getElementById("lookup-btn");
+
+    function getRequestedArchiveId() {
+      // 1. Query parameter (?archive_id=... / ?tx=... / ?txid=...) — this is how
+      //    /verify/{archive_id} clean URLs arrive here after the 404.html redirect.
+      const params = new URLSearchParams(window.location.search);
+      const fromQuery = params.get("archive_id") || params.get("tx") || params.get("txid");
+      if (fromQuery) return fromQuery;
+
+      // 2. Trailing path segment fallback, e.g. /verify/index.html/{id} style links.
+      const segments = window.location.pathname.split("/").filter(Boolean);
+      const last = segments[segments.length - 1];
+      if (last && last.toLowerCase() !== "verify" && last.toLowerCase() !== "index.html") {
+        return last;
+      }
+      return "";
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str == null ? "" : String(str);
+      return div.innerHTML;
+    }
+
+    function copyToClipboard(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      });
+    }
+    window.copyToClipboard = copyToClipboard;
+
+    function renderLoading() {
+      resultContainer.innerHTML = `<div class="loading">🔎 Verifying against the Arweave network...</div>`;
+    }
+
+    function renderNotFound(archiveId) {
+      resultContainer.innerHTML = `
+        <div class="result-card">
+          <div class="status-banner error">
+            <span class="status-icon">✕</span>
+            <div class="status-title">Archive Not Found</div>
+            <div class="status-subtitle">No record exists for "${escapeHtml(archiveId)}"</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderNetworkError() {
+      resultContainer.innerHTML = `
+        <div class="result-card">
+          <div class="status-banner error">
+            <span class="status-icon">⚠</span>
+            <div class="status-title">Verification Service Unavailable</div>
+            <div class="status-subtitle">Please try again in a moment.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderResult(data) {
+      let bannerClass = "pending";
+      let icon = "⏳";
+      let title = "Archived — Awaiting Blockchain Confirmation";
+      let subtitle = "Content is queued on Arweave and typically becomes verifiable within ~10-20 minutes.";
+      let proofBadge = `<span class="proof-badge indexing">Indexing</span>`;
+
+      if (data.status === "permanent" && data.verified) {
+        bannerClass = "verified";
+        icon = "✓";
+        title = "Permanently Archived";
+        subtitle = "Content integrity independently confirmed against the Arweave blockchain.";
+        proofBadge = `<span class="proof-badge available">Available</span>`;
+      } else if (data.status === "mismatch") {
+        bannerClass = "mismatch";
+        icon = "⚠";
+        title = "Content Hash Mismatch";
+        subtitle = "The retrieved on-chain content does not match the recorded fingerprint.";
+        proofBadge = `<span class="proof-badge indexing">Mismatch</span>`;
+      }
+
+      const archiveTime = data.archive_timestamp
+        ? new Date(data.archive_timestamp).toISOString().slice(0, 19).replace("T", " ") + " UTC"
+        : "Unknown";
+
+      resultContainer.innerHTML = `
+        <div class="result-card">
+          <div class="status-banner ${bannerClass}">
+            <span class="status-icon">${icon}</span>
+            <div class="status-title">${title}</div>
+            <div class="status-subtitle">${subtitle}</div>
+          </div>
+          <div class="details">
+            <div class="detail-row">
+              <div class="detail-label">File</div>
+              <div class="detail-value">${escapeHtml(data.filename || "unknown")}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Archive Time</div>
+              <div class="detail-value">${escapeHtml(archiveTime)}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">SHA-256</div>
+              <div class="detail-value mono">
+                <span id="sha256-val">${escapeHtml(data.sha256 || "N/A")}</span>
+                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(data.sha256 || "")}', this)">Copy</button>
+              </div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Arweave Transaction</div>
+              <div class="detail-value mono">
+                <span id="txid-val">${escapeHtml(data.arweave_tx_id)}</span>
+                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(data.arweave_tx_id)}', this)">Copy</button>
+              </div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Blockchain Proof</div>
+              <div class="detail-value">
+                ${proofBadge}
+                <a class="arweave-link" href="${data.arweave_url}" target="_blank" rel="noopener">View raw data on Arweave ↗</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function verifyArchive(archiveId) {
+      if (!archiveId) {
+        resultContainer.innerHTML = `<div class="empty-state">Enter an Archive ID above to begin verification.</div>`;
+        return;
+      }
+
+      // Reflect the lookup in the URL (without a full page reload) so results are shareable.
+      const newUrl = `${window.location.pathname}?archive_id=${encodeURIComponent(archiveId)}`;
+      window.history.replaceState(null, "", newUrl);
+      input.value = archiveId;
+
+      renderLoading();
+      try {
+        const res = await fetch(`${API_BASE}/verify/${encodeURIComponent(archiveId)}`);
+        if (res.status === 404) {
+          renderNotFound(archiveId);
+          return;
+        }
+        if (!res.ok) {
+          renderNetworkError();
+          return;
+        }
+        const data = await res.json();
+        renderResult(data);
+      } catch (e) {
+        renderNetworkError();
+      }
+    }
+
+    lookupBtn.addEventListener("click", () => verifyArchive(input.value.trim()));
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") verifyArchive(input.value.trim());
+    });
+
+    // Auto-run on page load if an archive id was supplied via the URL.
+    const initialId = getRequestedArchiveId();
+    if (initialId) {
+      verifyArchive(initialId);
+    }
+  </script>
+</body>
+</html>

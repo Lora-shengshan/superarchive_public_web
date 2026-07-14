@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperArchive</title>
+  <script>
+    // GitHub Pages has no server-side routing, so a request for the clean URL
+    // /verify/{archive_id} lands here as a genuine 404. If the path matches the
+    // public verification route, redirect to the static verify page and pass the
+    // archive_id along as a query parameter instead.
+    (function () {
+      var path = window.location.pathname;
+      var match = path.match(/^\/verify\/([^\/]+)\/?$/);
+      if (match && match[1]) {
+        var archiveId = decodeURIComponent(match[1]);
+        window.location.replace("/verify/?archive_id=" + encodeURIComponent(archiveId) + window.location.hash);
+        return;
+      }
+      document.body.innerHTML =
+        '<div style="font-family: -apple-system, sans-serif; text-align:center; padding: 4rem 1rem; color:#2c2c2c;">' +
+        '<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">404 - Page Not Found</h1>' +
+        '<p><a href="/" style="color:#4f46e5;">Return to SuperArchive Home</a></p>' +
+        '</div>';
+    })();
+  </script>
+</head>
+<body></body>
+</html>
