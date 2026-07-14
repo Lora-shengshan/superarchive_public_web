@@ -1215,10 +1215,14 @@
       
       try {
         const apiHost = API_BASE.replace('/api/v1', '');
+        // Pass the site's current language so the NewebPay checkout page opens
+        // in a matching language (falls back to NewebPay's own default,
+        // Traditional Chinese, if unset or unsupported).
+        const currentLang = (window.L10n && window.L10n.currentLanguage) || localStorage.getItem('sa_lang');
         const res = await fetch(`${apiHost}/api/payment/newebpay/checkout`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ points: points }),
+          body: JSON.stringify({ points: points, lang: currentLang }),
           credentials: "include"
         });
         
