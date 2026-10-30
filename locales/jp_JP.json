@@ -22,9 +22,9 @@
     "security_p1_title": "攻撃者は常に防御者より速い",
     "security_p1_desc": "AIの登場により、攻撃者はかつてない速さで脆弱性を発見し悪用できるようになりました。防御側の対策は常に一歩遅れます。",
     "security_p2_title": "NASでもデータの安全は保証されません",
-    "security_p2_desc": "Synologyのような有名ブランドのNASでさえ、攻撃を受ける可能性があります（<a href=\"https://www.oschina.net/news/503279\" target=\"_blank\" rel=\"noopener noreferrer\">参考事例</a>）。データ漏えいは気にしないかもしれませんが、データを失うことは誰も望みません。",
+    "security_p2_desc": "Synology自身が<a href=\"https://www.synology.com/zh-hk/company/news/article/C3RB3R\" target=\"_blank\" rel=\"noopener noreferrer\">警告を発表</a>しています：攻撃者は2024年12月に修正済みの脆弱性を悪用し、古いDSMを実行中のNASを狙ってデータを暗号化し、身代金を要求しています。データ漏えいは気にしないかもしれませんが、データを失うことは誰も望みません。",
     "security_p3_title": "SuperArchive：消失なし、改ざんなし",
-    "security_p3_desc": "SuperArchiveはブロックチェーンの特性を活かし、アップロードしたすべてのデータ・ファイルを永久に保存します。消失することも、改ざんされることもありません。アップロード前にご自身で暗号化すれば、漏えいも防げます。"
+    "security_p3_desc": "SuperArchiveはArweaveのブロックチェーン永久ストレージ上に構築されており、アップロードしたすべてのデータ・ファイルを永久に保存します。消失することも、改ざんされることもありません。アップロード前にご自身で暗号化すれば、漏えいも防げます。"
   },
   "auth": {
     "title": "ログイン / 新規登録",
