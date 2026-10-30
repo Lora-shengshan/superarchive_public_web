@@ -204,6 +204,39 @@
       text-align: justify;
     }
 
+    .security-section {
+      margin-top: 40px;
+      border-left: 4px solid #dc2626;
+    }
+
+    .security-section .card-title {
+      color: #b91c1c;
+    }
+
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .security-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .security-item h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+
+    .security-item p a {
+      color: var(--primary-color);
+    }
+
     .saltycat-footer {
       border-top: 1px solid var(--border-color);
       background-color: var(--secondary-bg);
@@ -290,6 +323,27 @@
         </p>
         <h4 style="margin: 0 0 10px 0; color: #333;" data-i18n="landing.free_terms_title">每日免費額度：</h4>
         <p data-i18n="landing.free_quota_detail">單一檔案小於 91KB，且每日少於 10 次上傳，將自動排隊上傳至區塊鏈，完全免費。</p>
+      </div>
+    </section>
+
+    <section class="card security-section">
+      <div class="card-title">
+        <span class="card-title-icon">🛡️</span>
+        <span data-i18n="landing.security_title">AI 時代，你的資料真的安全嗎？</span>
+      </div>
+      <div class="security-grid">
+        <div class="security-item">
+          <h4 data-i18n="landing.security_p1_title">攻擊者永遠比防守者快</h4>
+          <p data-i18n="landing.security_p1_desc">在 AI 時代，攻擊者能用 AI 以前所未有的速度找出並利用漏洞，防守方的修補永遠慢一步。</p>
+        </div>
+        <div class="security-item">
+          <h4 data-i18n="landing.security_p2_title">NAS 也無法保證資料永遠安全</h4>
+          <p data-i18n="landing.security_p2_desc">即使是 Synology 等知名品牌 NAS，也可能遭受攻擊（<a href="https://www.oschina.net/news/503279" target="_blank" rel="noopener noreferrer">參考案例</a>）。你或許不在意資料外洩，但你一定不希望資料遺失。</p>
+        </div>
+        <div class="security-item">
+          <h4 data-i18n="landing.security_p3_title">SuperArchive：不遺失、不被竄改</h4>
+          <p data-i18n="landing.security_p3_desc">SuperArchive 運用區塊鏈的特性，每一筆上傳的資料與檔案都永久保存，不會遺失、也無法被竄改。若你在上傳前自行加密，更能確保資料不外洩。</p>
+        </div>
       </div>
     </section>
   </main>

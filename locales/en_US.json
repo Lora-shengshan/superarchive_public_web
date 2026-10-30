@@ -17,7 +17,14 @@
     "description_free_title": "Free Quota Details",
     "description": "Upload to the blockchain, permanently saved without loss.",
     "free_terms_title": "Daily Free Quota:",
-    "free_quota_detail": "Single files smaller than 91KB, with less than 10 uploads daily, are automatically queued and safely uploaded via the blockchain with a 3-second delay, 100% free."
+    "free_quota_detail": "Single files smaller than 91KB, with less than 10 uploads daily, are automatically queued and safely uploaded via the blockchain with a 3-second delay, 100% free.",
+    "security_title": "In the AI Era, Is Your Data Really Safe?",
+    "security_p1_title": "Attackers Are Always Faster Than Defenders",
+    "security_p1_desc": "With AI, attackers can find and exploit vulnerabilities faster than ever before. Defenders' patches are always one step behind.",
+    "security_p2_title": "Your NAS Can't Guarantee Your Data Is Always Safe",
+    "security_p2_desc": "Even well-known NAS brands like Synology can be compromised (<a href=\"https://www.oschina.net/news/503279\" target=\"_blank\" rel=\"noopener noreferrer\">see example</a>). You might not care about a data leak, but you definitely don't want to lose your data.",
+    "security_p3_title": "SuperArchive: No Loss, No Tampering",
+    "security_p3_desc": "SuperArchive leverages the nature of blockchain: every file you upload is preserved permanently and cannot be lost or modified. Encrypt it yourself before uploading, and it can't be leaked either."
   },
   "auth": {
     "title": "Sign In / Sign Up",
